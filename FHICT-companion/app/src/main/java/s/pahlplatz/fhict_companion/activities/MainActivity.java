@@ -16,6 +16,7 @@ import android.view.MenuItem;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
+import s.pahlplatz.fhict_companion.fragments.JsonFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
 import s.pahlplatz.fhict_companion.fragments.NotificationsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
@@ -83,6 +84,7 @@ public class MainActivity extends AppCompatActivity
     public void onFragmentInteraction(String token)
     {
         Log.i(TAG, "onFragmentInteraction: token=" + token);
+        getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
     }
 
     @Override
@@ -137,6 +139,9 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_results)
         {
             fragmentClass = TokenFragment.class;
+        } else if (id == R.id.nav_jsontest)
+        {
+            fragmentClass = JsonFragment.class;
         }
 
         try
