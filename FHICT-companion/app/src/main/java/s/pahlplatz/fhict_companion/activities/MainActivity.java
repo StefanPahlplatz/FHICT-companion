@@ -1,6 +1,7 @@
 package s.pahlplatz.fhict_companion.activities;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
@@ -20,9 +21,10 @@ import s.pahlplatz.fhict_companion.fragments.NotificationsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
 import s.pahlplatz.fhict_companion.fragments.ResultsFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
+import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener
+        implements NavigationView.OnNavigationItemSelectedListener, TokenFragment.OnFragmentInteractionListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -78,6 +80,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public void onFragmentInteraction(String token)
+    {
+        Log.i(TAG, "onFragmentInteraction: token=" + token);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
@@ -105,7 +112,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item)
+    public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
         Fragment fragment;
         Class fragmentClass = null;
@@ -129,7 +136,7 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = ParticipationFragment.class;
         } else if (id == R.id.nav_results)
         {
-            fragmentClass = ResultsFragment.class;
+            fragmentClass = TokenFragment.class;
         }
 
         try
