@@ -17,28 +17,17 @@ import android.widget.FrameLayout;
 
 import s.pahlplatz.fhict_companion.R;
 
-
 /**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link TokenFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link TokenFragment#newInstance} factory method to
- * create an instance of this fragment.
- *
+ * Fragment to show the user the fontys login form.
  */
 public class TokenFragment extends Fragment
 {
     private static final String TAG = TokenFragment.class.getSimpleName();
 
-    //Change the Scope as you need
-    WebView web;
+    private WebView web;
 
     private OnFragmentInteractionListener mListener;
 
-	/**
-     * @return fragment
-     */
     public static TokenFragment newInstance() {
         TokenFragment fragment = new TokenFragment();
         Bundle args = new Bundle();
@@ -151,16 +140,6 @@ public class TokenFragment extends Fragment
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnFragmentInteractionListener {
 
         void onFragmentInteraction(String token);

@@ -16,11 +16,9 @@ import android.view.MenuItem;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
-import s.pahlplatz.fhict_companion.fragments.JsonFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
-import s.pahlplatz.fhict_companion.fragments.NotificationsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
-import s.pahlplatz.fhict_companion.fragments.ResultsFragment;
+import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 
@@ -126,7 +124,7 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = CoworkersFragment.class;
         } else if (id == R.id.nav_notifications)
         {
-            fragmentClass = NotificationsFragment.class;
+            fragmentClass = TokenFragment.class; // TODO: replace
         } else if (id == R.id.nav_schedule)
         {
             fragmentClass = ScheduleFragment.class;
@@ -138,10 +136,7 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = ParticipationFragment.class;
         } else if (id == R.id.nav_results)
         {
-            fragmentClass = ResultsFragment.class;
-        } else if (id == R.id.nav_jsontest)
-        {
-            fragmentClass = JsonFragment.class;
+            fragmentClass = GradeFragment.class;
         }
 
         try
