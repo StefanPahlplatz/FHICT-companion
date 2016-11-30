@@ -1,5 +1,9 @@
 package s.pahlplatz.fhict_companion.activities;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -13,7 +17,18 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
@@ -21,6 +36,7 @@ import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
 import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
+import s.pahlplatz.fhict_companion.utils.FhictAPI;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TokenFragment.OnFragmentInteractionListener
@@ -46,6 +62,12 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
+
+        // Get id and name of the user
+        new loadUserData().execute();
+
+        // Load the profile picture
+        new loadProfilePicture().execute();
 
         if (savedInstanceState == null)
         {
@@ -121,6 +143,7 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_coworkers)
         {
+            new loadProfilePicture().execute();
             fragmentClass = CoworkersFragment.class;
         } else if (id == R.id.nav_notifications)
         {
@@ -156,5 +179,62 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    private class loadProfilePicture extends AsyncTask<Void, Void, Bitmap>
+    {
+        @Override
+        protected Bitmap doInBackground(Void... params)
+        {
+            return FhictAPI.getProfilePicture("https://api.fhict.nl/pictures/I364237.jpg",
+                    getSharedPreferences("settings", MODE_PRIVATE).getString("token", ""));
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result)
+        {
+            CircleImageView image = (CircleImageView) findViewById(R.id.header_profile_image);
+            image.setImageBitmap(result);
+        }
+    }
+
+    private class loadUserData extends AsyncTask<Void, Void, ArrayList<String>>
+    {
+        @Override
+        protected ArrayList<String> doInBackground(Void... params)
+        {
+            ArrayList<String> retList = new ArrayList<>();
+
+            try
+            {
+                // Convert the InputStream to a JSONArray
+                JSONObject jObject = new JSONObject(FhictAPI.getStream("https://api.fhict.nl/people/me", getSharedPreferences("settings", MODE_PRIVATE).getString("token", "")));
+
+                // Store info
+                SharedPreferences.Editor edit = getSharedPreferences("settings", MODE_PRIVATE).edit();
+                edit.putString("id", jObject.getString("id"));
+                edit.putString("displayName", jObject.getString("displayName"));
+                edit.putString("title", jObject.getString("title"));
+                edit.apply();
+
+                // Return name and title
+                retList.add(jObject.getString("displayName"));
+                retList.add(jObject.getString("title"));
+            }catch (Exception ex)
+            {
+                Log.e(TAG, "doInBackground: A problem occurred while parsing the JSON file.", ex);
+            }
+            return retList;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> result)
+        {
+            TextView name = (TextView) findViewById(R.id.header_tv_name);
+            name.setText(result.get(0));
+
+            TextView title = (TextView) findViewById(R.id.header_tv_title);
+            title.setText(result.get(1));
+        }
     }
 }

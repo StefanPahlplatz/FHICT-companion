@@ -1,5 +1,7 @@
 package s.pahlplatz.fhict_companion.utils;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 
 import java.io.BufferedReader;
@@ -19,7 +21,7 @@ public class FhictAPI
 {
     private static final String TAG = FhictAPI.class.getSimpleName();
 
-    public static InputStream getStream(String link, String token)
+    public static String getStream(String link, String token)
     {
         InputStream inputStream;
         try
@@ -39,10 +41,10 @@ public class FhictAPI
             Log.e(TAG, "getStream: Couldn't get data from fontys api.", ex);
             return null;
         }
-        return inputStream;
+        return convertStreamToString(inputStream);
     }
 
-    public static String convertStreamToString(InputStream is)
+    private static String convertStreamToString(InputStream is)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
@@ -68,5 +70,24 @@ public class FhictAPI
             }
         }
         return sb.toString();
+    }
+
+    public static Bitmap getProfilePicture(String link, String token)
+    {
+        try
+        {
+            URL url = new URL(link);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestProperty("Accept", "image/jpeg");
+            connection.setRequestProperty("Authorization", "Bearer " + token);
+            connection.connect();
+            InputStream input = connection.getInputStream();
+
+            return BitmapFactory.decodeStream(input);
+        } catch (IOException ex)
+        {
+            Log.e(TAG, "doInBackground: Couldn't get picture from url", ex);
+            return null;
+        }
     }
 }

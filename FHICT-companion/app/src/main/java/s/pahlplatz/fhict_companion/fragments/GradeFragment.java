@@ -76,17 +76,16 @@ public class GradeFragment extends Fragment
         @Override
         public Void doInBackground(Void... params)
         {
-            InputStream is = FhictAPI.getStream("https://api.fhict.nl/grades/me", getContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getString("token", ""));
-
             try
             {
-                // Convert the InputStream to a JSONArray
-                JSONArray jArray = new JSONArray(FhictAPI.convertStreamToString(is)); // TODO: Should I just make it so that FhictAPI.getStream returns the output convertStreamToString would give?
+                JSONArray jArray = new JSONArray(FhictAPI.getStream(
+                        "https://api.fhict.nl/grades/me",
+                        getContext().getSharedPreferences(
+                                "settings", Context.MODE_PRIVATE).getString("token", "")));
 
                 for (int i = 0; i < jArray.length(); i++)
                 {
                     grades.add(new Grade(jArray.getJSONObject(i).getString(TAG_ITEM), jArray.getJSONObject(i).getDouble(TAG_GRADE)));
-                    Log.i(TAG, "doInBackground: " + jArray.getJSONObject(i).getString(TAG_ITEM) + ": " + jArray.getJSONObject(i).getDouble(TAG_GRADE));
                 }
             }catch (Exception ex)
             {
