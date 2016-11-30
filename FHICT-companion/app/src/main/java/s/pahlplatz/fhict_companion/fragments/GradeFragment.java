@@ -6,6 +6,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -84,7 +85,7 @@ public class GradeFragment extends Fragment
 
                 for (int i = 0; i < jArray.length(); i++)
                 {
-                    grades.add(new Grade(jArray.getJSONObject(i).getString(TAG_ITEM), jArray.getJSONObject(i).getInt(TAG_GRADE)));
+                    grades.add(new Grade(jArray.getJSONObject(i).getString(TAG_ITEM), jArray.getJSONObject(i).getDouble(TAG_GRADE)));
                     Log.i(TAG, "doInBackground: " + jArray.getJSONObject(i).getString(TAG_ITEM) + ": " + jArray.getJSONObject(i).getDouble(TAG_GRADE));
                 }
             }catch (Exception ex)
@@ -110,10 +111,16 @@ public class GradeFragment extends Fragment
                     TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                     TextView text2 = (TextView) view.findViewById(android.R.id.text2);
 
-                    String text2Text = "Grade: " + String.valueOf(grades.get(position).getGrade());
+                    double grade = grades.get(position).getGrade();
+                    String detail = "Grade: " + Double.toString(grade);
 
                     text1.setText(grades.get(position).getName());
-                    text2.setText(text2Text);
+                    text2.setText(detail);
+
+                    if (grade < 5.5)
+                    {
+                        text2.setTextColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                    }
                     return view;
                 }
             };
