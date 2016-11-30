@@ -138,7 +138,7 @@ public class MainActivity extends AppCompatActivity
             fragmentClass = ParticipationFragment.class;
         } else if (id == R.id.nav_results)
         {
-            fragmentClass = TokenFragment.class;
+            fragmentClass = ResultsFragment.class;
         } else if (id == R.id.nav_jsontest)
         {
             fragmentClass = JsonFragment.class;

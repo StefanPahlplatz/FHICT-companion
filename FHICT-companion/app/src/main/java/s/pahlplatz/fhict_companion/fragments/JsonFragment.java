@@ -126,36 +126,21 @@ public class JsonFragment extends Fragment
         {
             try
             {
+                // Request grades
                 URL url = new URL("https://api.fhict.nl/grades/me");
+
+                // Create Http connection
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestProperty("Accept", "application/json");
-                connection.setRequestProperty("Authorization", "Bearer " + getContext()
-                        .getSharedPreferences("settings", Context.MODE_PRIVATE)
-                        .getString("token", ""));
-                Log.i(TAG, "doInBackground: " + getContext()
-                        .getSharedPreferences("settings", Context.MODE_PRIVATE)
-                        .getString("token", ""));
+                connection.setRequestProperty("Authorization", "Bearer " + getContext().getSharedPreferences(
+                        "settings", Context.MODE_PRIVATE).getString("token", ""));
                 connection.connect();
 
+                // Get the result
                 InputStream is = connection.getInputStream();
-                Log.i(TAG, "doInBackground: " + convertStreamToString(is));
-                InputStreamReader isr = new InputStreamReader(is);
 
-                JsonReader reader = new JsonReader(isr);
-
-                reader.beginArray();
-                reader.beginObject();
-
-                //TODO: JSON hype
-
-                /*
-                while(jsonReader.hasNext())
-                {
-
-                    {
-                        Log.i(TAG, "doInBackground: " + jsonReader.nextName());
-                    }
-                }*/
+                JSONArray jArray = new JSONArray(convertStreamToString(is));
+                Log.i(TAG, "doInBackground: " + jArray.getJSONObject(0));
 
             } catch (Exception ex)
             {
@@ -171,21 +156,28 @@ public class JsonFragment extends Fragment
             Log.i(TAG, "onPostExecute: " + result);
         }
 
-        private String convertStreamToString(InputStream is) {
+        private String convertStreamToString(InputStream is)
+        {
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             StringBuilder sb = new StringBuilder();
 
             String line;
-            try {
-                while ((line = reader.readLine()) != null) {
+            try
+            {
+                while ((line = reader.readLine()) != null)
+                {
                     sb.append(line).append('\n');
                 }
-            } catch (IOException e) {
+            } catch (IOException e)
+            {
                 e.printStackTrace();
-            } finally {
-                try {
+            } finally
+            {
+                try
+                {
                     is.close();
-                } catch (IOException e) {
+                } catch (IOException e)
+                {
                     e.printStackTrace();
                 }
             }

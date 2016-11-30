@@ -1,15 +1,37 @@
 package s.pahlplatz.fhict_companion.fragments;
 
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ExpandableListView;
+
+import org.json.JSONArray;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
 
 import s.pahlplatz.fhict_companion.R;
+import s.pahlplatz.fhict_companion.utils.ResultsAdapter;
+import s.pahlplatz.fhict_companion.utils.models.Course;
+import s.pahlplatz.fhict_companion.utils.models.ItemDetail;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -18,6 +40,13 @@ import s.pahlplatz.fhict_companion.R;
  */
 public class ResultsFragment extends Fragment implements TokenFragment.OnFragmentInteractionListener
 {
+    private static final String TAG = ResultsFragment.class.getSimpleName();
+    private static final String TAG_DATE = "date";
+    private static final String TAG_ITEM = "item";
+    private static final String TAG_ITEMCODE = "itemCode";
+    private static final String TAG_GRADE = "grade";
+    private static final String TAG_PASSED = "passed";
+
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -26,6 +55,8 @@ public class ResultsFragment extends Fragment implements TokenFragment.OnFragmen
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private List<Course> courseList;
 
     private TokenFragment.OnFragmentInteractionListener mListener;
 
@@ -78,8 +109,85 @@ public class ResultsFragment extends Fragment implements TokenFragment.OnFragmen
     {
         View view =  inflater.inflate(R.layout.fragment_results, container, false);
 
-        // Do stuff
+        ExpandableListView expandableListView
+                = (ExpandableListView) view.findViewById(R.id.results_expandableListView);
+
+        courseList = new ArrayList<>();
+
+        Course course1 = new Course(1, "MATH", "nodesc");
+        ArrayList<ItemDetail> templist = new ArrayList<>();
+        templist.add(0, new ItemDetail(0, 0, "Grades", ""));
+        course1.setItemList(templist);
+
+        ResultsAdapter adapter = new ResultsAdapter(getContext(), courseList);
+        expandableListView.setAdapter(adapter);
 
         return view;
+    }
+
+    public class loadJSONFromWeb extends AsyncTask<Void, Void, String>
+    {
+        @Override
+        public String doInBackground(Void... params)
+        {
+            try
+            {
+                // Request grades
+                URL url = new URL("https://api.fhict.nl/grades/me");
+
+                // Create Http connection
+                HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+                connection.setRequestProperty("Accept", "application/json");
+                connection.setRequestProperty("Authorization", "Bearer " + getContext().getSharedPreferences(
+                        "settings", Context.MODE_PRIVATE).getString("token", ""));
+                connection.connect();
+
+                // Get the result
+                InputStream is = connection.getInputStream();
+
+                JSONArray jArray = new JSONArray(convertStreamToString(is));
+                Log.i(TAG, "doInBackground: " + jArray.getJSONObject(0));
+
+            } catch (Exception ex)
+            {
+                Log.e(TAG, "doInBackground: ", ex);
+            }
+
+            return "done";
+        }
+
+        @Override
+        public void onPostExecute(String result)
+        {
+            Log.i(TAG, "onPostExecute: " + result);
+        }
+
+        private String convertStreamToString(InputStream is)
+        {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(is));
+            StringBuilder sb = new StringBuilder();
+
+            String line;
+            try
+            {
+                while ((line = reader.readLine()) != null)
+                {
+                    sb.append(line).append('\n');
+                }
+            } catch (IOException e)
+            {
+                e.printStackTrace();
+            } finally
+            {
+                try
+                {
+                    is.close();
+                } catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            return sb.toString();
+        }
     }
 }

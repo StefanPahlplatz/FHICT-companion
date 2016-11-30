@@ -2,6 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
+
              tools:context="s.pahlplatz.fhict_companion.fragments.ResultsFragment">
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -16,12 +17,12 @@
 
     </FrameLayout>
 
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:padding="16dp"
+    <ExpandableListView
+        android:id="@+id/results_expandableListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="results fragment"/>
+        android:indicatorRight="?android:attr/expandableListPreferredChildIndicatorRight">
+
+    </ExpandableListView>
 
 </FrameLayout>
