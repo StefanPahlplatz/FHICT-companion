@@ -14,4 +14,5 @@
     <string name="news">News</string>
     <string name="participation">Participation</string>
     <string name="results">Results</string>
+    <string name="please_log_in_first">Please log in first</string>
 </resources>
