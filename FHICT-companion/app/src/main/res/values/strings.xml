@@ -15,4 +15,7 @@
     <string name="participation">Participation</string>
     <string name="results">Results</string>
     <string name="please_log_in_first">Please log in first</string>
+    <string name="thumbnail">Thumbnail</string>
+    <string name="description_placeholder">Description text and stuff</string>
+    <string name="header_placeholder">Header</string>
 </resources>

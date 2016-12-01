@@ -2,12 +2,11 @@ package s.pahlplatz.fhict_companion.activities;
 
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.support.design.widget.NavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -19,21 +18,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
+import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
-import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
@@ -236,7 +230,7 @@ public class MainActivity extends AppCompatActivity
         protected Bitmap doInBackground(Void... params)
         {
             SharedPreferences sp = getSharedPreferences("settings", MODE_PRIVATE);
-            return FhictAPI.getProfilePicture("https://api.fhict.nl/pictures/I"+ sp.getString("id", "").substring(1) +".jpg", sp.getString("token", ""));
+            return FhictAPI.getPicture("https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg", sp.getString("token", ""));
         }
 
         @Override
