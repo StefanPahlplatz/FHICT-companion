@@ -66,14 +66,11 @@ public class MainActivity extends AppCompatActivity
         // Get id and name of the user
         new loadUserData().execute();
 
-        // Load the profile picture
-        new loadProfilePicture().execute();
-
         if (savedInstanceState == null)
         {
             Fragment fragment = null;
             Class fragmentClass;
-            fragmentClass = CoworkersFragment.class;
+            fragmentClass = TokenFragment.class;
 
             try
             {
@@ -181,22 +178,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    private class loadProfilePicture extends AsyncTask<Void, Void, Bitmap>
-    {
-        @Override
-        protected Bitmap doInBackground(Void... params)
-        {
-            return FhictAPI.getProfilePicture("https://api.fhict.nl/pictures/I364237.jpg",
-                    getSharedPreferences("settings", MODE_PRIVATE).getString("token", ""));
-        }
 
-        @Override
-        protected void onPostExecute(Bitmap result)
-        {
-            CircleImageView image = (CircleImageView) findViewById(R.id.header_profile_image);
-            image.setImageBitmap(result);
-        }
-    }
 
     private class loadUserData extends AsyncTask<Void, Void, ArrayList<String>>
     {
@@ -215,6 +197,7 @@ public class MainActivity extends AppCompatActivity
                 edit.putString("id", jObject.getString("id"));
                 edit.putString("displayName", jObject.getString("displayName"));
                 edit.putString("title", jObject.getString("title"));
+                edit.putString("photo", jObject.getString("photo"));
                 edit.apply();
 
                 // Return name and title
@@ -230,11 +213,37 @@ public class MainActivity extends AppCompatActivity
         @Override
         protected void onPostExecute(ArrayList<String> result)
         {
-            TextView name = (TextView) findViewById(R.id.header_tv_name);
-            name.setText(result.get(0));
+            try
+            {
+                TextView name = (TextView) findViewById(R.id.header_tv_name);
+                name.setText(result.get(0));
 
-            TextView title = (TextView) findViewById(R.id.header_tv_title);
-            title.setText(result.get(1));
+                TextView title = (TextView) findViewById(R.id.header_tv_title);
+                title.setText(result.get(1));
+            } catch (Exception ex)
+            {
+                Log.e(TAG, "onPostExecute: Couldn't set the header textviews.", ex);
+            }
+
+            // Load the profile picture
+            new loadProfilePicture().execute();
+        }
+    }
+
+    private class loadProfilePicture extends AsyncTask<Void, Void, Bitmap>
+    {
+        @Override
+        protected Bitmap doInBackground(Void... params)
+        {
+            SharedPreferences sp = getSharedPreferences("settings", MODE_PRIVATE);
+            return FhictAPI.getProfilePicture("https://api.fhict.nl/pictures/I"+ sp.getString("id", "").substring(1) +".jpg", sp.getString("token", ""));
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result)
+        {
+            CircleImageView image = (CircleImageView) findViewById(R.id.header_profile_image);
+            image.setImageBitmap(result);
         }
     }
 }
