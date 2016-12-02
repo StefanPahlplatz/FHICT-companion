@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -37,6 +38,8 @@ public class NewsFragment extends Fragment
 
     private NewsAdapter adapter;
 
+    private SwipeRefreshLayout refreshLayout;
+
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -53,10 +56,12 @@ public class NewsFragment extends Fragment
 
         recyclerView = (RecyclerView) view.findViewById(R.id.news_recylerview);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
+        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
+        recyclerView.setLayoutManager(mLayoutManager);
 
         new loadNews().execute();
 
-        SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.news_swiperefresh);
+        refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.news_swiperefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
             @Override
@@ -113,6 +118,9 @@ public class NewsFragment extends Fragment
 
             adapter = new NewsAdapter(newsItems, getContext());
             recyclerView.setAdapter(adapter);
+            Log.i(TAG, "onPostExecute: adapter assigned");
+
+            refreshLayout.setRefreshing(false);
         }
     }
 

@@ -16,7 +16,6 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import s.pahlplatz.fhict_companion.R;
-import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
 
 /**
  * Fragment to show the user the fontys login form.
@@ -93,9 +92,6 @@ public class TokenFragment extends Fragment
                     if(v != null)
                     {
                         v.setVisibility(View.GONE);
-
-                        // Load profile picture
-                        new LoadProfilePicture().execute(getContext(), getView());
                     }
 
                     if(mListener != null)
@@ -105,7 +101,6 @@ public class TokenFragment extends Fragment
                 } else if (url.contains("error=access_denied"))
                 {
                     Log.e(TAG, "ACCESS_DENIED_HERE");
-                    mListener.onFragmentInteraction("LOL ERROR OFCOURSE");
                     resultIntent.putExtra("code", authCode);
                     authComplete = true;
                 }

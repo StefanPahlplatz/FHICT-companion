@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -42,9 +42,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position)
     {
-        holder.title.setText(newsItems.get(position).getTitle());
-        holder.desc.setText(newsItems.get(position).getContent());
+        //holder.title.setText(newsItems.get(position).getTitle());
+        //holder.desc.setText(newsItems.get(position).getContent());
         holder.thumbnail.setImageBitmap(newsItems.get(position).getThumbnail());
+        holder.webview.loadData(newsItems.get(position).getContent(), "text/html; charset=UTF-8", null);
     }
 
     @Override
@@ -53,17 +54,21 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
         return newsItems.size();
     }
 
-    protected class MyViewHolder extends RecyclerView.ViewHolder
+    /**
+     * Created by Stefan on 1-12-2016.
+     * <p>
+     * Adapter for newsItems in NewsFragment
+     */
+    class MyViewHolder extends RecyclerView.ViewHolder
     {
-        protected TextView title, desc;
-        protected ImageView thumbnail;
+        private WebView webview;
+        private ImageView thumbnail;
 
-        protected MyViewHolder(View view)
+        private MyViewHolder(View view)
         {
             super(view);
-            title = (TextView) view.findViewById(R.id.news_card_title);
-            desc = (TextView) view.findViewById(R.id.news_card_desc);
             thumbnail = (ImageView) view.findViewById(R.id.news_card_image);
+            webview = (WebView) view.findViewById(R.id.news_card_webview);
         }
     }
 }

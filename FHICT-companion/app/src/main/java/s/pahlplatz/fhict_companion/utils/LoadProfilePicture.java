@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
-import android.view.View;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import s.pahlplatz.fhict_companion.R;
 
 /**
  * Created by Stefan on 2-12-2016.
@@ -16,18 +14,18 @@ import s.pahlplatz.fhict_companion.R;
  * <p>
  * Params:
  * 0 = Context
- * 1 = View
+ * 1 = R.id.header_profile_image
  */
 
 public class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
 {
-    private View view;
+    private CircleImageView image;
 
     @Override
     protected Bitmap doInBackground(Object... params)
     {
         Context ctx = (Context) params[0];
-        view = (View) params[1];
+        image = (CircleImageView) params[1];
         SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
         return FhictAPI.getPicture("https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg", sp.getString("token", ""));
     }
@@ -35,7 +33,6 @@ public class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
     @Override
     protected void onPostExecute(Bitmap result)
     {
-        CircleImageView image = (CircleImageView) view.findViewById(R.id.header_profile_image);
         image.setImageBitmap(result);
     }
 }

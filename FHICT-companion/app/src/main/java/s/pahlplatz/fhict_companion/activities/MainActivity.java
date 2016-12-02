@@ -29,6 +29,7 @@ import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
+import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, TokenFragment.OnFragmentInteractionListener
@@ -54,9 +55,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
-
-        // Get id and name of the user
-        new LoadUserData().execute();
 
         if (savedInstanceState == null)
         {
@@ -92,8 +90,14 @@ public class MainActivity extends AppCompatActivity
 
     public void onFragmentInteraction(String token)
     {
-        Log.i(TAG, "onFragmentInteraction: token=" + token);
+        // Store the user token
         getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
+
+        // Set the profile picture
+        new LoadProfilePicture().execute(getBaseContext(), findViewById(R.id.header_profile_image));
+
+        // Get id and name of the user
+        new LoadUserData().execute();
     }
 
     @Override
