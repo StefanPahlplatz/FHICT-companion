@@ -19,13 +19,15 @@ public class NewsItem
     private Bitmap thumbnail;
     private String link;
     private String content;
+    private String author;
 
-    public NewsItem(String pubDate, String title, String thumbnailString, String link, String content)
+    public NewsItem(String pubDate, String title, String thumbnailString, String link, String content, String author)
     {
         this.pubDate = pubDate;
         this.title = title;
         this.thumbnailString = thumbnailString;
         this.link = link;
+        this.author = author;
 
         Document doc = Jsoup.parse(content);
         this.content = doc.body().text();
@@ -69,5 +71,10 @@ public class NewsItem
     public String getContent()
     {
         return content;
+    }
+
+    public String getAuthor()
+    {
+        return author;
     }
 }

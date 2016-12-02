@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
+import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
 import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 
 public class NewsFragment extends Fragment
@@ -56,8 +57,7 @@ public class NewsFragment extends Fragment
 
         recyclerView = (RecyclerView) view.findViewById(R.id.news_recylerview);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(getContext(), 1);
-        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
         new loadNews().execute();
 
@@ -99,7 +99,8 @@ public class NewsFragment extends Fragment
                             jArray.getJSONObject(i).getString("title"),
                             jArray.getJSONObject(i).getString("thumbnail"),
                             jArray.getJSONObject(i).getString("link"),
-                            jArray.getJSONObject(i).getString("content")));
+                            jArray.getJSONObject(i).getString("content"),
+                            jArray.getJSONObject(i).getString("author")));
                 }
             } catch (Exception ex)
             {

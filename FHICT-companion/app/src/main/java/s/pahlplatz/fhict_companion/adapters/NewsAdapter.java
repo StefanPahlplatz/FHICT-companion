@@ -43,6 +43,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
     public void onBindViewHolder(final MyViewHolder holder, int position)
     {
         holder.title.setText(newsItems.get(position).getTitle());
+        holder.author.setText(newsItems.get(position).getAuthor());
         holder.thumbnail.setImageBitmap(newsItems.get(position).getThumbnail());
     }
 
@@ -60,7 +61,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
     class MyViewHolder extends RecyclerView.ViewHolder
     {
         private TextView title;
-        private TextView desc;
+        private TextView author;
         private ImageView thumbnail;
 
         private MyViewHolder(View view)
@@ -68,6 +69,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.news_card_image);
             title = (TextView) view.findViewById(R.id.news_card_title);
+            author = (TextView) view.findViewById(R.id.news_card_author);
         }
     }
 }
