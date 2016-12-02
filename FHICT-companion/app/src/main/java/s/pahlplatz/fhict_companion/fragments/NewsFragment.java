@@ -144,5 +144,4 @@ public class NewsFragment extends Fragment
             adapter.notifyDataSetChanged();
         }
     }
-
 }

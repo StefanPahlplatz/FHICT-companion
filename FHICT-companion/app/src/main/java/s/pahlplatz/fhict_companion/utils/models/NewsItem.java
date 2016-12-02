@@ -2,6 +2,9 @@ package s.pahlplatz.fhict_companion.utils.models;
 
 import android.graphics.Bitmap;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+
 /**
  * Created by Stefan on 1-12-2016.
  * <p>
@@ -23,7 +26,9 @@ public class NewsItem
         this.title = title;
         this.thumbnailString = thumbnailString;
         this.link = link;
-        this.content = content;
+
+        Document doc = Jsoup.parse(content);
+        this.content = doc.body().text();
     }
 
     public String getPubDate()

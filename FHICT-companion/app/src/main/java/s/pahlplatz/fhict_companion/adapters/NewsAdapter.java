@@ -5,8 +5,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -42,10 +42,8 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
     @Override
     public void onBindViewHolder(final MyViewHolder holder, int position)
     {
-        //holder.title.setText(newsItems.get(position).getTitle());
-        //holder.desc.setText(newsItems.get(position).getContent());
+        holder.title.setText(newsItems.get(position).getTitle());
         holder.thumbnail.setImageBitmap(newsItems.get(position).getThumbnail());
-        holder.webview.loadData(newsItems.get(position).getContent(), "text/html; charset=UTF-8", null);
     }
 
     @Override
@@ -61,14 +59,15 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
      */
     class MyViewHolder extends RecyclerView.ViewHolder
     {
-        private WebView webview;
+        private TextView title;
+        private TextView desc;
         private ImageView thumbnail;
 
         private MyViewHolder(View view)
         {
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.news_card_image);
-            webview = (WebView) view.findViewById(R.id.news_card_webview);
+            title = (TextView) view.findViewById(R.id.news_card_title);
         }
     }
 }
