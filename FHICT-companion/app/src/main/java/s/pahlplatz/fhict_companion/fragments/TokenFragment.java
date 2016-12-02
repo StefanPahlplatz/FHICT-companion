@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 import android.widget.FrameLayout;
 
 import s.pahlplatz.fhict_companion.R;
+import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
 
 /**
  * Fragment to show the user the fontys login form.
@@ -54,14 +55,13 @@ public class TokenFragment extends Fragment
         {
             boolean authComplete = false;
             Intent resultIntent = new Intent();
+            String authCode;
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon)
             {
                 super.onPageStarted(view, url, favicon);
             }
-
-            String authCode;
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -93,6 +93,9 @@ public class TokenFragment extends Fragment
                     if(v != null)
                     {
                         v.setVisibility(View.GONE);
+
+                        // Load profile picture
+                        new LoadProfilePicture().execute(getContext(), getView());
                     }
 
                     if(mListener != null)

@@ -1,7 +1,6 @@
 package s.pahlplatz.fhict_companion.activities;
 
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -22,7 +21,6 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-import de.hdodenhof.circleimageview.CircleImageView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
 import s.pahlplatz.fhict_companion.fragments.GradeFragment;
@@ -58,7 +56,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.getMenu().getItem(0).setChecked(true);
 
         // Get id and name of the user
-        new loadUserData().execute();
+        new LoadUserData().execute();
 
         if (savedInstanceState == null)
         {
@@ -134,7 +132,6 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_coworkers)
         {
-            new loadProfilePicture().execute();
             fragmentClass = CoworkersFragment.class;
         } else if (id == R.id.nav_notifications)
         {
@@ -172,9 +169,8 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
-
-    private class loadUserData extends AsyncTask<Void, Void, ArrayList<String>>
+    // Get user info from api
+    private class LoadUserData extends AsyncTask<Void, Void, ArrayList<String>>
     {
         @Override
         protected ArrayList<String> doInBackground(Void... params)
@@ -218,26 +214,6 @@ public class MainActivity extends AppCompatActivity
             {
                 Log.e(TAG, "onPostExecute: Couldn't set the header textviews.", ex);
             }
-
-            // Load the profile picture
-            new loadProfilePicture().execute();
-        }
-    }
-
-    private class loadProfilePicture extends AsyncTask<Void, Void, Bitmap>
-    {
-        @Override
-        protected Bitmap doInBackground(Void... params)
-        {
-            SharedPreferences sp = getSharedPreferences("settings", MODE_PRIVATE);
-            return FhictAPI.getPicture("https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg", sp.getString("token", ""));
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap result)
-        {
-            CircleImageView image = (CircleImageView) findViewById(R.id.header_profile_image);
-            image.setImageBitmap(result);
         }
     }
 }
