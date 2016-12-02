@@ -1,5 +1,6 @@
 package s.pahlplatz.fhict_companion.activities;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -22,6 +23,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.R;
+import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
 import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
@@ -30,9 +32,12 @@ import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
 import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
+import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, TokenFragment.OnFragmentInteractionListener
+        implements NavigationView.OnNavigationItemSelectedListener,
+        TokenFragment.OnFragmentInteractionListener,
+        NewsAdapter.OnAdapterInteractionListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -42,16 +47,20 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // Configure toolbar
         Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
 
+        // Assign drawerLayout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
 
+        // Configure actionBar
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
+        // Configure navigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
@@ -70,11 +79,16 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+            // Load default fragment
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.activity_main_content_frame, fragment).commit();
         }
     }
 
+    /**
+     * Check if the navigation drawer is open, if so close it.
+     * Otherwise do the normal action.
+     */
     @Override
     public void onBackPressed()
     {
@@ -88,6 +102,11 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    /**
+     * Triggered when the user logged in
+     *
+     * @param token is the string that is returned from the auth
+     */
     public void onFragmentInteraction(String token)
     {
         // Store the user token
@@ -100,32 +119,52 @@ public class MainActivity extends AppCompatActivity
         new LoadUserData().execute();
     }
 
+    /**
+     * Inflate the menu; this adds items to the action bar if it is present.
+     *
+     * @param menu which menu to inflate
+     * @return true
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu)
     {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
+    /**
+     * Handle action bar item clicks here. The action bar will
+     * automatically handle clicks on the Home/Up button, so long
+     * as you specify a parent activity in AndroidManifest.xml.
+     *
+     * @param item the item that is selected
+     * @return true if selection is handled, otherwise call super method
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item)
     {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings)
+        switch (item.getItemId())
         {
-            return true;
+            case R.id.action_settings:
+                return true;
+            case android.R.id.home:
+                FragmentManager fm = getSupportFragmentManager();
+                if (fm.getBackStackEntryCount() > 0)
+                {
+                    fm.popBackStack();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+    /**
+     * Called when the user selects an item from the navigation drawer
+     *
+     * @param item the selected item
+     * @return true if action is handled
+     */
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item)
     {
@@ -173,7 +212,26 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // Get user info from api
+    /**
+     * Triggered when the user selects an item in the news fragment.
+     * Create an intent with detailed information about the selected item.
+     *
+     * @param item NewsItem instance that contains information about the selected item.
+     */
+    public void onAdapterInteractionListener(NewsItem item)
+    {
+        Intent myIntent = new Intent(this, NewsDetailsActivity.class);
+        myIntent.putExtra("title", item.getTitle());
+        myIntent.putExtra("content", item.getContent());
+        myIntent.putExtra("author", item.getAuthor());
+        myIntent.putExtra("pubDate", item.getPubDate());
+        myIntent.putExtra("image", item.getThumbnail());
+        startActivity(myIntent);
+    }
+
+    /**
+     * Get user info from fontys api
+     */
     private class LoadUserData extends AsyncTask<Void, Void, ArrayList<String>>
     {
         @Override

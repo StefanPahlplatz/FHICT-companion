@@ -111,7 +111,7 @@ public class NewsFragment extends Fragment
                     newsItems.add(new NewsItem(
                             jArray.getJSONObject(i).getString("pubDate"),
                             jArray.getJSONObject(i).getString("title"),
-                            jArray.getJSONObject(i).getString("thumbnail"),
+                            jArray.getJSONObject(i).getString("image"),
                             jArray.getJSONObject(i).getString("link"),
                             jArray.getJSONObject(i).getString("content"),
                             jArray.getJSONObject(i).getString("author")));
@@ -126,14 +126,20 @@ public class NewsFragment extends Fragment
 
         protected void onPostExecute(Void params)
         {
-            for (int i = 0; i < newsItems.size(); i++)
+            try
             {
-                new loadThumbnail().execute(newsItems.get(i));
-            }
+                for (int i = 0; i < newsItems.size(); i++)
+                {
+                    new loadThumbnail().execute(newsItems.get(i));
+                }
 
-            adapter = new NewsAdapter(newsItems, getContext());
-            recyclerView.setAdapter(adapter);
-            Log.i(TAG, "onPostExecute: adapter assigned");
+                adapter = new NewsAdapter(newsItems, getContext());
+                recyclerView.setAdapter(adapter);
+                Log.i(TAG, "onPostExecute: adapter assigned");
+            } catch (NullPointerException ex)
+            {
+                Log.e(TAG, "onPostExecute: Couldn't load news, view changed before onPostExecute triggered?", ex);
+            }
         }
     }
 

@@ -107,7 +107,7 @@ public class TokenFragment extends Fragment
             }
         });
 
-        String CLIENT_ID = "i874073-studentapp";
+        String CLIENT_ID = getActivity().getResources().getString(R.string.CLIENT_ID);
         String REDIRECT_URI="https://tas.fhict.nl/oob.html";
         String OAUTH_URL ="https://identity.fhict.nl/connect/authorize";
         String OAUTH_SCOPE="fhict fhict_personal";

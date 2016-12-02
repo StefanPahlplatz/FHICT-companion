@@ -1,6 +1,7 @@
 package s.pahlplatz.fhict_companion.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +24,20 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
 {
     private ArrayList<NewsItem> newsItems;
     private Context ctx;
+    private OnAdapterInteractionListener mListener;
 
     public NewsAdapter(ArrayList<NewsItem> newsItems, Context ctx)
     {
         this.newsItems = newsItems;
         this.ctx = ctx;
+
+        if (ctx instanceof OnAdapterInteractionListener)
+        {
+            mListener = (OnAdapterInteractionListener) ctx;
+        } else
+        {
+            throw new RuntimeException(ctx.toString() + " must implement OnFragmentInteractionListener");
+        }
     }
 
     @Override
@@ -40,17 +50,31 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, int position)
+    public void onBindViewHolder(final MyViewHolder holder, final int position)
     {
         holder.title.setText(newsItems.get(position).getTitle());
         holder.author.setText(newsItems.get(position).getAuthor());
         holder.thumbnail.setImageBitmap(newsItems.get(position).getThumbnail());
+        holder.cardView.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                mListener.onAdapterInteractionListener(newsItems.get(holder.getAdapterPosition()));
+            }
+        });
     }
 
     @Override
     public int getItemCount()
     {
         return newsItems.size();
+    }
+
+    public interface OnAdapterInteractionListener
+    {
+
+        void onAdapterInteractionListener(NewsItem newsItem);
     }
 
     /**
@@ -63,6 +87,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
         private TextView title;
         private TextView author;
         private ImageView thumbnail;
+        private CardView cardView;
 
         private MyViewHolder(View view)
         {
@@ -70,6 +95,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
             thumbnail = (ImageView) view.findViewById(R.id.news_card_image);
             title = (TextView) view.findViewById(R.id.news_card_title);
             author = (TextView) view.findViewById(R.id.news_card_author);
+            cardView = (CardView) view.findViewById(R.id.news_card_view);
         }
     }
 }

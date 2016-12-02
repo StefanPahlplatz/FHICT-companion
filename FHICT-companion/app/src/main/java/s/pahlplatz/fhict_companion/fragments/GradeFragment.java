@@ -104,40 +104,50 @@ public class GradeFragment extends Fragment
         @Override
         public void onPostExecute(Void params)
         {
-            // Create an ArrayAdapter for the listView
-            @SuppressWarnings("unchecked")
-            ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, grades)
+            try
             {
-                @NonNull
-                @Override
-                public View getView(int position, View convertView, @NonNull ViewGroup parent)
+                // Create an ArrayAdapter for the listView
+                @SuppressWarnings("unchecked")
+                ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, grades)
                 {
-                    View view = super.getView(position, convertView, parent);
-                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-
-                    double grade = grades.get(position).getGrade();
-                    String detail = "Grade: " + Double.toString(grade);
-
-                    text1.setText(grades.get(position).getName());
-                    text2.setText(detail);
-
-                    if (grade < 5.5)
+                    @NonNull
+                    @Override
+                    public View getView(int position, View convertView, @NonNull ViewGroup parent)
                     {
-                        text2.setTextColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        View view = super.getView(position, convertView, parent);
+                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+
+                        double grade = grades.get(position).getGrade();
+                        String detail = "Grade: " + Double.toString(grade);
+
+                        text1.setText(grades.get(position).getName());
+                        text2.setText(detail);
+
+                        if (grade < 5.5)
+                        {
+                            text2.setTextColor(ContextCompat.getColor(getContext(), R.color.colorRed));
+                        }
+                        return view;
                     }
-                    return view;
+                };
+
+                // Assign the new adapter
+                listView.setAdapter(adapter);
+
+                // Stop refreshing
+                View view = getView();
+                if (view != null)
+                {
+                    SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
+                    if (refreshLayout.isRefreshing())
+                    {
+                        refreshLayout.setRefreshing(false);
+                    }
                 }
-            };
-
-            // Assign the new adapter
-            listView.setAdapter(adapter);
-
-            // Stop refreshing
-            SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) getView().findViewById(R.id.grades_swiperefresh);
-            if (refreshLayout.isRefreshing())
+            } catch (NullPointerException ex)
             {
-                refreshLayout.setRefreshing(false);
+                Log.e(TAG, "onPostExecute: Couldn't load grades, view changed before onPostExecute triggered?", ex);
             }
         }
     }
