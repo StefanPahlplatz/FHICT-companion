@@ -45,6 +45,9 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
+        Log.i(TAG, "onCreate:" + getSupportFragmentManager().getBackStackEntryCount());
+
         setContentView(R.layout.activity_main);
 
         // Configure toolbar
@@ -220,12 +223,13 @@ public class MainActivity extends AppCompatActivity
      */
     public void onAdapterInteractionListener(NewsItem item)
     {
+        getSupportFragmentManager().beginTransaction().addToBackStack("last").commit();
+
         Intent myIntent = new Intent(this, NewsDetailsActivity.class);
         myIntent.putExtra("title", item.getTitle());
         myIntent.putExtra("content", item.getContent());
         myIntent.putExtra("author", item.getAuthor());
         myIntent.putExtra("pubDate", item.getPubDate());
-        myIntent.putExtra("image", item.getThumbnail());
         startActivity(myIntent);
     }
 

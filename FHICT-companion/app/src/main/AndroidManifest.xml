@@ -28,7 +28,9 @@
             android:label="News details"
             android:parentActivityName=".activities.MainActivity"
             android:theme="@style/AppTheme">
-
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activities.MainActivity"/>
         </activity>
     </application>
 
