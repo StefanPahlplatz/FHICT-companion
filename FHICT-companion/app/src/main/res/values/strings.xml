@@ -22,4 +22,6 @@
 
     <string name="author_template">Author</string>
     <string name="amount">Amount</string>
+    <string name="sort_alphabetical">Sort alphabetical</string>
+    <string name="sort_by_grade">Sort by grade</string>
 </resources>

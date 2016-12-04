@@ -98,14 +98,14 @@ public class NewsFragment extends Fragment
         int id = item.getItemId();
 
         // Refresh news feed
-        if (id == R.id.action_refresh)
+        if (id == R.id.action_news_refresh)
         {
             new loadNews().execute();
             return true;
         }
 
         // News item amount
-        else if (id == R.id.action_amount)
+        else if (id == R.id.action_news_amount)
         {
             // Create NumberPicker
             final NumberPicker picker = new NumberPicker(getContext());

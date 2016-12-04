@@ -10,6 +10,9 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -19,6 +22,8 @@ import android.widget.TextView;
 import org.json.JSONArray;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
@@ -36,6 +41,7 @@ public class GradeFragment extends Fragment
 
     // Grade array
     private ArrayList<Grade> grades;
+    private ArrayAdapter adapter;
 
     // Reference to the main listView
     private ListView listView;
@@ -53,6 +59,8 @@ public class GradeFragment extends Fragment
     {
         View view =  inflater.inflate(R.layout.fragment_grades, container, false);
 
+        setHasOptionsMenu(true);
+
         listView = (ListView) view.findViewById(R.id.grades_lv);
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
@@ -68,6 +76,56 @@ public class GradeFragment extends Fragment
         new loadGrades().execute();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
+    {
+        menu.clear();
+        inflater.inflate(R.menu.grades, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        int id = item.getItemId();
+
+        // Refresh grades
+        if (id == R.id.action_grade_refresh)
+        {
+            new loadGrades().execute();
+            return true;
+        }
+
+        // Sort by grade
+        else if (id == R.id.action_grade_sort_grade)
+        {
+            Collections.sort(grades, new Comparator<Grade>()
+            {
+                @Override
+                public int compare(Grade grade, Grade t1)
+                {
+                    return (int) (t1.getGrade() - grade.getGrade());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
+
+        // Sort by name
+        else if (id == R.id.action_grade_sort_alphabetical)
+        {
+            Collections.sort(grades, new Comparator<Grade>()
+            {
+                @Override
+                public int compare(Grade grade, Grade t1)
+                {
+                    return grade.getName().compareTo(t1.getName());
+                }
+            });
+            adapter.notifyDataSetChanged();
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     public class loadGrades extends AsyncTask<Void, Void, Void>
@@ -101,14 +159,15 @@ public class GradeFragment extends Fragment
             return null;
         }
 
+        @SuppressWarnings("unchecked")
         @Override
         public void onPostExecute(Void params)
         {
             try
             {
                 // Create an ArrayAdapter for the listView
-                @SuppressWarnings("unchecked")
-                ArrayAdapter adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, grades)
+
+                adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, grades)
                 {
                     @NonNull
                     @Override
