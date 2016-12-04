@@ -2,6 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:orientation="vertical"
                 tools:context="s.pahlplatz.fhict_companion.fragments.NewsFragment">
 
         <android.support.v7.widget.RecyclerView
@@ -10,5 +11,11 @@
             android:layout_height="wrap_content"
             android:clipToPadding="false"
             android:scrollbars="vertical"/>
+
+    <ProgressBar
+        android:id="@+id/news_pbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

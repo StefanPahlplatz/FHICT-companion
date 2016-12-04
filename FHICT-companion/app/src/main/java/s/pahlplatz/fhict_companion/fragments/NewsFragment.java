@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.NumberPicker;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -41,8 +42,8 @@ public class NewsFragment extends Fragment
 {
     private static final String TAG = NewsFragment.class.getSimpleName();
 
-    // Reference to the main listView
     private RecyclerView recyclerView;
+    private ProgressBar progressBar;
 
     // Store news items
     private ArrayList<NewsItem> newsItems;
@@ -68,6 +69,9 @@ public class NewsFragment extends Fragment
         recyclerView = (RecyclerView) view.findViewById(R.id.news_recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+
+        progressBar = (ProgressBar) view.findViewById(R.id.news_pbar);
+        progressBar.setVisibility(View.VISIBLE);
 
         new loadNews().execute();
 
@@ -195,6 +199,7 @@ public class NewsFragment extends Fragment
             {
                 adapter = new NewsAdapter(newsItems, getContext());
                 recyclerView.setAdapter(adapter);
+                progressBar.setVisibility(View.GONE);
                 for (int i = 0; i < newsItems.size(); i++)
                 {
                     new loadThumbnail().execute(newsItems.get(i));
