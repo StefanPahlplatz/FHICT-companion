@@ -20,5 +20,6 @@
     <string name="description_placeholder">Description text and stuff</string>
     <string name="header_placeholder">Header</string>
 
-    <string name="cover_image">Cover image</string>
+    <string name="author_template">Author</string>
+    <string name="amount">Amount</string>
 </resources>

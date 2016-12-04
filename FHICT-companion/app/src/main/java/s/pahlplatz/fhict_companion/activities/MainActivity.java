@@ -1,6 +1,5 @@
 package s.pahlplatz.fhict_companion.activities;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -26,6 +26,7 @@ import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
 import s.pahlplatz.fhict_companion.fragments.GradeFragment;
+import s.pahlplatz.fhict_companion.fragments.NewsDetailsFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
@@ -34,34 +35,26 @@ import s.pahlplatz.fhict_companion.utils.FhictAPI;
 import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
 import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener,
+public class MainActivity extends AppCompatActivity implements
+        NavigationView.OnNavigationItemSelectedListener,
         TokenFragment.OnFragmentInteractionListener,
         NewsAdapter.OnAdapterInteractionListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    Toolbar toolbar;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-
-        Log.i(TAG, "onCreate:" + getSupportFragmentManager().getBackStackEntryCount());
-
         setContentView(R.layout.activity_main);
 
         // Configure toolbar
-        Toolbar toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
+        toolbar = (Toolbar) findViewById(R.id.activity_main_toolbar);
         setSupportActionBar(toolbar);
 
-        // Assign drawerLayout
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
-
-        // Configure actionBar
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        configureToolbar();
 
         // Configure navigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -95,6 +88,12 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onBackPressed()
     {
+        // Change the icon to the drawer icon
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+        // Get the default configuration
+        configureToolbar();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START))
         {
@@ -223,14 +222,43 @@ public class MainActivity extends AppCompatActivity
      */
     public void onAdapterInteractionListener(NewsItem item)
     {
-        getSupportFragmentManager().beginTransaction().addToBackStack("last").commit();
+        // Switch fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.activity_main_content_frame, NewsDetailsFragment.newInstance(item))
+                .addToBackStack("parent")
+                .commit();
 
-        Intent myIntent = new Intent(this, NewsDetailsActivity.class);
-        myIntent.putExtra("title", item.getTitle());
-        myIntent.putExtra("content", item.getContent());
-        myIntent.putExtra("author", item.getAuthor());
-        myIntent.putExtra("pubDate", item.getPubDate());
-        startActivity(myIntent);
+        // Change the icon to the up arrow
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        // On UP click
+        toolbar.setNavigationOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                // Go to previous fragment
+                MainActivity.super.onBackPressed();
+
+                // Change the icon to the drawer icon
+                getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+
+                // Get the default configuration
+                configureToolbar();
+            }
+        });
+    }
+
+    private void configureToolbar()
+    {
+        // Assign drawerLayout
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
+
+        // Configure actionBar
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.addDrawerListener(toggle);
+        toggle.syncState();
     }
 
     /**
