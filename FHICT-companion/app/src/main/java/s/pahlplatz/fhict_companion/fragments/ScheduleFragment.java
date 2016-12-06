@@ -196,8 +196,11 @@ public class ScheduleFragment extends Fragment
                 // Add days to days list
                 for (int i = 0; i < jArray.length(); i++)
                 {
+                    String room = jArray.getJSONObject(i).getString("room");
+                    room = room.replace("_", " ");
+
                     days.add(new Day(
-                            jArray.getJSONObject(i).getString("room"),
+                            room,
                             jArray.getJSONObject(i).getString("subject"),
                             jArray.getJSONObject(i).getString("teacherAbbreviation"),
                             jArray.getJSONObject(i).getString("start"),
