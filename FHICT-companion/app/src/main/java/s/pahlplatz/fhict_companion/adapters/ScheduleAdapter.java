@@ -1,6 +1,8 @@
 package s.pahlplatz.fhict_companion.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,6 +23,7 @@ import s.pahlplatz.fhict_companion.utils.models.Day;
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
 {
     private ArrayList<Day> days;
+    private Context ctx;
 
     /**
      * Constructor for NewsAdapter
@@ -31,6 +34,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     public ScheduleAdapter(ArrayList<Day> days, Context ctx)
     {
         this.days = days;
+        this.ctx = ctx;
     }
 
     /**
@@ -65,6 +69,11 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
         holder.course.setText(days.get(position).getSubject());
         holder.room.setText(days.get(position).getRoom());
         holder.teacher.setText(days.get(position).getTeacherAbbr());
+
+        if (days.get(position).getSubject().equals("Break"))
+        {
+            holder.card.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorGreen));
+        }
     }
 
     @Override
@@ -84,6 +93,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
         private TextView course;
         private TextView room;
         private TextView teacher;
+        private CardView card;
 
         private MyViewHolder(View view)
         {
@@ -92,6 +102,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
             course = (TextView) view.findViewById(R.id.block_card_course);
             room = (TextView) view.findViewById(R.id.block_card_room);
             teacher = (TextView) view.findViewById(R.id.block_card_teacher);
+            card = (CardView) view.findViewById(R.id.block_card_view);
         }
     }
 }

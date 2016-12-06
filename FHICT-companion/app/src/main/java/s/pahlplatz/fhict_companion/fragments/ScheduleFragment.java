@@ -46,15 +46,15 @@ public class ScheduleFragment extends Fragment
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Spinner dropdownWeeks;
-    private TextView no_data;
+    private TextView noData;
 
     private String todayDay;
-    private String todayDate;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+        days = new ArrayList<>();
     }
 
     @Override
@@ -62,6 +62,8 @@ public class ScheduleFragment extends Fragment
                              Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
+
+        noData = (TextView) view.findViewById(R.id.schedule_no_data);
 
         // Configure the spinner
         dropdownWeeks = (Spinner) view.findViewById(R.id.schedule_spinner);
@@ -91,14 +93,11 @@ public class ScheduleFragment extends Fragment
         // Set the current day as selected day
         Date date = new Date();
         todayDay = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
-        todayDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(date);
         dropdownWeeks.setSelection(getDayAsInt(todayDay));
 
         // Make progressbar visible
         progressBar = (ProgressBar) view.findViewById(R.id.schedule_pbar);
         progressBar.setVisibility(View.VISIBLE);
-
-        no_data = (TextView) view.findViewById(R.id.schedule_no_data);
 
         new loadSchedule().execute();
 
@@ -133,22 +132,24 @@ public class ScheduleFragment extends Fragment
         return 0;
     }
 
+    /**
+     * Show the schedule for the selected day
+     */
     private void showDaySchedule()
     {
-        String day = dropdownWeeks.getSelectedItem().toString();
+        // Amount of days from/until now
+        int dif = getDayAsInt(dropdownWeeks.getSelectedItem().toString()) - getDayAsInt(todayDay);
 
-        int dif = getDayAsInt(day) - getDayAsInt(todayDay);
-
+        // Calculate selected date
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, dif);
-
         @SuppressLint("SimpleDateFormat") SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-
         String formatted = format1.format(cal.getTime());
-        Log.i(TAG, "showDaySchedule: " + formatted);
 
+        // Create new list to store the correct days
         ArrayList<Day> customDays = new ArrayList<>();
 
+        // Find days with the selected date
         for (int i = 0; i < days.size(); i++)
         {
             if (days.get(i).getDate().equals(formatted))
@@ -157,10 +158,12 @@ public class ScheduleFragment extends Fragment
             }
         }
 
+        // Create new adapter
         adapter = new ScheduleAdapter(customDays, getContext());
         recyclerView.setAdapter(adapter);
 
-        no_data.setVisibility(customDays.isEmpty() ? View.VISIBLE : View.INVISIBLE);
+        // Make the textView visible if the list is empty
+        noData.setVisibility(customDays.isEmpty() ? View.VISIBLE : View.GONE);
     }
 
     /**
@@ -174,22 +177,23 @@ public class ScheduleFragment extends Fragment
             if (days != null)
             {
                 days.clear();
+                noData.setVisibility(View.GONE);
             }
         }
 
         @Override
         protected Void doInBackground(Void... params)
         {
-            days = new ArrayList<>();
-
             try
             {
+                // Get JSONArray from fontys api
                 JSONArray jArray = new JSONObject(FhictAPI.getStream(
                         "https://api.fhict.nl/schedule/me?days=9",
                         getContext().getSharedPreferences(
                                 "settings", Context.MODE_PRIVATE).getString("token", "")
                 )).getJSONArray("data");
 
+                // Add days to days list
                 for (int i = 0; i < jArray.length(); i++)
                 {
                     days.add(new Day(
@@ -214,7 +218,7 @@ public class ScheduleFragment extends Fragment
             {
                 boolean isNextValid = true;
 
-                // Merge duplicates
+                // Combine classes if they are right after each
                 for (int i = 0; i < days.size(); i++)
                 {
                     if (isNextValid)
@@ -229,6 +233,19 @@ public class ScheduleFragment extends Fragment
                     } else
                     {
                         isNextValid = true;
+                    }
+                }
+
+                for (int i = 0; i < days.size(); i++)
+                {
+                    if (i + 1 < days.size())
+                    {
+                        if (!days.get(i).getEnd().equals(days.get(i + 1).getStart()) &&
+                                days.get(i).getDate().equals(days.get(i + 1).getDate()))
+                        {
+                            Log.i(TAG, "onPostExecute: Break after " + days.get(i).getSubject());
+                            days.add(i + 1, new Day(days.get(i).getEnd(), days.get(i + 1).getStart(), days.get(i).getDate()));
+                        }
                     }
                 }
 

@@ -1,7 +1,5 @@
 package s.pahlplatz.fhict_companion.utils.models;
 
-import android.util.Log;
-
 /**
  * Created by Stefan on 4-12-2016.
  * <p>
@@ -10,8 +8,6 @@ import android.util.Log;
 
 public class Day
 {
-    private static final String TAG = Day.class.getSimpleName();
-
     private String room;
     private String subject;
     private String teacherAbbr;
@@ -27,7 +23,16 @@ public class Day
         this.start = start.substring(11, 16);
         this.end = end.substring(11, 16);
         this.date = start.substring(0, 10);
-        Log.i(TAG, "Day: date  = " + this.date);
+    }
+
+    public Day(String start, String end, String date)
+    {
+        this.room = "";
+        this.subject = "Break";
+        this.teacherAbbr = "";
+        this.start = start;
+        this.end = end;
+        this.date = date;
     }
 
     public String getEnd()
