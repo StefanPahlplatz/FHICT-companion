@@ -24,8 +24,9 @@
     <string name="amount">Amount</string>
     <string name="sort_alphabetical">Sort alphabetical</string>
     <string name="sort_by_grade">Sort by grade</string>
-    <string name="time_placeholder">8:45 - 12:05</string>
-    <string name="course_placeholder">Displ FMMLdisc oms</string>
-    <string name="room_placeholder">R4 120</string>
-    <string name="teacher_placeholder">lah</string>
+    <string name="time_placeholder">time</string>
+    <string name="course_placeholder">course</string>
+    <string name="room_placeholder">room</string>
+    <string name="teacher_placeholder">teacher</string>
+    <string name="no_data">No data</string>
 </resources>

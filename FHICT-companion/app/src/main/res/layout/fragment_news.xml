@@ -16,6 +16,7 @@
         android:id="@+id/news_pbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"/>
 
 </RelativeLayout>

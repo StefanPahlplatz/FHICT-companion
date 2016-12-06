@@ -21,7 +21,6 @@ import s.pahlplatz.fhict_companion.utils.models.Day;
 public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
 {
     private ArrayList<Day> days;
-    private OnAdapterInteractionListener mListener;
 
     /**
      * Constructor for NewsAdapter
@@ -32,14 +31,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     public ScheduleAdapter(ArrayList<Day> days, Context ctx)
     {
         this.days = days;
-
-        if (ctx instanceof OnAdapterInteractionListener)
-        {
-            mListener = (OnAdapterInteractionListener) ctx;
-        } else
-        {
-            throw new RuntimeException(ctx.toString() + " must implement OnFragmentInteractionListener");
-        }
     }
 
     /**
@@ -53,7 +44,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
         View itemView = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.news_card_view, parent, false);
+                parent.getContext()).inflate(R.layout.block_card_view, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -68,36 +59,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
     public void onBindViewHolder(final MyViewHolder holder, final int position)
     {
         // Set the text
-        holder.title.setText(newsItems.get(position).getTitle());
-        String authorString = "By " + newsItems.get(position).getAuthor();
-        holder.author.setText(authorString);
-        holder.thumbnail.setImageBitmap(newsItems.get(position).getThumbnail());
-        holder.pubDate.setText(newsItems.get(position).getPubDate().substring(0, 10));
+        String time = days.get(position).getStart() + " - " + days.get(position).getEnd();
+        holder.time.setText(time);
 
-        // Send MainActivity signal to swap fragments when the user clicks on the card
-        holder.cardView.setOnClickListener(new View.OnClickListener()
-        {
-            @Override
-            public void onClick(View view)
-            {
-                mListener.onAdapterInteractionListener(newsItems.get(holder.getAdapterPosition()));
-            }
-        });
+        holder.course.setText(days.get(position).getSubject());
+        holder.room.setText(days.get(position).getRoom());
+        holder.teacher.setText(days.get(position).getTeacherAbbr());
     }
 
     @Override
     public int getItemCount()
     {
         return days.size();
-    }
-
-    /**
-     * Interface for when a card is clicked
-     */
-    public interface OnAdapterInteractionListener
-    {
-
-        void onAdapterInteractionListener(Day day);
     }
 
     /**
@@ -119,7 +92,6 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
             course = (TextView) view.findViewById(R.id.block_card_course);
             room = (TextView) view.findViewById(R.id.block_card_room);
             teacher = (TextView) view.findViewById(R.id.block_card_teacher);
-
         }
     }
 }
