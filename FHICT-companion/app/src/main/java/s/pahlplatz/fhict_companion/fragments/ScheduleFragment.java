@@ -224,18 +224,17 @@ public class ScheduleFragment extends Fragment
                 // Combine classes if they are right after each
                 for (int i = 0; i < days.size(); i++)
                 {
-                    if (isNextValid)
-                    {
-                        if (days.get(i).getSubject().equals(days.get(i + 1).getSubject()) &&
-                                days.get(i).getDate().equals(days.get(i + 1).getDate()))
-                        {
-                            days.get(i).setEnd(days.get(i + 1).getEnd());
-                            days.remove(i + 1);
-                            isNextValid = false;
+                    if (i + 1 > days.size()) {
+                        if (isNextValid) {
+                            if (days.get(i).getSubject().equals(days.get(i + 1).getSubject()) &&
+                                    days.get(i).getDate().equals(days.get(i + 1).getDate())) {
+                                days.get(i).setEnd(days.get(i + 1).getEnd());
+                                days.remove(i + 1);
+                                isNextValid = false;
+                            }
+                        } else {
+                            isNextValid = true;
                         }
-                    } else
-                    {
-                        isNextValid = true;
                     }
                 }
 
