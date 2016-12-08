@@ -125,9 +125,9 @@ public class ScheduleFragment extends Fragment
             case "Friday":
                 return 4;
             case "Saturday":
-                return 0;
+                return 5;
             case "Sunday":
-                return 0;
+                return 6;
         }
         return 0;
     }
@@ -188,7 +188,7 @@ public class ScheduleFragment extends Fragment
             {
                 // Get JSONArray from fontys api
                 JSONArray jArray = new JSONObject(FhictAPI.getStream(
-                        "https://api.fhict.nl/schedule/me?days=9",
+                        "https://api.fhict.nl/schedule/me?expandTeacher=false&days=7&startLastMonday=true",
                         getContext().getSharedPreferences(
                                 "settings", Context.MODE_PRIVATE).getString("token", "")
                 )).getJSONArray("data");

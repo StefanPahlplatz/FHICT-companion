@@ -1,78 +1,85 @@
 package s.pahlplatz.fhict_companion.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.models.Day;
 
-/**
- * Created by Stefan on 1-12-2016.
- * <p>
- * Adapter for newsItems in NewsFragment
- */
-
-public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyViewHolder>
+public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
+    private static final String TAG = ScheduleAdapter.class.getSimpleName();
+
     private ArrayList<Day> days;
     private Context ctx;
 
-    /**
-     * Constructor for NewsAdapter
-     *
-     * @param days ArrayList of NewsItems you want to show
-     * @param ctx  context used for the Listener
-     */
     public ScheduleAdapter(ArrayList<Day> days, Context ctx)
     {
         this.days = days;
         this.ctx = ctx;
     }
 
-    /**
-     * Create a new ViewHolder that the recyclerView can reuse
-     *
-     * @param parent   ViewGroup
-     * @param viewType int
-     * @return the new ViewHolder
-     */
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
+    public int getItemViewType(int position)
     {
-        View itemView = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.block_card_view, parent, false);
-
-        return new MyViewHolder(itemView);
+        if (days.get(position).getSubject().equals("Break"))
+            return 1;
+        return 0;
     }
 
-    /**
-     * Basically the onCreateView for the adapter
-     *
-     * @param holder   custom viewHolder
-     * @param position position in list
-     */
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position)
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
     {
-        // Set the text
-        String time = days.get(position).getStart() + " - " + days.get(position).getEnd();
-        holder.time.setText(time);
-
-        holder.course.setText(days.get(position).getSubject());
-        holder.room.setText(days.get(position).getRoom());
-        holder.teacher.setText(days.get(position).getTeacherAbbr());
-
-        if (days.get(position).getSubject().equals("Break"))
+        switch (viewType)
         {
-            holder.card.setBackgroundColor(ContextCompat.getColor(ctx, R.color.colorGreen));
+            case 0:
+                return new ViewHolder0(LayoutInflater.from(parent.getContext()).inflate(R.layout.block_card_view, parent, false));
+            case 1:
+                return new ViewHolder1(LayoutInflater.from(parent.getContext()).inflate(R.layout.break_card_view, parent, false));
+        }
+        return null;
+    }
+
+    @Override
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
+    {
+        String time = days.get(position).getStart() + " - " + days.get(position).getEnd();
+        switch (holder.getItemViewType())
+        {
+            case 0:
+                ViewHolder0 viewHolder0 = (ViewHolder0) holder;
+                viewHolder0.time.setText(time);
+                viewHolder0.course.setText(days.get(position).getSubject());
+                viewHolder0.room.setText(days.get(position).getRoom());
+                viewHolder0.teacher.setText(days.get(position).getTeacherAbbr());
+                break;
+            case 1:
+                try
+                {
+                    ViewHolder1 viewHolder1 = (ViewHolder1) holder;
+                    String start = time.substring(0, 5);
+                    String end = time.substring(8, 13);
+                    @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    Date date1 = format.parse(start);
+                    Date date2 = format.parse(end);
+                    long difference = (date2.getTime() - date1.getTime()) / 60000;
+                    String s = String.valueOf(difference) + " minute break";
+                    viewHolder1.time.setText(s);
+                } catch (Exception ex)
+                {
+                    Log.e(TAG, "onBindViewHolder: Error", ex);
+                }
+                break;
         }
     }
 
@@ -82,27 +89,31 @@ public class ScheduleAdapter extends RecyclerView.Adapter<ScheduleAdapter.MyView
         return days.size();
     }
 
-    /**
-     * Created by Stefan on 1-12-2016.
-     * <p>
-     * View holder for the adapter
-     */
-    class MyViewHolder extends RecyclerView.ViewHolder
+    private class ViewHolder0 extends RecyclerView.ViewHolder
     {
         private TextView time;
         private TextView course;
         private TextView room;
         private TextView teacher;
-        private CardView card;
 
-        private MyViewHolder(View view)
+        private ViewHolder0(View view)
         {
             super(view);
             time = (TextView) view.findViewById(R.id.block_card_times);
             course = (TextView) view.findViewById(R.id.block_card_course);
             room = (TextView) view.findViewById(R.id.block_card_room);
             teacher = (TextView) view.findViewById(R.id.block_card_teacher);
-            card = (CardView) view.findViewById(R.id.block_card_view);
+        }
+    }
+
+    private class ViewHolder1 extends RecyclerView.ViewHolder
+    {
+        private TextView time;
+
+        private ViewHolder1(View view)
+        {
+            super(view);
+            time = (TextView) view.findViewById(R.id.break_card_times);
         }
     }
 }
