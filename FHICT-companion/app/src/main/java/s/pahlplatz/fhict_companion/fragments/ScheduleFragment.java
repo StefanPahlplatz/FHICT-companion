@@ -159,7 +159,7 @@ public class ScheduleFragment extends Fragment
         }
 
         // Create new adapter
-        adapter = new ScheduleAdapter(customDays, getContext());
+        adapter = new ScheduleAdapter(customDays);
         recyclerView.setAdapter(adapter);
 
         // Make the textView visible if the list is empty
@@ -251,7 +251,7 @@ public class ScheduleFragment extends Fragment
                     }
                 }
 
-                adapter = new ScheduleAdapter(days, getContext());
+                adapter = new ScheduleAdapter(days);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
 

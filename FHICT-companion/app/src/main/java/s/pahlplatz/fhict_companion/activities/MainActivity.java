@@ -24,11 +24,11 @@ import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
-import s.pahlplatz.fhict_companion.fragments.CoworkersFragment;
 import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsDetailsFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
+import s.pahlplatz.fhict_companion.fragments.PeopleFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity implements
 
         if (id == R.id.nav_coworkers)
         {
-            fragmentClass = CoworkersFragment.class;
+            fragmentClass = PeopleFragment.class;
         } else if (id == R.id.nav_notifications)
         {
             fragmentClass = TokenFragment.class; // TODO: replace

@@ -1,7 +1,6 @@
 package s.pahlplatz.fhict_companion.adapters;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,12 +20,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final String TAG = ScheduleAdapter.class.getSimpleName();
 
     private ArrayList<Day> days;
-    private Context ctx;
 
-    public ScheduleAdapter(ArrayList<Day> days, Context ctx)
+    public ScheduleAdapter(ArrayList<Day> days)
     {
         this.days = days;
-        this.ctx = ctx;
     }
 
     @Override

@@ -5,7 +5,7 @@
         <item
             android:id="@+id/nav_coworkers"
             android:icon="@drawable/ic_people_white_24dp"
-            android:title="@string/co_workers"/>
+            android:title="@string/people"/>
         <item
             android:id="@+id/nav_notifications"
             android:icon="@drawable/ic_notifications_white_24dp"
