@@ -3,6 +3,7 @@ package s.pahlplatz.fhict_companion.activities;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -17,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -47,7 +49,8 @@ public class MainActivity extends AppCompatActivity implements
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 
-    Toolbar toolbar;
+    private Toolbar toolbar;
+    private boolean doubleBackToExitPressedOnce = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -105,7 +108,24 @@ public class MainActivity extends AppCompatActivity implements
             drawer.closeDrawer(GravityCompat.START);
         } else
         {
-            super.onBackPressed();
+            if (doubleBackToExitPressedOnce)
+            {
+                super.onBackPressed();
+            } else
+            {
+                this.doubleBackToExitPressedOnce = true;
+                Toast.makeText(this, "Press back again to leave", Toast.LENGTH_SHORT).show();
+
+                new Handler().postDelayed(new Runnable()
+                {
+
+                    @Override
+                    public void run()
+                    {
+                        doubleBackToExitPressedOnce = false;
+                    }
+                }, 2000);
+            }
         }
     }
 
@@ -126,6 +146,11 @@ public class MainActivity extends AppCompatActivity implements
         new LoadUserData().execute();
     }
 
+    /**
+     * Triggered when the search button is pressed in the people fragment
+     *
+     * @param persons list of people that match the query
+     */
     public void onPeopleSearchListener(final ArrayList<Person> persons)
     {
         if (persons.size() == 1)
@@ -165,6 +190,11 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * Triggered when the user clicks an item in the people listview
+     *
+     * @param p the selected person
+     */
     @Override
     public void onFragmentInteraction(Person p)
     {
