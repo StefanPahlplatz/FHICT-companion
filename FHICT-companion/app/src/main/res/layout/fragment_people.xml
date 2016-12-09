@@ -19,8 +19,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/people_button_search"
-        android:hint="@string/people_search_hint"
-        android:text=""/>
+        android:hint="@string/people_search_hint"/>
 
     <Button
         android:id="@+id/people_button_search"
@@ -31,10 +30,12 @@
         android:text="@string/search"
         android:textSize="12sp"/>
 
-    <ListView
-        android:id="@+id/people_listview"
+    <FrameLayout
+        android:id="@+id/people_content"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/people_button_search"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_edittext_search"
+        android:layout_marginTop="16dp"/>
 
 </RelativeLayout>

@@ -31,4 +31,7 @@
     <string name="no_data">No data</string>
     <string name="search">Search</string>
     <string name="people_search_hint">Part of name/office/Id</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

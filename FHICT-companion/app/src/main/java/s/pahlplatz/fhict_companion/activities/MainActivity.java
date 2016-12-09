@@ -16,6 +16,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -28,17 +30,21 @@ import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsDetailsFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
 import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
+import s.pahlplatz.fhict_companion.fragments.PeopleDetailFragment;
 import s.pahlplatz.fhict_companion.fragments.PeopleFragment;
+import s.pahlplatz.fhict_companion.fragments.PeopleListFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
 import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
 import s.pahlplatz.fhict_companion.utils.models.NewsItem;
+import s.pahlplatz.fhict_companion.utils.models.Person;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TokenFragment.OnFragmentInteractionListener,
-        NewsAdapter.OnAdapterInteractionListener
+        NewsAdapter.OnAdapterInteractionListener,
+        PeopleFragment.OnPeopleSearchListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -119,6 +125,49 @@ public class MainActivity extends AppCompatActivity implements
 
         // Get id and name of the user
         new LoadUserData().execute();
+    }
+
+    public void onPeopleSearchListener(final ArrayList<Person> persons)
+    {
+        if (persons.size() == 1)
+        {
+            Fragment fragment = null;
+            try
+            {
+                fragment = PeopleDetailFragment.newInstance(persons.get(0));
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.people_content, fragment).commit();
+        } else
+        {
+            @SuppressWarnings("unchecked") ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, persons)
+            {
+                @NonNull
+                @Override
+                public View getView(int position, View convertView, @NonNull ViewGroup parent)
+                {
+                    View view = super.getView(position, convertView, parent);
+                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
+                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
+                    text1.setText(persons.get(position).getName());
+                    text2.setText(persons.get(position).getTitle());
+                    return view;
+                }
+            };
+            Fragment fragment = null;
+            try
+            {
+                fragment = PeopleListFragment.newInstance();
+            } catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
+            fragmentManager.beginTransaction().replace(R.id.people_content, fragment).commit();
+        }
     }
 
     /**

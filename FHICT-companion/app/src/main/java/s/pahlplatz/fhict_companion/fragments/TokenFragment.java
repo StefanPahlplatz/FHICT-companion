@@ -138,8 +138,8 @@ public class TokenFragment extends Fragment
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-
+    public interface OnFragmentInteractionListener
+    {
         void onFragmentInteraction(String token);
     }
 }

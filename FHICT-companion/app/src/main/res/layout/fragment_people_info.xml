@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+    <!-- Layout is f*cked, too tired right now. Will probably not do it again tho -->
+
+    <TextView
+        android:id="@+id/people_info_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView20"
+        android:layout_toEndOf="@+id/textView21"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Title:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/people_info_dep"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/people_info_phone"
+        android:layout_toEndOf="@+id/textView20"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Department:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/people_info_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView17"
+        android:layout_toEndOf="@+id/textView15"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Phone:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/people_info_office"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/people_info_mail"
+        android:layout_toEndOf="@+id/textView17"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Office: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/people_info_mail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/people_info_title"
+        android:layout_below="@+id/textView15"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Mail:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/people_info_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/textView15"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Name: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/textView15"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Name: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/textView16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/people_info_name"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Mail:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/people_info_mail"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Office: "
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/textView18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/people_info_office"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Phone:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/textView20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/people_info_phone"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Department:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/people_info_dep"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Title:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/textView22"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/people_info_title"
+        android:paddingBottom="4dp"
+        android:paddingTop="4dp"
+        android:text="Id:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+        android:textStyle="normal|bold"/>
+
+    <TextView
+        android:id="@+id/people_info_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView22"
+        android:layout_alignBottom="@+id/textView22"
+        android:layout_toEndOf="@+id/textView22"
+        android:paddingBottom="4dp"
+        android:paddingLeft="4dp"
+        android:paddingTop="4dp"
+        android:text="Id:"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+</RelativeLayout>
