@@ -140,6 +140,7 @@ public class PeopleFragment extends Fragment
                 } catch (Exception ex)
                 {
                     Log.e(TAG, "onPostExecute: Error parsing JSON", ex);
+                    Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }
         }

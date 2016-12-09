@@ -16,8 +16,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import org.json.JSONObject;
@@ -44,7 +42,8 @@ public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         TokenFragment.OnFragmentInteractionListener,
         NewsAdapter.OnAdapterInteractionListener,
-        PeopleFragment.OnPeopleSearchListener
+        PeopleFragment.OnPeopleSearchListener,
+        PeopleListFragment.OnFragmentInteractionListener
 {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -140,34 +139,38 @@ public class MainActivity extends AppCompatActivity implements
                 e.printStackTrace();
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.people_content, fragment).commit();
+
+            PeopleListFragment myFragment = (PeopleListFragment) getSupportFragmentManager().findFragmentByTag("people_overview");
+            if (myFragment != null && myFragment.isVisible())
+            {
+                fragmentManager.beginTransaction().addToBackStack("people_overview").replace(R.id.people_content, fragment, "people_details").commit();
+            } else
+            {
+                fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_details").commit();
+            }
+
+
         } else
         {
-            @SuppressWarnings("unchecked") ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_2, android.R.id.text1, persons)
-            {
-                @NonNull
-                @Override
-                public View getView(int position, View convertView, @NonNull ViewGroup parent)
-                {
-                    View view = super.getView(position, convertView, parent);
-                    TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                    TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-                    text1.setText(persons.get(position).getName());
-                    text2.setText(persons.get(position).getTitle());
-                    return view;
-                }
-            };
             Fragment fragment = null;
             try
             {
-                fragment = PeopleListFragment.newInstance();
+                fragment = PeopleListFragment.newInstance(persons);
             } catch (Exception e)
             {
                 e.printStackTrace();
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.people_content, fragment).commit();
+            fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_overview").commit();
         }
+    }
+
+    @Override
+    public void onFragmentInteraction(Person p)
+    {
+        ArrayList<Person> person = new ArrayList<>();
+        person.add(p);
+        onPeopleSearchListener(person);
     }
 
     /**

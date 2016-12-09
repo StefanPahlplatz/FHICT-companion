@@ -11,25 +11,15 @@ import android.widget.TextView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.models.Person;
 
-/**
- * We don't talk about this one mkay?
- */
-
 public class PeopleDetailFragment extends Fragment
 {
     private Person person;
 
-    public static PeopleDetailFragment newInstance(String name, String mail, String office, String phone, String dep, String title, String id)
+    public static PeopleDetailFragment newInstance(Person person)
     {
         PeopleDetailFragment fragment = new PeopleDetailFragment();
         Bundle args = new Bundle();
-        args.putString("name", name);
-        args.putString("mail", mail);
-        args.putString("office", office);
-        args.putString("phone", phone);
-        args.putString("dep", dep);
-        args.putString("title", title);
-        args.putString("id", id);
+        args.putParcelable("person", person);
         fragment.setArguments(args);
         return fragment;
     }
@@ -40,13 +30,7 @@ public class PeopleDetailFragment extends Fragment
         super.onCreate(savedInstanceState);
         if (getArguments() != null)
         {
-            person = new Person(getArguments().getString("name"),
-                    getArguments().getString("mail"),
-                    getArguments().getString("office"),
-                    getArguments().getString("phone"),
-                    getArguments().getString("dep"),
-                    getArguments().getString("title"),
-                    getArguments().getString("id"));
+            person = getArguments().getParcelable("person");
         }
     }
 
