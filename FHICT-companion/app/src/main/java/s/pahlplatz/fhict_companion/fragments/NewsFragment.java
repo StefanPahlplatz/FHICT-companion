@@ -145,6 +145,9 @@ public class NewsFragment extends Fragment
                     .setNegativeButton("Cancel", null)
                     .show();
             return true;
+
+            // TODO: java.lang.IndexOutOfBoundsException: Inconsistency detected. - Invalid view holder adapter positionViewHolder{aba5b7b position=6 id=-1, oldPos=-1, pLpos:-1 no parent}
+
         }
 
         // Default option

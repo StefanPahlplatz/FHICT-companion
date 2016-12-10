@@ -13,9 +13,10 @@
         android:layout_below="@+id/textView20"
         android:layout_toEndOf="@+id/textView21"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:text="Title:"
+        android:text="@string/title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
@@ -25,21 +26,10 @@
         android:layout_below="@+id/people_info_phone"
         android:layout_toEndOf="@+id/textView20"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:text="Department:"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
-
-    <TextView
-        android:id="@+id/people_info_phone"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView17"
-        android:layout_toEndOf="@+id/textView15"
-        android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
-        android:paddingTop="4dp"
-        android:text="Phone:"
+        android:text="@string/department"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
@@ -49,9 +39,10 @@
         android:layout_below="@+id/people_info_mail"
         android:layout_toEndOf="@+id/textView17"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:text="Office: "
+        android:text="@string/office"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
@@ -61,9 +52,10 @@
         android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/textView15"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:text="Name: "
+        android:text="@string/name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
@@ -72,7 +64,7 @@
         android:layout_height="wrap_content"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Name: "
+        android:text="@string/name"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -83,7 +75,7 @@
         android:layout_below="@id/people_info_name"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Mail:"
+        android:text="@string/mail"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -94,7 +86,7 @@
         android:layout_below="@id/people_info_mail"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Office: "
+        android:text="@string/office"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -105,7 +97,7 @@
         android:layout_below="@id/people_info_office"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Phone:"
+        android:text="@string/phone"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -116,7 +108,7 @@
         android:layout_below="@id/people_info_phone"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Department:"
+        android:text="@string/department"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -127,7 +119,7 @@
         android:layout_below="@id/people_info_dep"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Title:"
+        android:text="@string/title"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -138,7 +130,7 @@
         android:layout_below="@id/people_info_title"
         android:paddingBottom="4dp"
         android:paddingTop="4dp"
-        android:text="Id:"
+        android:text="@string/id"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"
         android:textStyle="normal|bold"/>
 
@@ -150,9 +142,10 @@
         android:layout_alignBottom="@+id/textView22"
         android:layout_toEndOf="@+id/textView22"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:text="Id:"
+        android:text="@string/id"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
     <TextView
@@ -163,9 +156,23 @@
         android:layout_alignBottom="@+id/textView16"
         android:layout_toEndOf="@+id/textView16"
         android:paddingBottom="4dp"
-        android:paddingLeft="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
         android:paddingTop="4dp"
-        android:text="Mail:"
+        android:text="@string/mail"
+        android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
+
+    <TextView
+        android:id="@+id/people_info_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/people_info_office"
+        android:layout_toEndOf="@+id/textView18"
+        android:paddingBottom="4dp"
+        android:paddingEnd="4dp"
+        android:paddingStart="4dp"
+        android:paddingTop="4dp"
+        android:text="@string/phone"
         android:textAppearance="@style/TextAppearance.AppCompat.Medium"/>
 
 </RelativeLayout>

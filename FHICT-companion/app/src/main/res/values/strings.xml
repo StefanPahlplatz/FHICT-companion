@@ -32,6 +32,11 @@
     <string name="search">Search</string>
     <string name="people_search_hint">Part of name/office/Id</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="mail">Mail:</string>
+    <string name="id">Id:</string>
+    <string name="title">Title:</string>
+    <string name="department">Department:</string>
+    <string name="phone">Phone:</string>
+    <string name="office">Office:</string>
+    <string name="name">Name:</string>
 </resources>

@@ -4,11 +4,4 @@
              android:layout_height="match_parent"
              tools:context="s.pahlplatz.fhict_companion.fragments.ParticipationFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:padding="16dp"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="participation fragment"/>
-
 </FrameLayout>

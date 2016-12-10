@@ -97,6 +97,7 @@ public class MainActivity extends AppCompatActivity implements
     public void onBackPressed()
     {
         // Change the icon to the drawer icon
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
 
         // Get the default configuration
@@ -108,7 +109,10 @@ public class MainActivity extends AppCompatActivity implements
             drawer.closeDrawer(GravityCompat.START);
         } else
         {
-            if (doubleBackToExitPressedOnce)
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
+            {
+                getSupportFragmentManager().popBackStack();
+            } else if (doubleBackToExitPressedOnce)
             {
                 super.onBackPressed();
             } else
@@ -312,6 +316,7 @@ public class MainActivity extends AppCompatActivity implements
                 .commit();
 
         // Change the icon to the up arrow
+        //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // On UP click
@@ -369,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements
                 // Return name and title
                 retList.add(jObject.getString("displayName"));
                 retList.add(jObject.getString("title"));
-            }catch (Exception ex)
+            } catch (Exception ex)
             {
                 Log.e(TAG, "doInBackground: A problem occurred while parsing the JSON file.", ex);
             }

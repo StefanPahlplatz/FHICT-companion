@@ -2,6 +2,7 @@ package s.pahlplatz.fhict_companion.fragments;
 
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -87,17 +88,19 @@ public class PeopleFragment extends Fragment
         {
             JSONArray jArray = null;
             String query = params[0];
-            Log.i(TAG, "doInBackground: " + query);
-            try
+            SharedPreferences sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+            if (sp != null)
             {
-                jArray = new JSONArray(FhictAPI.getStream(
-                        "https://api.fhict.nl/people/search/" + query,
-                        getContext().getSharedPreferences(
-                                "settings", Context.MODE_PRIVATE).getString("token", "")
-                ));
-            } catch (Exception ex)
-            {
-                Log.e(TAG, "doInBackground: Couldn't get data", ex);
+                try
+                {
+                    jArray = new JSONArray(FhictAPI.getStream(
+                            "https://api.fhict.nl/people/search/" + query,
+                            sp.getString("token", "")
+                    ));
+                } catch (Exception ex)
+                {
+                    Log.e(TAG, "doInBackground: Couldn't get data", ex);
+                }
             }
 
             return jArray;
@@ -139,7 +142,7 @@ public class PeopleFragment extends Fragment
                     }
                 } catch (Exception ex)
                 {
-                    Log.e(TAG, "onPostExecute: Error parsing JSON", ex);
+                    Log.e(TAG, "onPostExecute: Error parsing JSON");
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
             }
