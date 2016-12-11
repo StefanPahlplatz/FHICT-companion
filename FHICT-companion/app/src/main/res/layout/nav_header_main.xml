@@ -36,7 +36,6 @@
         android:layout_width="128dp"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:layout_gravity="center"
-        android:text="@string/please_log_in_first"/>
+        android:layout_gravity="center"/>
 
 </LinearLayout>

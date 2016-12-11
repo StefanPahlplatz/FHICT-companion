@@ -54,14 +54,13 @@ public class TokenFragment extends Fragment
         {
             boolean authComplete = false;
             Intent resultIntent = new Intent();
+            String authCode;
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon)
             {
                 super.onPageStarted(view, url, favicon);
             }
-
-            String authCode;
 
             @Override
             public void onPageFinished(WebView view, String url) {
@@ -102,14 +101,13 @@ public class TokenFragment extends Fragment
                 } else if (url.contains("error=access_denied"))
                 {
                     Log.e(TAG, "ACCESS_DENIED_HERE");
-                    mListener.onFragmentInteraction("LOL ERROR OFCOURSE");
                     resultIntent.putExtra("code", authCode);
                     authComplete = true;
                 }
             }
         });
 
-        String CLIENT_ID = "i874073-studentapp";
+        String CLIENT_ID = getActivity().getResources().getString(R.string.CLIENT_ID);
         String REDIRECT_URI="https://tas.fhict.nl/oob.html";
         String OAUTH_URL ="https://identity.fhict.nl/connect/authorize";
         String OAUTH_SCOPE="fhict fhict_personal";
@@ -140,8 +138,8 @@ public class TokenFragment extends Fragment
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener {
-
+    public interface OnFragmentInteractionListener
+    {
         void onFragmentInteraction(String token);
     }
 }

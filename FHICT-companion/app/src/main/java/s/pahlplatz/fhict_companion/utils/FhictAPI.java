@@ -72,7 +72,7 @@ public class FhictAPI
         return sb.toString();
     }
 
-    public static Bitmap getProfilePicture(String link, String token)
+    public static Bitmap getPicture(String link, String token)
     {
         try
         {
