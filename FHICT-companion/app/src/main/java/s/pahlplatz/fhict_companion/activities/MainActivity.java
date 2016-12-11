@@ -1,6 +1,8 @@
 package s.pahlplatz.fhict_companion.activities;
 
+import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -24,25 +26,22 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsDetailsFragment;
 import s.pahlplatz.fhict_companion.fragments.NewsFragment;
-import s.pahlplatz.fhict_companion.fragments.ParticipationFragment;
 import s.pahlplatz.fhict_companion.fragments.PeopleDetailFragment;
 import s.pahlplatz.fhict_companion.fragments.PeopleFragment;
 import s.pahlplatz.fhict_companion.fragments.PeopleListFragment;
 import s.pahlplatz.fhict_companion.fragments.ScheduleFragment;
-import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
-import s.pahlplatz.fhict_companion.utils.LoadProfilePicture;
 import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 import s.pahlplatz.fhict_companion.utils.models.Person;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
-        TokenFragment.OnFragmentInteractionListener,
         NewsAdapter.OnAdapterInteractionListener,
         PeopleFragment.OnPeopleSearchListener,
         PeopleListFragment.OnFragmentInteractionListener
@@ -50,6 +49,7 @@ public class MainActivity extends AppCompatActivity implements
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar toolbar;
+    private CircleImageView image;
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
@@ -69,12 +69,15 @@ public class MainActivity extends AppCompatActivity implements
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().getItem(0).setChecked(true);
 
+        // Get id and name of the user
+        new LoadUserData().execute();
+
+        // Load default fragment
         if (savedInstanceState == null)
         {
             Fragment fragment = null;
             Class fragmentClass;
-            fragmentClass = TokenFragment.class;
-
+            fragmentClass = PeopleFragment.class;
             try
             {
                 fragment = (Fragment) fragmentClass.newInstance();
@@ -82,10 +85,12 @@ public class MainActivity extends AppCompatActivity implements
             {
                 e.printStackTrace();
             }
-
-            // Load default fragment
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
             fragmentManager.beginTransaction().replace(R.id.activity_main_content_frame, fragment).commit();
+
+            // Set the profile picture
+            image = (CircleImageView) findViewById(R.id.header_profile_image);
+            new LoadProfilePicture().execute(getBaseContext());
         }
     }
 
@@ -131,23 +136,6 @@ public class MainActivity extends AppCompatActivity implements
                 }, 2000);
             }
         }
-    }
-
-    /**
-     * Triggered when the user logged in
-     *
-     * @param token is the string that is returned from the auth
-     */
-    public void onFragmentInteraction(String token)
-    {
-        // Store the user token
-        getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
-
-        // Set the profile picture
-        new LoadProfilePicture().execute(getBaseContext(), findViewById(R.id.header_profile_image));
-
-        // Get id and name of the user
-        new LoadUserData().execute();
     }
 
     /**
@@ -264,18 +252,12 @@ public class MainActivity extends AppCompatActivity implements
         if (id == R.id.nav_coworkers)
         {
             fragmentClass = PeopleFragment.class;
-        } else if (id == R.id.nav_notifications)
-        {
-            fragmentClass = TokenFragment.class; // TODO: replace
         } else if (id == R.id.nav_schedule)
         {
             fragmentClass = ScheduleFragment.class;
         } else if (id == R.id.nav_news)
         {
             fragmentClass = NewsFragment.class;
-        } else if (id == R.id.nav_participation)
-        {
-            fragmentClass = ParticipationFragment.class;
         } else if (id == R.id.nav_results)
         {
             fragmentClass = GradeFragment.class;
@@ -397,4 +379,26 @@ public class MainActivity extends AppCompatActivity implements
             }
         }
     }
+
+    public class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
+    {
+        @Override
+        protected Bitmap doInBackground(Object... params)
+        {
+            Context ctx = (Context) params[0];
+            SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
+            return FhictAPI.getPicture("https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg", sp.getString("token", ""));
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result)
+        {
+            if (image == null)
+            {
+                image = (CircleImageView) findViewById(R.id.header_profile_image);
+            }
+            image.setImageBitmap(result);
+        }
+    }
+
 }
