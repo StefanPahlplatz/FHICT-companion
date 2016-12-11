@@ -245,7 +245,6 @@ public class ScheduleFragment extends Fragment
                         if (!days.get(i).getEnd().equals(days.get(i + 1).getStart()) &&
                                 days.get(i).getDate().equals(days.get(i + 1).getDate()))
                         {
-                            Log.i(TAG, "onPostExecute: Break after " + days.get(i).getSubject());
                             days.add(i + 1, new Day(days.get(i).getEnd(), days.get(i + 1).getStart(), days.get(i).getDate()));
                         }
                     }

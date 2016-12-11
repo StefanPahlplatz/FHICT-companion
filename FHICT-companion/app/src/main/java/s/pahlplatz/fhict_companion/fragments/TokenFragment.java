@@ -28,13 +28,6 @@ public class TokenFragment extends Fragment
 
     private OnFragmentInteractionListener mListener;
 
-    public static TokenFragment newInstance() {
-        TokenFragment fragment = new TokenFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
