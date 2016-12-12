@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FHICT-companion</string>
+    <string name="app_name">FHICT companion</string>
 
     <!-- Menu strings -->
     <string name="navigation_drawer_open">Open navigation drawer</string>

@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements
         {
             Fragment fragment = null;
             Class fragmentClass;
-            fragmentClass = PeopleFragment.class;
+            fragmentClass = ScheduleFragment.class;
             try
             {
                 fragment = (Fragment) fragmentClass.newInstance();

@@ -4,9 +4,7 @@ package s.pahlplatz.fhict_companion.fragments;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,9 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.GridView;
 
 import org.json.JSONArray;
 
@@ -26,6 +22,7 @@ import java.util.Collections;
 import java.util.Comparator;
 
 import s.pahlplatz.fhict_companion.R;
+import s.pahlplatz.fhict_companion.adapters.GradeAdapter;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
 import s.pahlplatz.fhict_companion.utils.models.Grade;
 
@@ -39,12 +36,8 @@ public class GradeFragment extends Fragment
 {
     private static final String TAG = GradeFragment.class.getSimpleName();
 
-    // Grade array
     private ArrayList<Grade> grades;
-    private ArrayAdapter adapter;
-
-    // Reference to the main listView
-    private ListView listView;
+    private GradeAdapter gradeAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -61,7 +54,6 @@ public class GradeFragment extends Fragment
 
         setHasOptionsMenu(true);
 
-        listView = (ListView) view.findViewById(R.id.grades_lv);
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
         {
@@ -109,7 +101,7 @@ public class GradeFragment extends Fragment
                     return (int) (t1.getGrade() - grade.getGrade());
                 }
             });
-            adapter.notifyDataSetChanged();
+            gradeAdapter.notifyDataSetChanged();
         }
 
         // Sort by name
@@ -123,7 +115,7 @@ public class GradeFragment extends Fragment
                     return grade.getName().compareTo(t1.getName());
                 }
             });
-            adapter.notifyDataSetChanged();
+            gradeAdapter.notifyDataSetChanged();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -159,55 +151,26 @@ public class GradeFragment extends Fragment
             return null;
         }
 
-        @SuppressWarnings("unchecked")
         @Override
         public void onPostExecute(Void params)
         {
-            try
+            // Stop refreshing
+            View view = getView();
+            if (view != null)
             {
-                // Create an ArrayAdapter for the listView
-
-                adapter = new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, grades)
+                SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
+                if (refreshLayout.isRefreshing())
                 {
-                    @NonNull
-                    @Override
-                    public View getView(int position, View convertView, @NonNull ViewGroup parent)
-                    {
-                        View view = super.getView(position, convertView, parent);
-                        TextView text1 = (TextView) view.findViewById(android.R.id.text1);
-                        TextView text2 = (TextView) view.findViewById(android.R.id.text2);
-
-                        double grade = grades.get(position).getGrade();
-                        String detail = "Grade: " + Double.toString(grade);
-
-                        text1.setText(grades.get(position).getName());
-                        text2.setText(detail);
-
-                        if (grade < 5.5)
-                        {
-                            text2.setTextColor(ContextCompat.getColor(getContext(), R.color.colorRed));
-                        }
-                        return view;
-                    }
-                };
-
-                // Assign the new adapter
-                listView.setAdapter(adapter);
-
-                // Stop refreshing
-                View view = getView();
-                if (view != null)
-                {
-                    SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
-                    if (refreshLayout.isRefreshing())
-                    {
-                        refreshLayout.setRefreshing(false);
-                    }
+                    refreshLayout.setRefreshing(false);
                 }
-            } catch (NullPointerException ex)
-            {
-                Log.e(TAG, "onPostExecute: Couldn't load grades, view changed before onPostExecute triggered?", ex);
             }
+
+            // Assign the adapter
+            assert view != null;
+            GridView gridView = (GridView) view.findViewById(R.id.grades_gridview);
+            gradeAdapter = new GradeAdapter(getContext(), grades);
+            gridView.setAdapter(gradeAdapter);
+
         }
     }
 }
