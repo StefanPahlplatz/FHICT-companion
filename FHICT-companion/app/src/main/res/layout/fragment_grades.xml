@@ -1,9 +1,16 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:padding="4dp"
-             tools:context="s.pahlplatz.fhict_companion.fragments.GradeFragment">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="4dp"
+                tools:context="s.pahlplatz.fhict_companion.fragments.GradeFragment">
+
+    <ProgressBar
+        android:id="@+id/grades_pbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"/>
 
     <android.support.v4.widget.SwipeRefreshLayout
         android:id="@+id/grades_swiperefresh"
@@ -24,4 +31,4 @@
 
     </android.support.v4.widget.SwipeRefreshLayout>
 
-</FrameLayout>
+</RelativeLayout>

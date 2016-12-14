@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements
         // Configure navigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.getMenu().getItem(1).setChecked(true);
 
         // Get id and name of the user
         new LoadUserData().execute();

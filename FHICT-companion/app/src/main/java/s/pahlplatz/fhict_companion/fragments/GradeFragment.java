@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 
@@ -38,6 +39,7 @@ public class GradeFragment extends Fragment
 
     private ArrayList<Grade> grades;
     private GradeAdapter gradeAdapter;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -63,6 +65,9 @@ public class GradeFragment extends Fragment
                 new loadGrades().execute();
             }
         });
+
+        progressBar = (ProgressBar) view.findViewById(R.id.grades_pbar);
+        progressBar.setVisibility(View.VISIBLE);
 
         // Load the grades in to the listView
         new loadGrades().execute();
@@ -171,6 +176,8 @@ public class GradeFragment extends Fragment
             gradeAdapter = new GradeAdapter(getContext(), grades);
             gridView.setAdapter(gradeAdapter);
 
+            // Hide progressbar
+            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }

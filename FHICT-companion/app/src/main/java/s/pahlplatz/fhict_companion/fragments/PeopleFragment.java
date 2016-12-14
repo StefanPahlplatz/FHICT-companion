@@ -83,12 +83,20 @@ public class PeopleFragment extends Fragment
 
     private class LoadResults extends AsyncTask<String, Void, JSONArray>
     {
+        SharedPreferences sp;
+
+        @Override
+        protected void onPreExecute()
+        {
+            sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        }
+
         @Override
         protected JSONArray doInBackground(String... params)
         {
             JSONArray jArray = null;
             String query = params[0];
-            SharedPreferences sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
             if (sp != null)
             {
                 try
@@ -147,6 +155,5 @@ public class PeopleFragment extends Fragment
                 }
             }
         }
-
     }
 }
