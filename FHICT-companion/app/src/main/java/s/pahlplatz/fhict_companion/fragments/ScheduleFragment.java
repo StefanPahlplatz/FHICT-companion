@@ -158,6 +158,20 @@ public class ScheduleFragment extends Fragment
             }
         }
 
+        // Combine all 'zelfstudie' blocks for this day
+        for (int i = 0; i < customDays.size(); i++)
+        {
+            if (i + 1 < customDays.size())
+            {
+                if (customDays.get(i).getSubject().equals(customDays.get(i + 1).getSubject()))
+                {
+                    customDays.get(i).setEnd(customDays.get(i + 1).getEnd());
+                    customDays.remove(i + 1);
+                    i--;
+                }
+            }
+        }
+
         // Create new adapter
         adapter = new ScheduleAdapter(customDays);
         recyclerView.setAdapter(adapter);
@@ -219,45 +233,65 @@ public class ScheduleFragment extends Fragment
         {
             try
             {
-                boolean isNextValid = true;
-
                 // Combine classes if they are right after each
-                for (int i = 0; i < days.size(); i++)
-                {
-                    if (i + 1 > days.size()) {
-                        if (isNextValid) {
-                            if (days.get(i).getSubject().equals(days.get(i + 1).getSubject()) &&
-                                    days.get(i).getDate().equals(days.get(i + 1).getDate())) {
-                                days.get(i).setEnd(days.get(i + 1).getEnd());
-                                days.remove(i + 1);
-                                isNextValid = false;
-                            }
-                        } else {
-                            isNextValid = true;
-                        }
-                    }
-                }
+                combineClasses();
 
-                for (int i = 0; i < days.size(); i++)
-                {
-                    if (i + 1 < days.size())
-                    {
-                        if (!days.get(i).getEnd().equals(days.get(i + 1).getStart()) &&
-                                days.get(i).getDate().equals(days.get(i + 1).getDate()))
-                        {
-                            days.add(i + 1, new Day(days.get(i).getEnd(), days.get(i + 1).getStart(), days.get(i).getDate()));
-                        }
-                    }
-                }
+                // Add breaks
+                addBreaks();
 
                 adapter = new ScheduleAdapter(days);
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
 
+                // Show today's schedule
                 showDaySchedule();
             } catch (Exception ex)
             {
                 Log.e(TAG, "onPostExecute: Exception", ex);
+            }
+        }
+
+        private void combineClasses()
+        {
+            boolean isNextValid = true;
+
+            for (int i = 0; i < days.size(); i++)
+            {
+                if (i + 1 > days.size())
+                {
+                    if (isNextValid)
+                    {
+                        if (days.get(i).getSubject().equals(days.get(i + 1).getSubject()) &&
+                                days.get(i).getDate().equals(days.get(i + 1).getDate()))
+                        {
+                            days.get(i).setEnd(days.get(i + 1).getEnd());
+                            days.remove(i + 1);
+                            isNextValid = false;
+                            i = 0;
+                        }
+                    } else
+                    {
+                        isNextValid = true;
+                    }
+                }
+            }
+        }
+
+        private void addBreaks()
+        {
+            for (int i = 0; i < days.size(); i++)
+            {
+                if (i + 1 < days.size())
+                {
+                    // Add breaks if the classes don't come after each other and if the subject isn't 'zelfwerk'
+                    if (!days.get(i).getEnd().equals(days.get(i + 1).getStart()) &&
+                            days.get(i).getDate().equals(days.get(i + 1).getDate()) &&
+                            !days.get(i).getSubject().equals("zelfwerk") &&
+                            !days.get(i + 1).getSubject().equals("zelfwerk"))
+                    {
+                        days.add(i + 1, new Day(days.get(i).getEnd(), days.get(i + 1).getStart(), days.get(i).getDate()));
+                    }
+                }
             }
         }
     }
