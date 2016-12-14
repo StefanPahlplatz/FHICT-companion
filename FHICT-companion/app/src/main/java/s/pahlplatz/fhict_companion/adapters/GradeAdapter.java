@@ -1,6 +1,7 @@
 package s.pahlplatz.fhict_companion.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,6 +55,7 @@ public class GradeAdapter extends BaseAdapter
     {
         ViewHolder viewHolder;
 
+        // Initialize the viewHolder
         if (view == null)
         {
             viewHolder = new ViewHolder();
@@ -66,8 +68,18 @@ public class GradeAdapter extends BaseAdapter
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        String grade = String.valueOf(grades.get(position).getGrade());
-        viewHolder.grade.setText(grade);
+        // Make the grade colour red if it's insufficient
+        Double grade = grades.get(position).getGrade();
+        if (grade < 5.5)
+        {
+            viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.colorRed));
+        }
+
+        // Display the grade
+        String gradeString = String.valueOf(grade);
+        viewHolder.grade.setText(gradeString);
+
+        // Display the course
         viewHolder.course.setText(grades.get(position).getName());
 
         return view;

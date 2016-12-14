@@ -159,25 +159,31 @@ public class GradeFragment extends Fragment
         @Override
         public void onPostExecute(Void params)
         {
-            // Stop refreshing
-            View view = getView();
-            if (view != null)
+            try
             {
-                SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
-                if (refreshLayout.isRefreshing())
+                // Stop refreshing
+                View view = getView();
+                if (view != null)
                 {
-                    refreshLayout.setRefreshing(false);
+                    SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
+                    if (refreshLayout.isRefreshing())
+                    {
+                        refreshLayout.setRefreshing(false);
+                    }
                 }
+
+                // Assign the adapter
+                assert view != null;
+                GridView gridView = (GridView) view.findViewById(R.id.grades_gridview);
+                gradeAdapter = new GradeAdapter(getContext(), grades);
+                gridView.setAdapter(gradeAdapter);
+
+                // Hide progressbar
+                progressBar.setVisibility(View.INVISIBLE);
+            } catch (Exception ex)
+            {
+                Log.e(TAG, "onPostExecute: Something went wrong!");
             }
-
-            // Assign the adapter
-            assert view != null;
-            GridView gridView = (GridView) view.findViewById(R.id.grades_gridview);
-            gradeAdapter = new GradeAdapter(getContext(), grades);
-            gridView.setAdapter(gradeAdapter);
-
-            // Hide progressbar
-            progressBar.setVisibility(View.INVISIBLE);
         }
     }
 }

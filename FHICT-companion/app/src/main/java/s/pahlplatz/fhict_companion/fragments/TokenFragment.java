@@ -42,7 +42,7 @@ public class TokenFragment extends Fragment
 
         web = (WebView) frameLayout.findViewById(R.id.token_webview);
         web.getSettings().setJavaScriptEnabled(true);
-		
+		web.getSettings().setDomStorageEnabled(true);
         web.setWebViewClient(new WebViewClient()
         {
             boolean authComplete = false;
