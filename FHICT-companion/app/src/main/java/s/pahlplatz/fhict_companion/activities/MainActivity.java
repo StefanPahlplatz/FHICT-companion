@@ -1,6 +1,7 @@
 package s.pahlplatz.fhict_companion.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -222,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId())
         {
             case R.id.action_settings:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
                 return true;
             case android.R.id.home:
                 FragmentManager fm = getSupportFragmentManager();
