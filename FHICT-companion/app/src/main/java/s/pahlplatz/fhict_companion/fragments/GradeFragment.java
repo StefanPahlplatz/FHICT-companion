@@ -129,7 +129,7 @@ public class GradeFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-    public class loadGrades extends AsyncTask<Void, Void, Void>
+    private class loadGrades extends AsyncTask<Void, Void, Void>
     {
         @Override
         public void onPreExecute()

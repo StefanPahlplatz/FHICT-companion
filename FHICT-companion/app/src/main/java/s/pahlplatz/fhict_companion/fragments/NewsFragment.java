@@ -148,7 +148,7 @@ public class NewsFragment extends Fragment
                     .show();
             return true;
 
-            // TODO: java.lang.IndexOutOfBoundsException: Inconsistency detected. - Invalid view holder adapter positionViewHolder{aba5b7b position=6 id=-1, oldPos=-1, pLpos:-1 no parent}
+            // TODO: java.lang.IndexOutOfBoundsException: Inconsistency detected. - Invalid view holder adapter positionViewHolder{aba5b7b position=6 id=-1, oldPos=-1, plPos:-1 no parent}
 
         }
 
@@ -162,7 +162,7 @@ public class NewsFragment extends Fragment
     /**
      * Async class to load the news items from the fontys api
      */
-    public class loadNews extends AsyncTask<Void, Void, Void>
+    private class loadNews extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected void onPreExecute()
@@ -189,7 +189,6 @@ public class NewsFragment extends Fragment
                             jArray.getJSONObject(i).getString("pubDate"),
                             jArray.getJSONObject(i).getString("title"),
                             jArray.getJSONObject(i).getString("image"),
-                            jArray.getJSONObject(i).getString("link"),
                             jArray.getJSONObject(i).getString("content"),
                             jArray.getJSONObject(i).getString("author")));
                 }

@@ -10,8 +10,8 @@ import android.support.annotation.NonNull;
 
 public class Grade implements Comparable<Grade>
 {
-    private String name;
-    private double grade;
+    private final String name;
+    private final double grade;
 
     public Grade(String name, double grade)
     {

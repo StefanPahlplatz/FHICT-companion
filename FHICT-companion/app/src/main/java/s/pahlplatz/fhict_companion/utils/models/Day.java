@@ -8,11 +8,11 @@ package s.pahlplatz.fhict_companion.utils.models;
 
 public class Day
 {
-    private String room;
-    private String subject;
-    private String teacherAbbr;
-    private String date;
-    private String start;
+    private final String room;
+    private final String subject;
+    private final String teacherAbbr;
+    private final String date;
+    private final String start;
     private String end;
 
     public Day(String room, String subject, String teacherAbbr, String start, String end)

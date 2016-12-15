@@ -13,8 +13,6 @@ import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 
 public class NewsDetailsFragment extends Fragment
 {
-    private static final String TAG = NewsDetailsFragment.class.getSimpleName();
-
     private String title, content, author, pubDate;
 
     /**

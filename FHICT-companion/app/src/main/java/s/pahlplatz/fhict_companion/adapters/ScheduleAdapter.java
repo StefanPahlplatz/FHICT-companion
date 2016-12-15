@@ -19,7 +19,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 {
     private static final String TAG = ScheduleAdapter.class.getSimpleName();
 
-    private ArrayList<Day> days;
+    private final ArrayList<Day> days;
 
     public ScheduleAdapter(ArrayList<Day> days)
     {
@@ -88,10 +88,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private class ViewHolder0 extends RecyclerView.ViewHolder
     {
-        private TextView time;
-        private TextView course;
-        private TextView room;
-        private TextView teacher;
+        private final TextView time;
+        private final TextView course;
+        private final TextView room;
+        private final TextView teacher;
 
         private ViewHolder0(View view)
         {
@@ -105,7 +105,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private class ViewHolder1 extends RecyclerView.ViewHolder
     {
-        private TextView time;
+        private final TextView time;
 
         private ViewHolder1(View view)
         {

@@ -21,9 +21,9 @@ import s.pahlplatz.fhict_companion.utils.models.Grade;
 
 public class GradeAdapter extends BaseAdapter
 {
-    private LayoutInflater layoutinflater;
-    private ArrayList<Grade> grades;
-    private Context ctx;
+    private final LayoutInflater layoutinflater;
+    private final ArrayList<Grade> grades;
+    private final Context ctx;
 
     public GradeAdapter(Context ctx, ArrayList<Grade> grades)
     {

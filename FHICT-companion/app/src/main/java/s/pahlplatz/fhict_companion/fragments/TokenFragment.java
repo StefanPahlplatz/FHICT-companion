@@ -3,7 +3,6 @@ package s.pahlplatz.fhict_companion.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,14 +23,7 @@ public class TokenFragment extends Fragment
 {
     private static final String TAG = TokenFragment.class.getSimpleName();
 
-    private WebView web;
-
     private OnFragmentInteractionListener mListener;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
@@ -40,20 +32,14 @@ public class TokenFragment extends Fragment
     {
         FrameLayout frameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_token, container, false);
 
-        web = (WebView) frameLayout.findViewById(R.id.token_webview);
+        WebView web = (WebView) frameLayout.findViewById(R.id.token_webview);
         web.getSettings().setJavaScriptEnabled(true);
 		web.getSettings().setDomStorageEnabled(true);
         web.setWebViewClient(new WebViewClient()
         {
             boolean authComplete = false;
-            Intent resultIntent = new Intent();
+            final Intent resultIntent = new Intent();
             String authCode;
-
-            @Override
-            public void onPageStarted(WebView view, String url, Bitmap favicon)
-            {
-                super.onPageStarted(view, url, favicon);
-            }
 
             @Override
             public void onPageFinished(WebView view, String url) {

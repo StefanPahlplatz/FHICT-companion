@@ -22,7 +22,7 @@ import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
 {
-    private ArrayList<NewsItem> newsItems;
+    private final ArrayList<NewsItem> newsItems;
     private OnAdapterInteractionListener mListener;
 
     /**
@@ -108,11 +108,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
      */
     class MyViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView title;
-        private TextView author;
-        private TextView pubDate;
-        private ImageView thumbnail;
-        private CardView cardView;
+        private final TextView title;
+        private final TextView author;
+        private final TextView pubDate;
+        private final ImageView thumbnail;
+        private final CardView cardView;
 
         private MyViewHolder(View view)
         {

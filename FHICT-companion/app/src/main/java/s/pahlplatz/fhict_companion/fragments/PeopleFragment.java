@@ -36,12 +36,6 @@ public class PeopleFragment extends Fragment
     private ImageView logo;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState)
     {
@@ -79,18 +73,17 @@ public class PeopleFragment extends Fragment
         return view;
     }
 
-    private boolean search(String query)
+    private void search(String query)
     {
         if (!query.equals(""))
         {
             new LoadResults().execute(query);
             logo.setVisibility(View.GONE);
             Keyboard.hide(getActivity());
-            return true;
+        } else
+        {
+            Toast.makeText(getContext(), "Search can't be empty", Toast.LENGTH_SHORT).show();
         }
-
-        Toast.makeText(getContext(), "Search can't be empty", Toast.LENGTH_SHORT).show();
-        return false;
     }
 
     @Override

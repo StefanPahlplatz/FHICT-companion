@@ -380,7 +380,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
+    private class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
     {
         @Override
         protected Bitmap doInBackground(Object... params)
