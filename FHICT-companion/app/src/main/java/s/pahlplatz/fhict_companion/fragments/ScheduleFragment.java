@@ -63,6 +63,8 @@ public class ScheduleFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
+        getActivity().setTitle("Schedule");
+
         noData = (TextView) view.findViewById(R.id.schedule_no_data);
 
         // TODO: View different weeks functionality

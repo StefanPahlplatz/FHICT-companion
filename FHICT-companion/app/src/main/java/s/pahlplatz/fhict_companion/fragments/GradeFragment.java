@@ -54,6 +54,9 @@ public class GradeFragment extends Fragment
     {
         View view =  inflater.inflate(R.layout.fragment_grades, container, false);
 
+        getActivity().setTitle("Grades");
+
+        // Enable option menu
         setHasOptionsMenu(true);
 
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
@@ -66,6 +69,7 @@ public class GradeFragment extends Fragment
             }
         });
 
+        // Make the progress bar visible
         progressBar = (ProgressBar) view.findViewById(R.id.grades_pbar);
         progressBar.setVisibility(View.VISIBLE);
 

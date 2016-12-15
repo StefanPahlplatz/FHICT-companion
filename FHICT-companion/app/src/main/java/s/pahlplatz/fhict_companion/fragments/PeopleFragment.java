@@ -41,6 +41,8 @@ public class PeopleFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_people, container, false);
 
+        getActivity().setTitle("People");
+
         final EditText et_query = (EditText) view.findViewById(R.id.people_edittext_search);
 
         Button btnSearch = (Button) view.findViewById(R.id.people_button_search);
