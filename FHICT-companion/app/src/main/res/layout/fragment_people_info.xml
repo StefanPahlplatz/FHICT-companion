@@ -2,9 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-    <!-- Layout is f*cked, too tired right now. Will probably not do it again tho -->
+                android:orientation="vertical"
+                android:padding="8dp">
 
     <TextView
         android:id="@+id/people_info_title"
