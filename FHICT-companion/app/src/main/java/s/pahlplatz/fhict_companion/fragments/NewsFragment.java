@@ -235,9 +235,18 @@ public class NewsFragment extends Fragment
         @Override
         protected void onPostExecute(Bitmap result)
         {
-            newsItem.setThumbnailString(null);
-            newsItem.setThumbnail(result);
-            adapter.notifyDataSetChanged();
+            try
+            {
+                if (newsItem != null && adapter != null)
+                {
+                    newsItem.setThumbnailString(null);
+                    newsItem.setThumbnail(result);
+                    adapter.notifyDataSetChanged();
+                }
+            } catch (Exception ex)
+            {
+                Log.e(TAG, "onPostExecute: Couldn't load news thumbnails");
+            }
         }
     }
 }
