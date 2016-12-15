@@ -65,6 +65,8 @@ public class ScheduleFragment extends Fragment
 
         noData = (TextView) view.findViewById(R.id.schedule_no_data);
 
+        // TODO: View different weeks functionality
+
         // Configure the spinner
         dropdownWeeks = (Spinner) view.findViewById(R.id.schedule_spinner);
         String[] items = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
