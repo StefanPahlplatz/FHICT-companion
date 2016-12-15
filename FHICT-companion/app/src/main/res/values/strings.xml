@@ -37,5 +37,4 @@
     <string name="phone">Phone:</string>
     <string name="office">Office:</string>
     <string name="name">Name:</string>
-    <string name="title_activity_login">Sign in</string>
 </resources>
