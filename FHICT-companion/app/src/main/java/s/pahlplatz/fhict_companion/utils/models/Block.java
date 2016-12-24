@@ -8,11 +8,11 @@ package s.pahlplatz.fhict_companion.utils.models;
 
 public class Block
 {
-    private String room;                // Room
-    private String subject;             // Subject
-    private String teacherAbbr;         // Teacher
+    private final String room;          // Room
+    private final String subject;       // Subject
+    private final String teacherAbbr;   // Teacher
+    private final String start;         // Start - TIME!
     private String desc;                // Description
-    private String start;               // Start - TIME!
     private String end;                 // End - TIME!
 
     /**
@@ -43,31 +43,56 @@ public class Block
         this.end = end;
     }
 
+    /**
+     * Returns the end time of the block
+     *
+     * @return String in hh:mm format
+     */
     public String getEnd()
     {
         return end;
     }
 
+    /**
+     * Sets the end time of the block
+     * @param end String in hh:mm format
+     */
     public void setEnd(String end)
     {
         this.end = end;
     }
 
+    /**
+     * Returns the start time of the block
+     * @return String in hh:mm format
+     */
     public String getStart()
     {
         return start;
     }
 
+    /**
+     * Returns the abbreviation of the teacher
+     * @return String
+     */
     public String getTeacherAbbr()
     {
         return teacherAbbr;
     }
 
+    /**
+     * Returns the subject of the block
+     * @return String
+     */
     public String getSubject()
     {
         return subject;
     }
 
+    /**
+     * Returns the room of the block
+     * @return String
+     */
     public String getRoom()
     {
         return room;

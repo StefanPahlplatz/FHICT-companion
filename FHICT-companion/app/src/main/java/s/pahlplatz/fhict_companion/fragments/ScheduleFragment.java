@@ -48,7 +48,6 @@ public class ScheduleFragment extends Fragment
     private static final String TAG = ScheduleFragment.class.getSimpleName();
 
     private Schedule schedule;          // List to store all information from api
-    private ScheduleAdapter adapter;    // Adapter for recyclerView
     private String[] days;
     private String[] weeks;
     private int week;
@@ -228,7 +227,7 @@ public class ScheduleFragment extends Fragment
             recyclerView.setVisibility(View.INVISIBLE);
         } else
         {
-            adapter = new ScheduleAdapter(scheduleDay);
+            ScheduleAdapter adapter = new ScheduleAdapter(scheduleDay);
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
         }

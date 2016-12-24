@@ -15,11 +15,14 @@ public class NewsItem
 {
     private final String pubDate;
     private final String title;
-    private String thumbnailString;
-    private Bitmap thumbnail;
     private final String content;
     private final String author;
+    private String thumbnailString;
+    private Bitmap thumbnail;
 
+    /**
+     * Default constructor
+     */
     public NewsItem(String pubDate, String title, String thumbnailString, String content, String author)
     {
         this.pubDate = pubDate;

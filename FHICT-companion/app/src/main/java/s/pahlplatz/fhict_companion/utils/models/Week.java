@@ -26,6 +26,13 @@ public class Week
     private Date end;
     private ArrayList<Day> days;
 
+    /**
+     * Default constructor
+     *
+     * @param weekNr     the week number
+     * @param startParam start date as string
+     * @param endParam   end date as string
+     */
     public Week(String weekNr, String startParam, String endParam)
     {
         // Assign the week nr

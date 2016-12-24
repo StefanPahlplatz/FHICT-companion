@@ -240,7 +240,7 @@ public class NewsFragment extends Fragment
             {
                 if (newsItem != null && adapter != null)
                 {
-                    newsItem.setThumbnailString(null);
+                    newsItem.setThumbnailString("");
                     newsItem.setThumbnail(result);
                     adapter.notifyDataSetChanged();
                 }

@@ -9,7 +9,7 @@ public class Schedule
 {
     private static final String TAG = Schedule.class.getSimpleName();
 
-    private ArrayList<Week> weeks;
+    private final ArrayList<Week> weeks;
 
     public Schedule()
     {

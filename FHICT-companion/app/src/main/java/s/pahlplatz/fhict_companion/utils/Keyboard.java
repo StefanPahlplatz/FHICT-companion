@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+/**
+ * Created by Stefan on 30-11-2016.
+ * <p>
+ * Static class to manually hide the keyboard
+ */
 public final class Keyboard
 {
     /**
