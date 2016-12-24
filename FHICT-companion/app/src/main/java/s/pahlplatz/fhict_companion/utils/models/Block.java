@@ -98,6 +98,16 @@ public class Block
         return room;
     }
 
+    /**
+     * Returns the description of the block
+     *
+     * @return String
+     */
+    public String getDesc()
+    {
+        return desc;
+    }
+
     @Override
     public String toString()
     {

@@ -15,6 +15,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,6 +35,7 @@ public class PeopleFragment extends Fragment
 
     private OnPeopleSearchListener mListener;
     private ImageView logo;
+    private ProgressBar progressBar;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,11 +43,16 @@ public class PeopleFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_people, container, false);
 
+        // Set title
         getActivity().setTitle("People");
 
+        // UI references
         logo = (ImageView) view.findViewById(R.id.people_logo);
+        progressBar = (ProgressBar) view.findViewById(R.id.people_pbar);
+        Button btnSearch = (Button) view.findViewById(R.id.people_button_search);
         final EditText et_query = (EditText) view.findViewById(R.id.people_edittext_search);
 
+        // Configure search EditText
         et_query.setOnEditorActionListener(new TextView.OnEditorActionListener()
         {
             @Override
@@ -60,7 +67,7 @@ public class PeopleFragment extends Fragment
             }
         });
 
-        Button btnSearch = (Button) view.findViewById(R.id.people_button_search);
+        // Configure search button
         btnSearch.setOnClickListener(new View.OnClickListener()
         {
             @Override
@@ -70,15 +77,21 @@ public class PeopleFragment extends Fragment
             }
         });
 
+        progressBar.setVisibility(View.GONE);
+
         return view;
     }
 
+    /**
+     * Search for the specified person(s)
+     *
+     * @param query String
+     */
     private void search(String query)
     {
         if (!query.equals(""))
         {
             new LoadResults().execute(query);
-            logo.setVisibility(View.GONE);
             Keyboard.hide(getActivity());
         } else
         {
@@ -119,6 +132,7 @@ public class PeopleFragment extends Fragment
         protected void onPreExecute()
         {
             sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+            progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -152,6 +166,7 @@ public class PeopleFragment extends Fragment
                 if (jArray.length() == 0)
                 {
                     Toast.makeText(getContext(), "No results found", Toast.LENGTH_SHORT).show();
+                    progressBar.setVisibility(View.GONE);
                     return;
                 }
 
@@ -183,7 +198,9 @@ public class PeopleFragment extends Fragment
                     Log.e(TAG, "onPostExecute: Error parsing JSON");
                     Toast.makeText(getContext(), "Error", Toast.LENGTH_SHORT).show();
                 }
+                logo.setVisibility(View.GONE);
             }
+            progressBar.setVisibility(View.GONE);
         }
     }
 }

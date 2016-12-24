@@ -195,16 +195,21 @@ public class ScheduleFragment extends Fragment
     {
         Date date = new Date();
         day = getDayAsInt(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime()));
+        String temp = days[day];
+        days[day] = temp + " (today)";
         dropdownDays.setSelection(day);
     }
 
     /**
      * Set the current week as the selected week in the week spinner
+     * Also append (current) to the current week
      */
     private void setCurrentWeek()
     {
         Date date = new Date();
         week = schedule.getWeekFromDate(date);
+        String temp = weeks[week];
+        weeks[week] = temp + " (current)";
         dropdownWeeks.setSelection(week);
     }
 

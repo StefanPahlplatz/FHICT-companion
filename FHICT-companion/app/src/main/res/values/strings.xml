@@ -47,4 +47,5 @@
     <string name="fontys_logo">Fontys logo</string>
     <string name="previous"><![CDATA[<]]></string>
     <string name="next"><![CDATA[>]]></string>
+    <string name="exam">exam</string>
 </resources>
