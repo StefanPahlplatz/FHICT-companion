@@ -7,11 +7,15 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -21,6 +25,7 @@ import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
+import s.pahlplatz.fhict_companion.utils.Keyboard;
 import s.pahlplatz.fhict_companion.utils.models.Person;
 
 public class PeopleFragment extends Fragment
@@ -28,12 +33,7 @@ public class PeopleFragment extends Fragment
     private static final String TAG = NewsFragment.class.getSimpleName();
 
     private OnPeopleSearchListener mListener;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-    }
+    private ImageView logo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -41,7 +41,24 @@ public class PeopleFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_people, container, false);
 
+        getActivity().setTitle("People");
+
+        logo = (ImageView) view.findViewById(R.id.people_logo);
         final EditText et_query = (EditText) view.findViewById(R.id.people_edittext_search);
+
+        et_query.setOnEditorActionListener(new TextView.OnEditorActionListener()
+        {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent)
+            {
+                if (i == EditorInfo.IME_ACTION_SEARCH)
+                {
+                    search(et_query.getText().toString());
+                    return true;
+                }
+                return false;
+            }
+        });
 
         Button btnSearch = (Button) view.findViewById(R.id.people_button_search);
         btnSearch.setOnClickListener(new View.OnClickListener()
@@ -49,11 +66,24 @@ public class PeopleFragment extends Fragment
             @Override
             public void onClick(View view)
             {
-                new LoadResults().execute(et_query.getText().toString());
+                search(et_query.getText().toString());
             }
         });
 
         return view;
+    }
+
+    private void search(String query)
+    {
+        if (!query.equals(""))
+        {
+            new LoadResults().execute(query);
+            logo.setVisibility(View.GONE);
+            Keyboard.hide(getActivity());
+        } else
+        {
+            Toast.makeText(getContext(), "Search can't be empty", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override
@@ -83,12 +113,20 @@ public class PeopleFragment extends Fragment
 
     private class LoadResults extends AsyncTask<String, Void, JSONArray>
     {
+        SharedPreferences sp;
+
+        @Override
+        protected void onPreExecute()
+        {
+            sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+        }
+
         @Override
         protected JSONArray doInBackground(String... params)
         {
             JSONArray jArray = null;
             String query = params[0];
-            SharedPreferences sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
+
             if (sp != null)
             {
                 try
@@ -147,6 +185,5 @@ public class PeopleFragment extends Fragment
                 }
             }
         }
-
     }
 }

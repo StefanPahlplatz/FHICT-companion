@@ -13,20 +13,21 @@ import org.jsoup.nodes.Document;
 
 public class NewsItem
 {
-    private String pubDate;
-    private String title;
+    private final String pubDate;
+    private final String title;
+    private final String content;
+    private final String author;
     private String thumbnailString;
     private Bitmap thumbnail;
-    private String link;
-    private String content;
-    private String author;
 
-    public NewsItem(String pubDate, String title, String thumbnailString, String link, String content, String author)
+    /**
+     * Default constructor
+     */
+    public NewsItem(String pubDate, String title, String thumbnailString, String content, String author)
     {
         this.pubDate = pubDate;
         this.title = title;
         this.thumbnailString = thumbnailString;
-        this.link = link;
         this.author = author;
 
         Document doc = Jsoup.parse(content);
@@ -61,11 +62,6 @@ public class NewsItem
     public void setThumbnail(Bitmap thumbnail)
     {
         this.thumbnail = thumbnail;
-    }
-
-    public String getLink()
-    {
-        return link;
     }
 
     public String getContent()

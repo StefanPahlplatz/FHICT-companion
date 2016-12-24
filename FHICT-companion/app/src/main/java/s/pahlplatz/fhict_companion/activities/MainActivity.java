@@ -1,6 +1,7 @@
 package s.pahlplatz.fhict_companion.activities;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
@@ -67,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements
         // Configure navigationView
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        navigationView.getMenu().getItem(0).setChecked(true);
+        navigationView.getMenu().getItem(1).setChecked(true);
 
         // Get id and name of the user
         new LoadUserData().execute();
@@ -222,6 +223,8 @@ public class MainActivity extends AppCompatActivity implements
         switch (item.getItemId())
         {
             case R.id.action_settings:
+                Intent settings = new Intent(this, SettingsActivity.class);
+                startActivity(settings);
                 return true;
             case android.R.id.home:
                 FragmentManager fm = getSupportFragmentManager();
@@ -380,7 +383,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    public class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
+    private class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
     {
         @Override
         protected Bitmap doInBackground(Object... params)

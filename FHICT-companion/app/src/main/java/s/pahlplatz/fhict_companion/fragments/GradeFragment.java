@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ProgressBar;
 
 import org.json.JSONArray;
 
@@ -38,6 +39,7 @@ public class GradeFragment extends Fragment
 
     private ArrayList<Grade> grades;
     private GradeAdapter gradeAdapter;
+    private ProgressBar progressBar;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -52,6 +54,9 @@ public class GradeFragment extends Fragment
     {
         View view =  inflater.inflate(R.layout.fragment_grades, container, false);
 
+        getActivity().setTitle("Grades");
+
+        // Enable option menu
         setHasOptionsMenu(true);
 
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
@@ -63,6 +68,10 @@ public class GradeFragment extends Fragment
                 new loadGrades().execute();
             }
         });
+
+        // Make the progress bar visible
+        progressBar = (ProgressBar) view.findViewById(R.id.grades_pbar);
+        progressBar.setVisibility(View.VISIBLE);
 
         // Load the grades in to the listView
         new loadGrades().execute();
@@ -120,7 +129,7 @@ public class GradeFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-    public class loadGrades extends AsyncTask<Void, Void, Void>
+    private class loadGrades extends AsyncTask<Void, Void, Void>
     {
         @Override
         public void onPreExecute()
@@ -154,23 +163,31 @@ public class GradeFragment extends Fragment
         @Override
         public void onPostExecute(Void params)
         {
-            // Stop refreshing
-            View view = getView();
-            if (view != null)
+            try
             {
-                SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
-                if (refreshLayout.isRefreshing())
+                // Stop refreshing
+                View view = getView();
+                if (view != null)
                 {
-                    refreshLayout.setRefreshing(false);
+                    SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
+                    if (refreshLayout.isRefreshing())
+                    {
+                        refreshLayout.setRefreshing(false);
+                    }
                 }
+
+                // Assign the adapter
+                assert view != null;
+                GridView gridView = (GridView) view.findViewById(R.id.grades_gridview);
+                gradeAdapter = new GradeAdapter(getContext(), grades);
+                gridView.setAdapter(gradeAdapter);
+
+                // Hide progressbar
+                progressBar.setVisibility(View.INVISIBLE);
+            } catch (Exception ex)
+            {
+                Log.e(TAG, "onPostExecute: Something went wrong!");
             }
-
-            // Assign the adapter
-            assert view != null;
-            GridView gridView = (GridView) view.findViewById(R.id.grades_gridview);
-            gradeAdapter = new GradeAdapter(getContext(), grades);
-            gridView.setAdapter(gradeAdapter);
-
         }
     }
 }

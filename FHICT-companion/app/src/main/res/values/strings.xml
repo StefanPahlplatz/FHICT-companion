@@ -10,10 +10,8 @@
     <string name="action_refresh">Refresh</string>
 
     <string name="people">People</string>
-    <string name="notifications">Notifications</string>
     <string name="schedule">Schedule</string>
     <string name="news">News</string>
-    <string name="participation">Participation</string>
     <string name="results">Results</string>
     <string name="please_log_in_first">Please log in first</string>
     <string name="thumbnail">Thumbnail</string>
@@ -39,13 +37,14 @@
     <string name="phone">Phone:</string>
     <string name="office">Office:</string>
     <string name="name">Name:</string>
-    <string name="title_activity_login">Sign in</string>
+    <string name="title_activity_settings">Settings</string>
 
-    <!-- Strings related to login -->
-    <string name="prompt_pcn">i + pcn</string>
-    <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Sign in</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="error_invalid_email">Pcn is invalid</string>
-    <string name="error_field_required">This field is required</string>
+    <!-- Strings related to Settings -->
+
+    <!-- Example General settings -->
+    <string name="pref_header_general">General</string>
+
+    <string name="fontys_logo">Fontys logo</string>
+    <string name="previous"><![CDATA[<]]></string>
+    <string name="next"><![CDATA[>]]></string>
 </resources>

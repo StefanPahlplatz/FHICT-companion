@@ -18,7 +18,9 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_toStartOf="@+id/people_button_search"
-        android:hint="@string/people_search_hint"/>
+        android:hint="@string/people_search_hint"
+        android:imeOptions="actionSearch"
+        android:inputType="text"/>
 
     <Button
         android:id="@+id/people_button_search"
@@ -29,12 +31,23 @@
         android:text="@string/search"
         android:textSize="12sp"/>
 
+    <ImageView
+        android:id="@+id/people_logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:alpha="0.5"
+        android:contentDescription="@string/fontys_logo"
+        android:padding="32dp"
+        android:paddingTop="-40dp"
+        android:src="@drawable/logo_fontys"/>
+
     <FrameLayout
         android:id="@+id/people_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_edittext_search"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp">
+    </FrameLayout>
 
 </RelativeLayout>

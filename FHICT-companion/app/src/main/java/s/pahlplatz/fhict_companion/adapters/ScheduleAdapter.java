@@ -1,6 +1,5 @@
 package s.pahlplatz.fhict_companion.adapters;
 
-import android.annotation.SuppressLint;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,28 +7,48 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.models.Day;
 
+/**
+ * Created by Stefan on 24-12-2016.
+ * <p>
+ * Adapter for the schedule
+ * <p>
+ * ItemViewType 0: The block is a break
+ * ItemViewType 1: Normal block
+ */
 public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 {
     private static final String TAG = ScheduleAdapter.class.getSimpleName();
 
-    private ArrayList<Day> days;
+    private final Day day;
 
-    public ScheduleAdapter(ArrayList<Day> days)
+    /**
+     * Default constructor
+     *
+     * @param day the day the schedule will show
+     */
+    public ScheduleAdapter(Day day)
     {
-        this.days = days;
+        this.day = day;
     }
 
+    /**
+     * Determines if the current item is a break or not
+     *
+     * @param position of the block in the day
+     * @return 1 if the block is a break, otherwise 0
+     */
     @Override
     public int getItemViewType(int position)
     {
-        if (days.get(position).getSubject().equals("Break"))
+        if (day.getBlock(position).getSubject().equals("Break"))
             return 1;
         return 0;
     }
@@ -50,15 +69,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
     {
-        String time = days.get(position).getStart() + " - " + days.get(position).getEnd();
+        String time = day.getBlock(position).getStart() + " - " + day.getBlock(position).getEnd();
         switch (holder.getItemViewType())
         {
             case 0:
                 ViewHolder0 viewHolder0 = (ViewHolder0) holder;
                 viewHolder0.time.setText(time);
-                viewHolder0.course.setText(days.get(position).getSubject());
-                viewHolder0.room.setText(days.get(position).getRoom());
-                viewHolder0.teacher.setText(days.get(position).getTeacherAbbr());
+                viewHolder0.course.setText(day.getBlock(position).getSubject());
+                viewHolder0.room.setText(day.getBlock(position).getRoom());
+                viewHolder0.teacher.setText(day.getBlock(position).getTeacherAbbr());
                 break;
             case 1:
                 try
@@ -66,15 +85,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     ViewHolder1 viewHolder1 = (ViewHolder1) holder;
                     String start = time.substring(0, 5);
                     String end = time.substring(8, 13);
-                    @SuppressLint("SimpleDateFormat") SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+                    SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
                     Date date1 = format.parse(start);
                     Date date2 = format.parse(end);
                     long difference = (date2.getTime() - date1.getTime()) / 60000;
                     String s = String.valueOf(difference) + " minute break";
                     viewHolder1.time.setText(s);
-                } catch (Exception ex)
+                } catch (ParseException ex)
                 {
-                    Log.e(TAG, "onBindViewHolder: Error", ex);
+                    Log.e(TAG, "onBindViewHolder: Exception occurred while parsing the string to a Date", ex);
                 }
                 break;
         }
@@ -83,15 +102,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     @Override
     public int getItemCount()
     {
-        return days.size();
+        return day.size();
     }
 
     private class ViewHolder0 extends RecyclerView.ViewHolder
     {
-        private TextView time;
-        private TextView course;
-        private TextView room;
-        private TextView teacher;
+        private final TextView time;
+        private final TextView course;
+        private final TextView room;
+        private final TextView teacher;
 
         private ViewHolder0(View view)
         {
@@ -105,7 +124,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     private class ViewHolder1 extends RecyclerView.ViewHolder
     {
-        private TextView time;
+        private final TextView time;
 
         private ViewHolder1(View view)
         {

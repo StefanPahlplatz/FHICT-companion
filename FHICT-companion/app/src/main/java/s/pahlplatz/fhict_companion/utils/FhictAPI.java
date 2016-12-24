@@ -16,11 +16,17 @@ import java.net.URL;
  *
  * Static class to connect to the fontys api and retrieve the JSON files.
  */
-
 public class FhictAPI
 {
     private static final String TAG = FhictAPI.class.getSimpleName();
 
+    /**
+     * Get the JSON stream from the fontys API
+     *
+     * @param link  to request the data
+     * @param token the users unique token
+     * @return JSON stream
+     */
     public static String getStream(String link, String token)
     {
         InputStream inputStream;
@@ -44,6 +50,11 @@ public class FhictAPI
         return convertStreamToString(inputStream);
     }
 
+    /**
+     * Converts the stream to a string
+     * @param is InputStream to convert
+     * @return String
+     */
     private static String convertStreamToString(InputStream is)
     {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -72,6 +83,12 @@ public class FhictAPI
         return sb.toString();
     }
 
+    /**
+     * Gets the picture from the fontys API
+     * @param link of the picture
+     * @param token the users unique token
+     * @return a bitmap of the image
+     */
     public static Bitmap getPicture(String link, String token)
     {
         try

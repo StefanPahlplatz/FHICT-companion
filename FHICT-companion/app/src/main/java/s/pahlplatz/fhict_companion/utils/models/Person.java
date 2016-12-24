@@ -3,6 +3,9 @@ package s.pahlplatz.fhict_companion.utils.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+/**
+ * Person class to store data about a person
+ */
 public class Person implements Parcelable
 {
     public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>()
@@ -17,8 +20,8 @@ public class Person implements Parcelable
 
             return new Person[size];
         }
-
     };
+
     private String name;
     private String mail;
     private String office;
@@ -27,6 +30,9 @@ public class Person implements Parcelable
     private String title;
     private String id;
 
+    /**
+     * Default constructor
+     */
     public Person(String name, String mail, String office, String phone, String dep, String title, String id)
     {
         this.name = name;
@@ -38,12 +44,21 @@ public class Person implements Parcelable
         this.id = id;
     }
 
-    public Person(Parcel in)
+    /**
+     * Constructor used for parcels
+     *
+     * @param in Parcel
+     */
+    private Person(Parcel in)
     {
         super();
         readFromParcel(in);
     }
 
+    /**
+     * Read and store the data
+     * @param in Parcel
+     */
     private void readFromParcel(Parcel in)
     {
         name = in.readString();

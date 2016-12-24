@@ -1,7 +1,5 @@
 package s.pahlplatz.fhict_companion.fragments;
 
-
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,16 +13,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -32,29 +32,40 @@ import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.ScheduleAdapter;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
 import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
+import s.pahlplatz.fhict_companion.utils.models.Block;
 import s.pahlplatz.fhict_companion.utils.models.Day;
+import s.pahlplatz.fhict_companion.utils.models.Schedule;
+import s.pahlplatz.fhict_companion.utils.models.Week;
 
 /**
- * Fragment to show your schedule
+ * Created by Stefan on 22-12-2016.
+ *
+ * Fragment to show the schedule
  */
+
 public class ScheduleFragment extends Fragment
 {
     private static final String TAG = ScheduleFragment.class.getSimpleName();
 
-    private ArrayList<Day> days;
-    private ScheduleAdapter adapter;
+    private Schedule schedule;          // List to store all information from api
+    private String[] days;
+    private String[] weeks;
+    private int week;
+    private int day;
+
+    // UI references
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
     private Spinner dropdownWeeks;
+    private Spinner dropdownDays;
     private TextView noData;
-
-    private String todayDay;
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        days = new ArrayList<>();
+        schedule = new Schedule();
+        days = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     }
 
     @Override
@@ -63,19 +74,31 @@ public class ScheduleFragment extends Fragment
     {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        noData = (TextView) view.findViewById(R.id.schedule_no_data);
+        // Set toolbar title
+        getActivity().setTitle("Schedule");
 
-        // Configure the spinner
-        dropdownWeeks = (Spinner) view.findViewById(R.id.schedule_spinner);
-        String[] items = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, items);
-        dropdownWeeks.setAdapter(adapter);
-        dropdownWeeks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        // Assign UI elements
+        recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler);
+        progressBar = (ProgressBar) view.findViewById(R.id.schedule_pbar);
+        dropdownWeeks = (Spinner) view.findViewById(R.id.schedule_spinner_week);
+        dropdownDays = (Spinner) view.findViewById(R.id.schedule_spinner_day);
+        noData = (TextView) view.findViewById(R.id.schedule_no_data);
+        Button prevWeek = (Button) view.findViewById(R.id.schedule_week_prev);
+        Button nextWeek = (Button) view.findViewById(R.id.schedule_week_next);
+        Button prevDay = (Button) view.findViewById(R.id.schedule_day_prev);
+        Button nextDay = (Button) view.findViewById(R.id.schedule_day_next);
+
+        // Configure day spinner
+        ArrayAdapter<String> adapter_days = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, days);
+        dropdownDays.setAdapter(adapter_days);
+        setCurrentDay();                // Show current day in spinner
+        dropdownDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
         {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
-                showDaySchedule();
+                day = i;
+                showSchedule();
             }
 
             @Override
@@ -85,179 +108,262 @@ public class ScheduleFragment extends Fragment
             }
         });
 
+        // Configure week spinner
+        dropdownWeeks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
+        {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
+            {
+                week = i;
+                showSchedule();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView)
+            {
+
+            }
+        });
+
+        // Configure buttons
+        prevWeek.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                week--;
+                if (week < 0)
+                    week = weeks.length - 1;
+                dropdownWeeks.setSelection(week);
+                showSchedule();
+            }
+        });
+        nextWeek.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                week++;
+                if (week >= weeks.length)
+                    week = 0;
+                dropdownWeeks.setSelection(week);
+                showSchedule();
+            }
+        });
+        prevDay.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                day--;
+                if (day < 0)
+                    day = days.length - 1;
+                dropdownDays.setSelection(day);
+                showSchedule();
+            }
+        });
+        nextDay.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                day++;
+                if (day > days.length - 1)
+                    day = 0;
+                dropdownDays.setSelection(day);
+                showSchedule();
+            }
+        });
+
         // Configure recyclerView
-        recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        // Set the current day as selected day
-        Date date = new Date();
-        todayDay = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime());
-        dropdownWeeks.setSelection(getDayAsInt(todayDay));
-
-        // Make progressbar visible
-        progressBar = (ProgressBar) view.findViewById(R.id.schedule_pbar);
+        // Configure progressbar
         progressBar.setVisibility(View.VISIBLE);
 
-        new loadSchedule().execute();
+        // Load the schedule
+        new LoadSchedule().execute();
 
         return view;
     }
 
     /**
+     * Set the current day as the selected day in the day spinner
+     */
+    private void setCurrentDay()
+    {
+        Date date = new Date();
+        day = getDayAsInt(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime()));
+        dropdownDays.setSelection(day);
+    }
+
+    /**
+     * Set the current week as the selected week in the week spinner
+     */
+    private void setCurrentWeek()
+    {
+        Date date = new Date();
+        week = schedule.getWeekFromDate(date);
+        dropdownWeeks.setSelection(week);
+    }
+
+    /**
+     * Show the schedule. If the current day has no info, show the 'no data' label instead
+     */
+    private void showSchedule()
+    {
+        Day scheduleDay = null;
+        try
+        {
+            scheduleDay = schedule.getWeek(week).getDay(day);
+        } catch (Exception ex)
+        {
+            Log.e(TAG, "showSchedule: Tried to call showSchedule before the schedule was loaded");
+        }
+        if (scheduleDay == null)
+        {
+            noData.setVisibility(View.VISIBLE);
+            recyclerView.setVisibility(View.INVISIBLE);
+        } else
+        {
+            ScheduleAdapter adapter = new ScheduleAdapter(scheduleDay);
+            recyclerView.setAdapter(adapter);
+            recyclerView.setVisibility(View.VISIBLE);
+        }
+    }
+
+    /**
      * Convert the day string into an int
-     * If the day is sunday or saturday return 0 anyway.
+     *
      * @param day string
-     * @return day representation as integer
+     * @return day represented as integer
      */
     private int getDayAsInt(String day)
     {
-        switch (day)
+        for (int i = 0; i < days.length; i++)
         {
-            case "Monday":
-                return 0;
-            case "Tuesday":
-                return 1;
-            case "Wednesday":
-                return 2;
-            case "Thursday":
-                return 3;
-            case "Friday":
-                return 4;
-            case "Saturday":
-                return 5;
-            case "Sunday":
-                return 6;
+            if (day.equals(days[i]))
+                return i;
         }
-        return 0;
+        return -1;
     }
 
     /**
-     * Show the schedule for the selected day
+     * Async class to load the schedule from the api
      */
-    private void showDaySchedule()
-    {
-        // Amount of days from/until now
-        int dif = getDayAsInt(dropdownWeeks.getSelectedItem().toString()) - getDayAsInt(todayDay);
-
-        // Calculate selected date
-        Calendar cal = Calendar.getInstance();
-        cal.add(Calendar.DATE, dif);
-        @SuppressLint("SimpleDateFormat") SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-        String formatted = format1.format(cal.getTime());
-
-        // Create new list to store the correct days
-        ArrayList<Day> customDays = new ArrayList<>();
-
-        // Find days with the selected date
-        for (int i = 0; i < days.size(); i++)
-        {
-            if (days.get(i).getDate().equals(formatted))
-            {
-                customDays.add(days.get(i));
-            }
-        }
-
-        // Create new adapter
-        adapter = new ScheduleAdapter(customDays);
-        recyclerView.setAdapter(adapter);
-
-        // Make the textView visible if the list is empty
-        noData.setVisibility(customDays.isEmpty() ? View.VISIBLE : View.GONE);
-    }
-
-    /**
-     * Async class to load the schedule
-     */
-    public class loadSchedule extends AsyncTask<Void, Void, Void>
+    private class LoadSchedule extends AsyncTask<Void, Void, Void>
     {
         @Override
         protected void onPreExecute()
         {
-            if (days != null)
+            if (schedule != null)
             {
-                days.clear();
+                schedule.clear();
                 noData.setVisibility(View.GONE);
             }
         }
 
         @Override
-        protected Void doInBackground(Void... params)
+        protected Void doInBackground(Void... voids)
         {
             try
             {
-                // Get JSONArray from fontys api
-                JSONArray jArray = new JSONObject(FhictAPI.getStream(
-                        "https://api.fhict.nl/schedule/me?expandTeacher=false&days=7&startLastMonday=true",
-                        getContext().getSharedPreferences(
-                                "settings", Context.MODE_PRIVATE).getString("token", "")
-                )).getJSONArray("data");
+                // Get JSONObject from fontys API
+                JSONObject jObject = new JSONObject(FhictAPI.getStream(
+                        "https://api.fhict.nl/schedule/me?startLastMonday=true&expandWeeks=true",
+                        getContext().getSharedPreferences("settings", Context.MODE_PRIVATE).getString("token", "")));
 
-                // Add days to days list
-                for (int i = 0; i < jArray.length(); i++)
-                {
-                    String room = jArray.getJSONObject(i).getString("room");
-                    room = room.replace("_", " ");
+                // Add weeks to schedule
+                addWeeks(jObject.getJSONArray("weeks"));
 
-                    days.add(new Day(
-                            room,
-                            jArray.getJSONObject(i).getString("subject"),
-                            jArray.getJSONObject(i).getString("teacherAbbreviation"),
-                            jArray.getJSONObject(i).getString("start"),
-                            jArray.getJSONObject(i).getString("end")
-                    ));
-                }
-            } catch (Exception ex)
+                // Loop through all days
+                addBlocks(jObject.getJSONArray("data"));
+            } catch (JSONException ex)
             {
-                Log.e(TAG, "doInBackground: Couldn't fetch schedule");
+                Log.e(TAG, "doInBackground: Exception occurred", ex);
             }
-
             return null;
         }
 
+        @Override
         protected void onPostExecute(Void params)
+        {
+            schedule.mergeBlocks();
+            schedule.insertBreaks();
+
+            // Assign adapter for dropdownWeeks
+            weeks = schedule.getWeekNrs();
+            ArrayAdapter<String> adapter_weeks = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, weeks);
+            dropdownWeeks.setAdapter(adapter_weeks);
+
+            setCurrentWeek();
+
+            showSchedule();
+
+            // Hide progressbar
+            progressBar.setVisibility(View.GONE);
+
+            // Log the schedule
+            //Log.i(TAG, "onPostExecute: \n" + schedule.toString());
+        }
+
+        /**
+         * Adds all weeks of the given array to the schedule
+         *
+         * @param jWeeks JSONArray that contains data about the weeks
+         */
+        private void addWeeks(JSONArray jWeeks)
         {
             try
             {
-                boolean isNextValid = true;
-
-                // Combine classes if they are right after each
-                for (int i = 0; i < days.size(); i++)
+                for (int i = 0; i < jWeeks.length(); i++)
                 {
-                    if (i + 1 > days.size()) {
-                        if (isNextValid) {
-                            if (days.get(i).getSubject().equals(days.get(i + 1).getSubject()) &&
-                                    days.get(i).getDate().equals(days.get(i + 1).getDate())) {
-                                days.get(i).setEnd(days.get(i + 1).getEnd());
-                                days.remove(i + 1);
-                                isNextValid = false;
-                            }
-                        } else {
-                            isNextValid = true;
-                        }
-                    }
+                    String weekNr = jWeeks.getJSONObject(i).getString("title");
+                    String start = jWeeks.getJSONObject(i).getString("start");
+                    String end = jWeeks.getJSONObject(i).getString("end");
+                    schedule.addWeek(new Week(weekNr, start, end));
                 }
-
-                for (int i = 0; i < days.size(); i++)
-                {
-                    if (i + 1 < days.size())
-                    {
-                        if (!days.get(i).getEnd().equals(days.get(i + 1).getStart()) &&
-                                days.get(i).getDate().equals(days.get(i + 1).getDate()))
-                        {
-                            days.add(i + 1, new Day(days.get(i).getEnd(), days.get(i + 1).getStart(), days.get(i).getDate()));
-                        }
-                    }
-                }
-
-                adapter = new ScheduleAdapter(days);
-                recyclerView.setAdapter(adapter);
-                progressBar.setVisibility(View.GONE);
-
-                showDaySchedule();
-            } catch (Exception ex)
+            } catch (JSONException ex)
             {
-                Log.e(TAG, "onPostExecute: Exception", ex);
+                Log.e(TAG, "addWeeks: Exception while adding weeks", ex);
+            }
+        }
+
+        /**
+         * Adds all blocks of the given array to the schedule
+         *
+         * @param jDays JSONArray that contains data about the blocks
+         */
+        private void addBlocks(JSONArray jDays)
+        {
+            DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+
+            for (int i = 0; i < jDays.length(); i++)
+            {
+                try
+                {
+                    // Get data from array
+                    String room = jDays.getJSONObject(i).getString("room").replace("_", " ");
+                    String subject = jDays.getJSONObject(i).getString("subject");
+                    String desc = jDays.getJSONObject(i).getString("description");
+                    String teacherAbbr = jDays.getJSONObject(i).getString("teacherAbbreviation");
+                    String start = jDays.getJSONObject(i).getString("start");
+                    String end = jDays.getJSONObject(i).getString("end");
+                    Date date = format.parse(start);
+
+                    // Wrap all info in a block object
+                    Block block = new Block(room, subject, teacherAbbr, desc, start, end);
+
+                    // Add block to the schedule
+                    schedule.addBlock(block, date);
+                } catch (ParseException ex)
+                {
+                    Log.e(TAG, "Week: Exception occurred while converting the start date string to a date object", ex);
+                } catch (JSONException ex)
+                {
+                    Log.e(TAG, "Week: Exception occurred while parsing JSON", ex);
+                }
             }
         }
     }
