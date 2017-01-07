@@ -208,9 +208,15 @@ public class ScheduleFragment extends Fragment
     {
         Date date = new Date();
         week = schedule.getWeekFromDate(date);
-        String temp = weeks[week];
-        weeks[week] = temp + " (current)";
-        dropdownWeeks.setSelection(week);
+        if (week == -1)
+        {
+            dropdownWeeks.setSelection(0);
+        } else
+        {
+            String temp = weeks[week];
+            weeks[week] = temp + " (current)";
+            dropdownWeeks.setSelection(week);
+        }
     }
 
     /**
@@ -351,14 +357,14 @@ public class ScheduleFragment extends Fragment
                     // Get data from array
                     String room = jDays.getJSONObject(i).getString("room").replace("_", " ");
                     String subject = jDays.getJSONObject(i).getString("subject");
-                    String desc = jDays.getJSONObject(i).getString("description");
+                    //String desc = jDays.getJSONObject(i).getString("description");
                     String teacherAbbr = jDays.getJSONObject(i).getString("teacherAbbreviation");
                     String start = jDays.getJSONObject(i).getString("start");
                     String end = jDays.getJSONObject(i).getString("end");
                     Date date = format.parse(start);
 
                     // Wrap all info in a block object
-                    Block block = new Block(room, subject, teacherAbbr, desc, start, end);
+                    Block block = new Block(room, subject, teacherAbbr, start, end);
 
                     // Add block to the schedule
                     schedule.addBlock(block, date);

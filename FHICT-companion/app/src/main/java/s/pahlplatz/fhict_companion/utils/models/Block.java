@@ -18,12 +18,12 @@ public class Block
     /**
      * Default constructor
      */
-    public Block(String room, String subject, String teacherAbbr, String desc, String start, String end)
+    public Block(String room, String subject, String teacherAbbr, String start, String end)
     {
         this.room = room;
         this.subject = subject;
         this.teacherAbbr = teacherAbbr;
-        this.desc = desc;
+        //this.desc = desc;
         this.start = start.substring(11, 16);
         this.end = end.substring(11, 16);
     }
