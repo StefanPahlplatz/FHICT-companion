@@ -78,6 +78,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder0.course.setText(day.getBlock(position).getSubject());
                 viewHolder0.room.setText(day.getBlock(position).getRoom());
                 viewHolder0.teacher.setText(day.getBlock(position).getTeacherAbbr());
+                viewHolder0.desc.setText(day.getBlock(position).getDesc());
                 break;
             case 1:
                 try
@@ -111,6 +112,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         private final TextView course;
         private final TextView room;
         private final TextView teacher;
+        private final TextView desc;
 
         private ViewHolder0(View view)
         {
@@ -119,6 +121,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             course = (TextView) view.findViewById(R.id.block_card_course);
             room = (TextView) view.findViewById(R.id.block_card_room);
             teacher = (TextView) view.findViewById(R.id.block_card_teacher);
+            desc = (TextView) view.findViewById(R.id.block_card_desc);
         }
     }
 

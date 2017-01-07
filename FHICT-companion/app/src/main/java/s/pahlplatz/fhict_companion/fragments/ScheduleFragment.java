@@ -195,17 +195,28 @@ public class ScheduleFragment extends Fragment
     {
         Date date = new Date();
         day = getDayAsInt(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime()));
+        String temp = days[day];
+        days[day] = temp + " (today)";
         dropdownDays.setSelection(day);
     }
 
     /**
      * Set the current week as the selected week in the week spinner
+     * Also append (current) to the current week
      */
     private void setCurrentWeek()
     {
         Date date = new Date();
         week = schedule.getWeekFromDate(date);
-        dropdownWeeks.setSelection(week);
+        if (week == -1)
+        {
+            dropdownWeeks.setSelection(0);
+        } else
+        {
+            String temp = weeks[week];
+            weeks[week] = temp + " (current)";
+            dropdownWeeks.setSelection(week);
+        }
     }
 
     /**
@@ -346,14 +357,14 @@ public class ScheduleFragment extends Fragment
                     // Get data from array
                     String room = jDays.getJSONObject(i).getString("room").replace("_", " ");
                     String subject = jDays.getJSONObject(i).getString("subject");
-                    String desc = jDays.getJSONObject(i).getString("description");
+                    //String desc = jDays.getJSONObject(i).getString("description");
                     String teacherAbbr = jDays.getJSONObject(i).getString("teacherAbbreviation");
                     String start = jDays.getJSONObject(i).getString("start");
                     String end = jDays.getJSONObject(i).getString("end");
                     Date date = format.parse(start);
 
                     // Wrap all info in a block object
-                    Block block = new Block(room, subject, teacherAbbr, desc, start, end);
+                    Block block = new Block(room, subject, teacherAbbr, start, end);
 
                     // Add block to the schedule
                     schedule.addBlock(block, date);

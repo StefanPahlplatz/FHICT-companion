@@ -50,4 +50,11 @@
         android:layout_marginTop="16dp">
     </FrameLayout>
 
+    <ProgressBar
+        android:id="@+id/people_pbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"/>
+
 </RelativeLayout>

@@ -89,7 +89,8 @@ public class Day
         for (int i = 0; i < blocks.size(); i++)
             if (i + 1 < blocks.size())
                 if (!blocks.get(i).getEnd().equals(blocks.get(i + 1).getStart()) &&
-                        !blocks.get(i).getSubject().equals("zelfwerk"))
+                        !blocks.get(i).getSubject().equals("zelfwerk") &&
+                        !blocks.get(i).getStart().equals(blocks.get(i + 1).getStart()))
                 {
                     blocks.add(i + 1, new Block(blocks.get(i).getEnd(), blocks.get(i + 1).getStart()));
                     i = 0;
