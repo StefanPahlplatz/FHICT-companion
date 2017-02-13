@@ -90,6 +90,10 @@ public class Schedule
         return -1;
     }
 
+    public int getAmountOfWeeks() {
+        return weeks.size();
+    }
+
     /**
      * Calls Day.mergeDuplicates on every one of the blocks in the schedule
      */

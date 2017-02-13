@@ -17,6 +17,7 @@ import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -156,8 +157,16 @@ public class ScheduleFragment extends Fragment
             public void onClick(View view)
             {
                 day--;
-                if (day < 0)
+                if (day < 0) {
                     day = days.length - 1;
+
+                    // If we're not in the first week
+                    if (week - 1 >= 0) {
+                        dropdownWeeks.setSelection(--week);
+                    } else {
+                        Toast.makeText(getActivity(), "Can't view further back.", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 dropdownDays.setSelection(day);
                 showSchedule();
             }
@@ -168,8 +177,14 @@ public class ScheduleFragment extends Fragment
             public void onClick(View view)
             {
                 day++;
-                if (day > days.length - 1)
+                if (day > days.length - 1) {
                     day = 0;
+                    if (week + 1 < schedule.getAmountOfWeeks()) {
+                        dropdownWeeks.setSelection(++week);
+                    } else {
+                        Toast.makeText(getActivity(), "Can't view any further.", Toast.LENGTH_SHORT).show();
+                    }
+                }
                 dropdownDays.setSelection(day);
                 showSchedule();
             }
@@ -241,6 +256,7 @@ public class ScheduleFragment extends Fragment
             ScheduleAdapter adapter = new ScheduleAdapter(scheduleDay);
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
+            noData.setVisibility(View.GONE);
         }
     }
 
@@ -314,6 +330,7 @@ public class ScheduleFragment extends Fragment
 
             // Hide progressbar
             progressBar.setVisibility(View.GONE);
+            noData.setVisibility(View.GONE);
 
             // Log the schedule
             //Log.i(TAG, "onPostExecute: \n" + schedule.toString());
