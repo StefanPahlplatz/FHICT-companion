@@ -14,23 +14,18 @@ import android.util.Log;
  * Invalid view holder adapter positionViewHolder
  */
 
-public class WrapContentLinearLayoutManager extends LinearLayoutManager
-{
+public class WrapContentLinearLayoutManager extends LinearLayoutManager {
     private static final String TAG = WrapContentLinearLayoutManager.class.getSimpleName();
 
-    public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout)
-    {
+    public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
 
     @Override
-    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state)
-    {
-        try
-        {
+    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+        try {
             super.onLayoutChildren(recycler, state);
-        } catch (IndexOutOfBoundsException ex)
-        {
+        } catch (IndexOutOfBoundsException ex) {
             Log.e(TAG, "java.lang.IndexOutOfBoundsException: Inconsistency detected.");
         }
     }

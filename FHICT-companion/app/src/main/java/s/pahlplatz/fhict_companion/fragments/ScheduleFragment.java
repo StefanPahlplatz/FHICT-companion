@@ -40,12 +40,11 @@ import s.pahlplatz.fhict_companion.utils.models.Week;
 
 /**
  * Created by Stefan on 22-12-2016.
- *
+ * <p>
  * Fragment to show the schedule
  */
 
-public class ScheduleFragment extends Fragment
-{
+public class ScheduleFragment extends Fragment {
     private static final String TAG = ScheduleFragment.class.getSimpleName();
 
     private Schedule schedule;          // List to store all information from api
@@ -62,8 +61,7 @@ public class ScheduleFragment extends Fragment
     private TextView noData;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         schedule = new Schedule();
         days = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
@@ -71,8 +69,7 @@ public class ScheduleFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         // Set toolbar title
@@ -93,45 +90,37 @@ public class ScheduleFragment extends Fragment
         ArrayAdapter<String> adapter_days = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, days);
         dropdownDays.setAdapter(adapter_days);
         setCurrentDay();                // Show current day in spinner
-        dropdownDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        dropdownDays.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
-            {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 day = i;
                 showSchedule();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
         // Configure week spinner
-        dropdownWeeks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener()
-        {
+        dropdownWeeks.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
-            {
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 week = i;
                 showSchedule();
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> adapterView)
-            {
+            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
 
         // Configure buttons
-        prevWeek.setOnClickListener(new View.OnClickListener()
-        {
+        prevWeek.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 week--;
                 if (week < 0)
                     week = weeks.length - 1;
@@ -139,11 +128,9 @@ public class ScheduleFragment extends Fragment
                 showSchedule();
             }
         });
-        nextWeek.setOnClickListener(new View.OnClickListener()
-        {
+        nextWeek.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 week++;
                 if (week >= weeks.length)
                     week = 0;
@@ -151,11 +138,9 @@ public class ScheduleFragment extends Fragment
                 showSchedule();
             }
         });
-        prevDay.setOnClickListener(new View.OnClickListener()
-        {
+        prevDay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 day--;
                 if (day < 0) {
                     day = days.length - 1;
@@ -171,11 +156,9 @@ public class ScheduleFragment extends Fragment
                 showSchedule();
             }
         });
-        nextDay.setOnClickListener(new View.OnClickListener()
-        {
+        nextDay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 day++;
                 if (day > days.length - 1) {
                     day = 0;
@@ -206,8 +189,7 @@ public class ScheduleFragment extends Fragment
     /**
      * Set the current day as the selected day in the day spinner
      */
-    private void setCurrentDay()
-    {
+    private void setCurrentDay() {
         Date date = new Date();
         day = getDayAsInt(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(date.getTime()));
         String temp = days[day];
@@ -219,15 +201,12 @@ public class ScheduleFragment extends Fragment
      * Set the current week as the selected week in the week spinner
      * Also append (current) to the current week
      */
-    private void setCurrentWeek()
-    {
+    private void setCurrentWeek() {
         Date date = new Date();
         week = schedule.getWeekFromDate(date);
-        if (week == -1)
-        {
+        if (week == -1) {
             dropdownWeeks.setSelection(0);
-        } else
-        {
+        } else {
             String temp = weeks[week];
             weeks[week] = temp + " (current)";
             dropdownWeeks.setSelection(week);
@@ -237,22 +216,17 @@ public class ScheduleFragment extends Fragment
     /**
      * Show the schedule. If the current day has no info, show the 'no data' label instead
      */
-    private void showSchedule()
-    {
+    private void showSchedule() {
         Day scheduleDay = null;
-        try
-        {
+        try {
             scheduleDay = schedule.getWeek(week).getDay(day);
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Log.e(TAG, "showSchedule: Tried to call showSchedule before the schedule was loaded");
         }
-        if (scheduleDay == null)
-        {
+        if (scheduleDay == null) {
             noData.setVisibility(View.VISIBLE);
             recyclerView.setVisibility(View.INVISIBLE);
-        } else
-        {
+        } else {
             ScheduleAdapter adapter = new ScheduleAdapter(scheduleDay);
             recyclerView.setAdapter(adapter);
             recyclerView.setVisibility(View.VISIBLE);
@@ -266,10 +240,8 @@ public class ScheduleFragment extends Fragment
      * @param day string
      * @return day represented as integer
      */
-    private int getDayAsInt(String day)
-    {
-        for (int i = 0; i < days.length; i++)
-        {
+    private int getDayAsInt(String day) {
+        for (int i = 0; i < days.length; i++) {
             if (day.equals(days[i]))
                 return i;
         }
@@ -279,23 +251,18 @@ public class ScheduleFragment extends Fragment
     /**
      * Async class to load the schedule from the api
      */
-    private class LoadSchedule extends AsyncTask<Void, Void, Void>
-    {
+    private class LoadSchedule extends AsyncTask<Void, Void, Void> {
         @Override
-        protected void onPreExecute()
-        {
-            if (schedule != null)
-            {
+        protected void onPreExecute() {
+            if (schedule != null) {
                 schedule.clear();
                 noData.setVisibility(View.GONE);
             }
         }
 
         @Override
-        protected Void doInBackground(Void... voids)
-        {
-            try
-            {
+        protected Void doInBackground(Void... voids) {
+            try {
                 // Get JSONObject from fontys API
                 JSONObject jObject = new JSONObject(FhictAPI.getStream(
                         "https://api.fhict.nl/schedule/me?startLastMonday=true&expandWeeks=true",
@@ -306,16 +273,14 @@ public class ScheduleFragment extends Fragment
 
                 // Loop through all days
                 addBlocks(jObject.getJSONArray("data"));
-            } catch (JSONException ex)
-            {
+            } catch (JSONException ex) {
                 Log.e(TAG, "doInBackground: Exception occurred", ex);
             }
             return null;
         }
 
         @Override
-        protected void onPostExecute(Void params)
-        {
+        protected void onPostExecute(Void params) {
             schedule.mergeBlocks();
             schedule.insertBreaks();
 
@@ -341,19 +306,15 @@ public class ScheduleFragment extends Fragment
          *
          * @param jWeeks JSONArray that contains data about the weeks
          */
-        private void addWeeks(JSONArray jWeeks)
-        {
-            try
-            {
-                for (int i = 0; i < jWeeks.length(); i++)
-                {
+        private void addWeeks(JSONArray jWeeks) {
+            try {
+                for (int i = 0; i < jWeeks.length(); i++) {
                     String weekNr = jWeeks.getJSONObject(i).getString("title");
                     String start = jWeeks.getJSONObject(i).getString("start");
                     String end = jWeeks.getJSONObject(i).getString("end");
                     schedule.addWeek(new Week(weekNr, start, end));
                 }
-            } catch (JSONException ex)
-            {
+            } catch (JSONException ex) {
                 Log.e(TAG, "addWeeks: Exception while adding weeks", ex);
             }
         }
@@ -363,14 +324,11 @@ public class ScheduleFragment extends Fragment
          *
          * @param jDays JSONArray that contains data about the blocks
          */
-        private void addBlocks(JSONArray jDays)
-        {
+        private void addBlocks(JSONArray jDays) {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
-            for (int i = 0; i < jDays.length(); i++)
-            {
-                try
-                {
+            for (int i = 0; i < jDays.length(); i++) {
+                try {
                     // Get data from array
                     String room = jDays.getJSONObject(i).getString("room").replace("_", " ");
                     String subject = jDays.getJSONObject(i).getString("subject");
@@ -385,11 +343,9 @@ public class ScheduleFragment extends Fragment
 
                     // Add block to the schedule
                     schedule.addBlock(block, date);
-                } catch (ParseException ex)
-                {
+                } catch (ParseException ex) {
                     Log.e(TAG, "Week: Exception occurred while converting the start date string to a date object", ex);
-                } catch (JSONException ex)
-                {
+                } catch (JSONException ex) {
                     Log.e(TAG, "Week: Exception occurred while parsing JSON", ex);
                 }
             }

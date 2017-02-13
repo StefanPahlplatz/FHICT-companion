@@ -13,11 +13,10 @@ import java.net.URL;
 
 /**
  * Created by Stefan on 30-11-2016.
- *
+ * <p>
  * Static class to connect to the fontys api and retrieve the JSON files.
  */
-public class FhictAPI
-{
+public class FhictAPI {
     private static final String TAG = FhictAPI.class.getSimpleName();
 
     /**
@@ -27,11 +26,9 @@ public class FhictAPI
      * @param token the users unique token
      * @return JSON stream
      */
-    public static String getStream(String link, String token)
-    {
+    public static String getStream(String link, String token) {
         InputStream inputStream;
-        try
-        {
+        try {
             URL url = new URL(link);
 
             // Create Http connection
@@ -42,8 +39,7 @@ public class FhictAPI
 
             // Get the result
             inputStream = connection.getInputStream();
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Log.e(TAG, "getStream: Couldn't get data from fontys api.", ex);
             return null;
         }
@@ -52,31 +48,25 @@ public class FhictAPI
 
     /**
      * Converts the stream to a string
+     *
      * @param is InputStream to convert
      * @return String
      */
-    private static String convertStreamToString(InputStream is)
-    {
+    private static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
         String line;
-        try
-        {
-            while ((line = reader.readLine()) != null)
-            {
+        try {
+            while ((line = reader.readLine()) != null) {
                 sb.append(line).append('\n');
             }
-        } catch (IOException e)
-        {
+        } catch (IOException e) {
             e.printStackTrace();
-        } finally
-        {
-            try
-            {
+        } finally {
+            try {
                 is.close();
-            } catch (IOException e)
-            {
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -85,14 +75,13 @@ public class FhictAPI
 
     /**
      * Gets the picture from the fontys API
-     * @param link of the picture
+     *
+     * @param link  of the picture
      * @param token the users unique token
      * @return a bitmap of the image
      */
-    public static Bitmap getPicture(String link, String token)
-    {
-        try
-        {
+    public static Bitmap getPicture(String link, String token) {
+        try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Accept", "image/jpeg");
@@ -101,8 +90,7 @@ public class FhictAPI
             InputStream input = connection.getInputStream();
 
             return BitmapFactory.decodeStream(input);
-        } catch (IOException ex)
-        {
+        } catch (IOException ex) {
             Log.e(TAG, "doInBackground: Couldn't get picture from url", ex);
             return null;
         }

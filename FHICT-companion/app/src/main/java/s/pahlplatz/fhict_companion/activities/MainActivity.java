@@ -45,8 +45,7 @@ public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener,
         NewsAdapter.OnAdapterInteractionListener,
         PeopleFragment.OnPeopleSearchListener,
-        PeopleListFragment.OnFragmentInteractionListener
-{
+        PeopleListFragment.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private Toolbar toolbar;
@@ -54,8 +53,7 @@ public class MainActivity extends AppCompatActivity implements
     private boolean doubleBackToExitPressedOnce = false;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -74,16 +72,13 @@ public class MainActivity extends AppCompatActivity implements
         new LoadUserData().execute();
 
         // Load default fragment
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             Fragment fragment = null;
             Class fragmentClass;
             fragmentClass = ScheduleFragment.class;
-            try
-            {
+            try {
                 fragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -100,8 +95,7 @@ public class MainActivity extends AppCompatActivity implements
      * Otherwise do the normal action.
      */
     @Override
-    public void onBackPressed()
-    {
+    public void onBackPressed() {
         // Change the icon to the drawer icon
         //noinspection ConstantConditions
         getSupportActionBar().setDisplayHomeAsUpEnabled(false);
@@ -110,28 +104,21 @@ public class MainActivity extends AppCompatActivity implements
         configureToolbar();
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START))
-        {
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
-        } else
-        {
-            if (getSupportFragmentManager().getBackStackEntryCount() > 0)
-            {
+        } else {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 getSupportFragmentManager().popBackStack();
-            } else if (doubleBackToExitPressedOnce)
-            {
+            } else if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
-            } else
-            {
+            } else {
                 this.doubleBackToExitPressedOnce = true;
                 Toast.makeText(this, "Press back again to leave", Toast.LENGTH_SHORT).show();
 
-                new Handler().postDelayed(new Runnable()
-                {
+                new Handler().postDelayed(new Runnable() {
 
                     @Override
-                    public void run()
-                    {
+                    public void run() {
                         doubleBackToExitPressedOnce = false;
                     }
                 }, 2000);
@@ -144,38 +131,29 @@ public class MainActivity extends AppCompatActivity implements
      *
      * @param persons list of people that match the query
      */
-    public void onPeopleSearchListener(final ArrayList<Person> persons)
-    {
-        if (persons.size() == 1)
-        {
+    public void onPeopleSearchListener(final ArrayList<Person> persons) {
+        if (persons.size() == 1) {
             Fragment fragment = null;
-            try
-            {
+            try {
                 fragment = PeopleDetailFragment.newInstance(persons.get(0));
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
             PeopleListFragment myFragment = (PeopleListFragment) getSupportFragmentManager().findFragmentByTag("people_overview");
-            if (myFragment != null && myFragment.isVisible())
-            {
+            if (myFragment != null && myFragment.isVisible()) {
                 fragmentManager.beginTransaction().addToBackStack("people_overview").replace(R.id.people_content, fragment, "people_details").commit();
-            } else
-            {
+            } else {
                 fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_details").commit();
             }
 
 
-        } else
-        {
+        } else {
             Fragment fragment = null;
-            try
-            {
+            try {
                 fragment = PeopleListFragment.newInstance(persons);
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
@@ -189,8 +167,7 @@ public class MainActivity extends AppCompatActivity implements
      * @param p the selected person
      */
     @Override
-    public void onFragmentInteraction(Person p)
-    {
+    public void onFragmentInteraction(Person p) {
         ArrayList<Person> person = new ArrayList<>();
         person.add(p);
         onPeopleSearchListener(person);
@@ -203,8 +180,7 @@ public class MainActivity extends AppCompatActivity implements
      * @return true
      */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu)
-    {
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
@@ -218,18 +194,15 @@ public class MainActivity extends AppCompatActivity implements
      * @return true if selection is handled, otherwise call super method
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
-        switch (item.getItemId())
-        {
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
             case R.id.action_settings:
                 Intent settings = new Intent(this, SettingsActivity.class);
                 startActivity(settings);
                 return true;
             case android.R.id.home:
                 FragmentManager fm = getSupportFragmentManager();
-                if (fm.getBackStackEntryCount() > 0)
-                {
+                if (fm.getBackStackEntryCount() > 0) {
                     fm.popBackStack();
                 }
                 return true;
@@ -245,38 +218,30 @@ public class MainActivity extends AppCompatActivity implements
      * @return true if action is handled
      */
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item)
-    {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment;
         Class fragmentClass = null;
 
         int id = item.getItemId();
 
-        if (id == R.id.nav_coworkers)
-        {
+        if (id == R.id.nav_coworkers) {
             fragmentClass = PeopleFragment.class;
-        } else if (id == R.id.nav_schedule)
-        {
+        } else if (id == R.id.nav_schedule) {
             fragmentClass = ScheduleFragment.class;
-        } else if (id == R.id.nav_news)
-        {
+        } else if (id == R.id.nav_news) {
             fragmentClass = NewsFragment.class;
-        } else if (id == R.id.nav_results)
-        {
+        } else if (id == R.id.nav_results) {
             fragmentClass = GradeFragment.class;
         }
 
-        try
-        {
-            if (fragmentClass != null)
-            {
+        try {
+            if (fragmentClass != null) {
                 fragment = (Fragment) fragmentClass.newInstance();
 
                 FragmentManager fragmentManager = getSupportFragmentManager();
                 fragmentManager.beginTransaction().replace(R.id.activity_main_content_frame, fragment).commit();
             }
-        } catch (Exception ex)
-        {
+        } catch (Exception ex) {
             Log.e(TAG, "onNavigationItemSelected: Couldn't switch fragments", ex);
         }
 
@@ -291,8 +256,7 @@ public class MainActivity extends AppCompatActivity implements
      *
      * @param item NewsItem instance that contains information about the selected item.
      */
-    public void onAdapterInteractionListener(NewsItem item)
-    {
+    public void onAdapterInteractionListener(NewsItem item) {
         // Switch fragment
         getSupportFragmentManager()
                 .beginTransaction()
@@ -305,11 +269,9 @@ public class MainActivity extends AppCompatActivity implements
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         // On UP click
-        toolbar.setNavigationOnClickListener(new View.OnClickListener()
-        {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 // Go to previous fragment
                 MainActivity.super.onBackPressed();
 
@@ -322,8 +284,7 @@ public class MainActivity extends AppCompatActivity implements
         });
     }
 
-    private void configureToolbar()
-    {
+    private void configureToolbar() {
         // Assign drawerLayout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
 
@@ -336,15 +297,12 @@ public class MainActivity extends AppCompatActivity implements
     /**
      * Get user info from fontys api
      */
-    private class LoadUserData extends AsyncTask<Void, Void, ArrayList<String>>
-    {
+    private class LoadUserData extends AsyncTask<Void, Void, ArrayList<String>> {
         @Override
-        protected ArrayList<String> doInBackground(Void... params)
-        {
+        protected ArrayList<String> doInBackground(Void... params) {
             ArrayList<String> retList = new ArrayList<>();
 
-            try
-            {
+            try {
                 // Convert the InputStream to a JSONArray
                 JSONObject jObject = new JSONObject(FhictAPI.getStream("https://api.fhict.nl/people/me", getSharedPreferences("settings", MODE_PRIVATE).getString("token", "")));
 
@@ -359,45 +317,37 @@ public class MainActivity extends AppCompatActivity implements
                 // Return name and title
                 retList.add(jObject.getString("displayName"));
                 retList.add(jObject.getString("title"));
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e(TAG, "doInBackground: A problem occurred while parsing the JSON file.", ex);
             }
             return retList;
         }
 
         @Override
-        protected void onPostExecute(ArrayList<String> result)
-        {
-            try
-            {
+        protected void onPostExecute(ArrayList<String> result) {
+            try {
                 TextView name = (TextView) findViewById(R.id.header_tv_name);
                 name.setText(result.get(0));
 
                 TextView title = (TextView) findViewById(R.id.header_tv_title);
                 title.setText(result.get(1));
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e(TAG, "onPostExecute: Couldn't set the header textviews.", ex);
             }
         }
     }
 
-    private class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap>
-    {
+    private class LoadProfilePicture extends AsyncTask<Object, Void, Bitmap> {
         @Override
-        protected Bitmap doInBackground(Object... params)
-        {
+        protected Bitmap doInBackground(Object... params) {
             Context ctx = (Context) params[0];
             SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
             return FhictAPI.getPicture("https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg", sp.getString("token", ""));
         }
 
         @Override
-        protected void onPostExecute(Bitmap result)
-        {
-            if (image == null)
-            {
+        protected void onPostExecute(Bitmap result) {
+            if (image == null) {
                 image = (CircleImageView) findViewById(R.id.header_profile_image);
             }
             image.setImageBitmap(result);

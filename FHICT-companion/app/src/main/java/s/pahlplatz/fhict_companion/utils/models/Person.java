@@ -6,17 +6,13 @@ import android.os.Parcelable;
 /**
  * Person class to store data about a person
  */
-public class Person implements Parcelable
-{
-    public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>()
-    {
-        public Person createFromParcel(Parcel in)
-        {
+public class Person implements Parcelable {
+    public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
+        public Person createFromParcel(Parcel in) {
             return new Person(in);
         }
 
-        public Person[] newArray(int size)
-        {
+        public Person[] newArray(int size) {
 
             return new Person[size];
         }
@@ -33,8 +29,7 @@ public class Person implements Parcelable
     /**
      * Default constructor
      */
-    public Person(String name, String mail, String office, String phone, String dep, String title, String id)
-    {
+    public Person(String name, String mail, String office, String phone, String dep, String title, String id) {
         this.name = name;
         this.mail = mail;
         this.office = office;
@@ -49,18 +44,17 @@ public class Person implements Parcelable
      *
      * @param in Parcel
      */
-    private Person(Parcel in)
-    {
+    private Person(Parcel in) {
         super();
         readFromParcel(in);
     }
 
     /**
      * Read and store the data
+     *
      * @param in Parcel
      */
-    private void readFromParcel(Parcel in)
-    {
+    private void readFromParcel(Parcel in) {
         name = in.readString();
         mail = in.readString();
         office = in.readString();
@@ -72,13 +66,11 @@ public class Person implements Parcelable
     }
 
     @Override
-    public int describeContents()
-    {
+    public int describeContents() {
         return 0;
     }
 
-    public void writeToParcel(Parcel dest, int flags)
-    {
+    public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(name);
         dest.writeString(mail);
         dest.writeString(office);
@@ -88,38 +80,31 @@ public class Person implements Parcelable
         dest.writeString(id);
     }
 
-    public String getName()
-    {
+    public String getName() {
         return name;
     }
 
-    public String getMail()
-    {
+    public String getMail() {
         return mail;
     }
 
-    public String getOffice()
-    {
+    public String getOffice() {
         return office;
     }
 
-    public String getPhone()
-    {
+    public String getPhone() {
         return phone;
     }
 
-    public String getDep()
-    {
+    public String getDep() {
         return dep;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public String getId()
-    {
+    public String getId() {
         return id;
     }
 }

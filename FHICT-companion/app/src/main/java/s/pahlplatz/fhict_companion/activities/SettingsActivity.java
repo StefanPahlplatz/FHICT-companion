@@ -27,23 +27,19 @@ import s.pahlplatz.fhict_companion.R;
  * settings are split by category, with category headers shown to the left of
  * the list of settings.
  */
-    //region SettingsActivity
-public class SettingsActivity extends AppCompatPreferenceActivity
-{
+//region SettingsActivity
+public class SettingsActivity extends AppCompatPreferenceActivity {
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
     private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener
-            = new Preference.OnPreferenceChangeListener()
-    {
+            = new Preference.OnPreferenceChangeListener() {
         @Override
-        public boolean onPreferenceChange(Preference preference, Object value)
-        {
+        public boolean onPreferenceChange(Preference preference, Object value) {
             String stringValue = value.toString();
 
-            if (preference instanceof ListPreference)
-            {
+            if (preference instanceof ListPreference) {
                 // For list preferences, look up the correct display value in
                 // the preference's 'entries' list.
                 ListPreference listPreference = (ListPreference) preference;
@@ -55,8 +51,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
                                 ? listPreference.getEntries()[index]
                                 : null);
 
-            }  else
-            {
+            } else {
                 // For all other preferences, set the summary to the value's
                 // simple string representation.
                 preference.setSummary(stringValue);
@@ -69,15 +64,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * Helper method to determine if the device has an extra-large screen. For
      * example, 10" tablets are extra-large.
      */
-    private static boolean isXLargeTablet(Context context)
-    {
+    private static boolean isXLargeTablet(Context context) {
         return (context.getResources().getConfiguration().screenLayout
                 & Configuration.SCREENLAYOUT_SIZE_MASK) >= Configuration.SCREENLAYOUT_SIZE_XLARGE;
     }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setupActionBar();
     }
@@ -85,24 +78,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
-    private void setupActionBar()
-    {
+    private void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null)
-        {
+        if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
 
     @Override
-    public boolean onMenuItemSelected(int featureId, MenuItem item)
-    {
+    public boolean onMenuItemSelected(int featureId, MenuItem item) {
         int id = item.getItemId();
-        if (id == android.R.id.home)
-        {
-            if (!super.onMenuItemSelected(featureId, item))
-            {
+        if (id == android.R.id.home) {
+            if (!super.onMenuItemSelected(featureId, item)) {
                 NavUtils.navigateUpFromSameTask(this);
             }
             return true;
@@ -114,8 +102,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * {@inheritDoc}
      */
     @Override
-    public boolean onIsMultiPane()
-    {
+    public boolean onIsMultiPane() {
         return isXLargeTablet(this);
     }
 
@@ -124,8 +111,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      */
     @Override
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public void onBuildHeaders(List<Header> target)
-    {
+    public void onBuildHeaders(List<Header> target) {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
@@ -133,8 +119,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * This method stops fragment injection in malicious applications.
      * Make sure to deny any unknown fragments here.
      */
-    protected boolean isValidFragment(String fragmentName)
-    {
+    protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || AccountPreferenceFragment.class.getName().equals(fragmentName);
     }
@@ -145,29 +130,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity
      * activity is showing a two-pane settings UI.
      */
     //region GeneralSettings
-    public static class AccountPreferenceFragment extends PreferenceFragment
-    {
+    public static class AccountPreferenceFragment extends PreferenceFragment {
         @Override
-        public void onCreate(Bundle savedInstanceState)
-        {
+        public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_account);
             setHasOptionsMenu(true);
 
             Preference logout = findPreference("logout");
             logout.setSummary("");
-            logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener()
-            {
+            logout.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
-                public boolean onPreferenceClick(Preference preference)
-                {
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener()
-                    {
+                public boolean onPreferenceClick(Preference preference) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialog, int which)
-                        {
-                            if (which ==  DialogInterface.BUTTON_POSITIVE)
-                            {
+                        public void onClick(DialogInterface dialog, int which) {
+                            if (which == DialogInterface.BUTTON_POSITIVE) {
                                 // Start login intent
                                 Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
                                 loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -187,11 +165,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity
         }
 
         @Override
-        public boolean onOptionsItemSelected(MenuItem item)
-        {
+        public boolean onOptionsItemSelected(MenuItem item) {
             int id = item.getItemId();
-            if (id == android.R.id.home)
-            {
+            if (id == android.R.id.home) {
                 startActivity(new Intent(getActivity(), SettingsActivity.class));
                 return true;
             }

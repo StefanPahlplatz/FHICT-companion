@@ -11,8 +11,7 @@ import android.widget.TextView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 
-public class NewsDetailsFragment extends Fragment
-{
+public class NewsDetailsFragment extends Fragment {
     private String title, content, author, pubDate;
 
     /**
@@ -22,8 +21,7 @@ public class NewsDetailsFragment extends Fragment
      * @param newsItem News Item that contains the details about the selected news.
      * @return A new instance of fragment NewsDetailsFragment.
      */
-    public static NewsDetailsFragment newInstance(NewsItem newsItem)
-    {
+    public static NewsDetailsFragment newInstance(NewsItem newsItem) {
         NewsDetailsFragment fragment = new NewsDetailsFragment();
         Bundle args = new Bundle();
         args.putString("title", newsItem.getTitle());
@@ -35,11 +33,9 @@ public class NewsDetailsFragment extends Fragment
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             title = getArguments().getString("title");
             content = getArguments().getString("content");
             author = getArguments().getString("author");
@@ -49,8 +45,7 @@ public class NewsDetailsFragment extends Fragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_details, container, false);
 
         // Title
