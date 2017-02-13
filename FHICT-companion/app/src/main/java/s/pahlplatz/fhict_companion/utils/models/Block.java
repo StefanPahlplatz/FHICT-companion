@@ -6,8 +6,7 @@ package s.pahlplatz.fhict_companion.utils.models;
  * Class that represents a block in the schedule
  */
 
-public class Block
-{
+public class Block {
     private final String room;          // Room
     private final String subject;       // Subject
     private final String teacherAbbr;   // Teacher
@@ -18,8 +17,7 @@ public class Block
     /**
      * Default constructor
      */
-    public Block(String room, String subject, String teacherAbbr, String start, String end)
-    {
+    public Block(String room, String subject, String teacherAbbr, String start, String end) {
         this.room = room;
         this.subject = subject;
         this.teacherAbbr = teacherAbbr;
@@ -34,8 +32,7 @@ public class Block
      * @param start full datetime string
      * @param end   full datetime string
      */
-    Block(String start, String end)
-    {
+    Block(String start, String end) {
         this.room = "";
         this.subject = "Break";
         this.teacherAbbr = "";
@@ -48,53 +45,52 @@ public class Block
      *
      * @return String in hh:mm format
      */
-    public String getEnd()
-    {
+    public String getEnd() {
         return end;
     }
 
     /**
      * Sets the end time of the block
+     *
      * @param end String in hh:mm format
      */
-    public void setEnd(String end)
-    {
+    public void setEnd(String end) {
         this.end = end;
     }
 
     /**
      * Returns the start time of the block
+     *
      * @return String in hh:mm format
      */
-    public String getStart()
-    {
+    public String getStart() {
         return start;
     }
 
     /**
      * Returns the abbreviation of the teacher
+     *
      * @return String
      */
-    public String getTeacherAbbr()
-    {
+    public String getTeacherAbbr() {
         return teacherAbbr;
     }
 
     /**
      * Returns the subject of the block
+     *
      * @return String
      */
-    public String getSubject()
-    {
+    public String getSubject() {
         return subject;
     }
 
     /**
      * Returns the room of the block
+     *
      * @return String
      */
-    public String getRoom()
-    {
+    public String getRoom() {
         return room;
     }
 
@@ -103,14 +99,12 @@ public class Block
      *
      * @return String
      */
-    public String getDesc()
-    {
+    public String getDesc() {
         return desc;
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         if (subject.equals("Break"))
             return "Break";
         else

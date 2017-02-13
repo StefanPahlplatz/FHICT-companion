@@ -11,25 +11,20 @@ import s.pahlplatz.fhict_companion.fragments.TokenFragment;
 /**
  * A login screen that offers login via pcn/password.
  */
-public class LoginActivity extends AppCompatActivity implements TokenFragment.OnFragmentInteractionListener
-{
+public class LoginActivity extends AppCompatActivity implements TokenFragment.OnFragmentInteractionListener {
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        if (savedInstanceState == null)
-        {
+        if (savedInstanceState == null) {
             Fragment fragment = null;
             Class fragmentClass;
             fragmentClass = TokenFragment.class;
 
-            try
-            {
+            try {
                 fragment = (Fragment) fragmentClass.newInstance();
-            } catch (Exception e)
-            {
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
@@ -44,8 +39,7 @@ public class LoginActivity extends AppCompatActivity implements TokenFragment.On
      *
      * @param token is the string that is returned from the auth
      */
-    public void onFragmentInteraction(String token)
-    {
+    public void onFragmentInteraction(String token) {
         // Store the user token
         getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
 

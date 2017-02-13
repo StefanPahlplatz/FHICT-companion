@@ -29,12 +29,11 @@ import s.pahlplatz.fhict_companion.utils.models.Grade;
 
 /**
  * Created by Stefan on 30-11-2016.
- *
+ * <p>
  * Fragment to show the user their grades.
  */
 
-public class GradeFragment extends Fragment
-{
+public class GradeFragment extends Fragment {
     private static final String TAG = GradeFragment.class.getSimpleName();
 
     private ArrayList<Grade> grades;
@@ -42,17 +41,15 @@ public class GradeFragment extends Fragment
     private ProgressBar progressBar;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         grades = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
-        View view =  inflater.inflate(R.layout.fragment_grades, container, false);
+                             Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_grades, container, false);
 
         getActivity().setTitle("Grades");
 
@@ -60,11 +57,9 @@ public class GradeFragment extends Fragment
         setHasOptionsMenu(true);
 
         SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
-        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener()
-        {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
-            public void onRefresh()
-            {
+            public void onRefresh() {
                 new loadGrades().execute();
             }
         });
@@ -80,33 +75,27 @@ public class GradeFragment extends Fragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.grades, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         // Refresh grades
-        if (id == R.id.action_grade_refresh)
-        {
+        if (id == R.id.action_grade_refresh) {
             new loadGrades().execute();
             return true;
         }
 
         // Sort by grade
-        else if (id == R.id.action_grade_sort_grade)
-        {
-            Collections.sort(grades, new Comparator<Grade>()
-            {
+        else if (id == R.id.action_grade_sort_grade) {
+            Collections.sort(grades, new Comparator<Grade>() {
                 @Override
-                public int compare(Grade grade, Grade t1)
-                {
+                public int compare(Grade grade, Grade t1) {
                     return (int) (t1.getGrade() - grade.getGrade());
                 }
             });
@@ -114,13 +103,10 @@ public class GradeFragment extends Fragment
         }
 
         // Sort by name
-        else if (id == R.id.action_grade_sort_alphabetical)
-        {
-            Collections.sort(grades, new Comparator<Grade>()
-            {
+        else if (id == R.id.action_grade_sort_alphabetical) {
+            Collections.sort(grades, new Comparator<Grade>() {
                 @Override
-                public int compare(Grade grade, Grade t1)
-                {
+                public int compare(Grade grade, Grade t1) {
                     return grade.getName().compareTo(t1.getName());
                 }
             });
@@ -129,31 +115,25 @@ public class GradeFragment extends Fragment
         return super.onOptionsItemSelected(item);
     }
 
-    private class loadGrades extends AsyncTask<Void, Void, Void>
-    {
+    private class loadGrades extends AsyncTask<Void, Void, Void> {
         @Override
-        public void onPreExecute()
-        {
+        public void onPreExecute() {
             // Clear grade list
             grades.clear();
         }
 
         @Override
-        public Void doInBackground(Void... params)
-        {
-            try
-            {
+        public Void doInBackground(Void... params) {
+            try {
                 JSONArray jArray = new JSONArray(FhictAPI.getStream(
                         "https://api.fhict.nl/grades/me",
                         getContext().getSharedPreferences(
                                 "settings", Context.MODE_PRIVATE).getString("token", "")));
 
-                for (int i = 0; i < jArray.length(); i++)
-                {
+                for (int i = 0; i < jArray.length(); i++) {
                     grades.add(new Grade(jArray.getJSONObject(i).getString("item"), jArray.getJSONObject(i).getDouble("grade")));
                 }
-            }catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e(TAG, "doInBackground: A problem occurred while parsing the JSON file.", ex);
             }
 
@@ -161,17 +141,13 @@ public class GradeFragment extends Fragment
         }
 
         @Override
-        public void onPostExecute(Void params)
-        {
-            try
-            {
+        public void onPostExecute(Void params) {
+            try {
                 // Stop refreshing
                 View view = getView();
-                if (view != null)
-                {
+                if (view != null) {
                     SwipeRefreshLayout refreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grades_swiperefresh);
-                    if (refreshLayout.isRefreshing())
-                    {
+                    if (refreshLayout.isRefreshing()) {
                         refreshLayout.setRefreshing(false);
                     }
                 }
@@ -184,8 +160,7 @@ public class GradeFragment extends Fragment
 
                 // Hide progressbar
                 progressBar.setVisibility(View.INVISIBLE);
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e(TAG, "onPostExecute: Something went wrong!");
             }
         }

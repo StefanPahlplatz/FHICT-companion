@@ -23,13 +23,11 @@ import s.pahlplatz.fhict_companion.utils.models.Person;
  * {@link PeopleListFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
  */
-public class PeopleListFragment extends Fragment
-{
+public class PeopleListFragment extends Fragment {
     private OnFragmentInteractionListener mListener;
     private ArrayList<Person> persons;
 
-    public static PeopleListFragment newInstance(ArrayList<Person> persons)
-    {
+    public static PeopleListFragment newInstance(ArrayList<Person> persons) {
         PeopleListFragment fragment = new PeopleListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("persons", persons);
@@ -38,28 +36,23 @@ public class PeopleListFragment extends Fragment
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState)
-    {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null)
-        {
+        if (getArguments() != null) {
             persons = getArguments().getParcelableArrayList("persons");
         }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         ListView lv = new ListView(getActivity());
 
         @SuppressWarnings("unchecked") ArrayAdapter adapter =
-                new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, persons)
-                {
+                new ArrayAdapter(getContext(), android.R.layout.simple_list_item_2, android.R.id.text1, persons) {
                     @NonNull
                     @Override
-                    public View getView(int position, View convertView, @NonNull ViewGroup parent)
-                    {
+                    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
                         TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
@@ -70,11 +63,9 @@ public class PeopleListFragment extends Fragment
                 };
         lv.setAdapter(adapter);
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener()
-        {
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
-            {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mListener.onFragmentInteraction(persons.get(i));
             }
         });
@@ -83,28 +74,23 @@ public class PeopleListFragment extends Fragment
     }
 
     @Override
-    public void onAttach(Context context)
-    {
+    public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener)
-        {
+        if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
-        } else
-        {
+        } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
         }
     }
 
     @Override
-    public void onDetach()
-    {
+    public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    public interface OnFragmentInteractionListener
-    {
+    public interface OnFragmentInteractionListener {
         void onFragmentInteraction(Person person);
     }
 }

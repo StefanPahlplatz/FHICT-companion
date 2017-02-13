@@ -38,8 +38,7 @@ import s.pahlplatz.fhict_companion.utils.models.NewsItem;
 /**
  * Fragment to display the recent news items
  */
-public class NewsFragment extends Fragment
-{
+public class NewsFragment extends Fragment {
     private static final String TAG = NewsFragment.class.getSimpleName();
 
     private RecyclerView recyclerView;
@@ -51,16 +50,14 @@ public class NewsFragment extends Fragment
     private NewsAdapter adapter;
 
     @Override
-    public void onCreate(Bundle savedInstanceState)
-    {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         newsItems = new ArrayList<>();
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState)
-    {
+                             Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
@@ -84,8 +81,7 @@ public class NewsFragment extends Fragment
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater)
-    {
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         menu.clear();
         inflater.inflate(R.menu.news, menu);
         super.onCreateOptionsMenu(menu, inflater);
@@ -98,20 +94,17 @@ public class NewsFragment extends Fragment
      * @return whether the item is handled or not
      */
     @Override
-    public boolean onOptionsItemSelected(MenuItem item)
-    {
+    public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
         // Refresh news feed
-        if (id == R.id.action_news_refresh)
-        {
+        if (id == R.id.action_news_refresh) {
             new loadNews().execute();
             return true;
         }
 
         // News item amount
-        else if (id == R.id.action_news_amount)
-        {
+        else if (id == R.id.action_news_amount) {
             // Create NumberPicker
             final NumberPicker picker = new NumberPicker(getContext());
             picker.setMinValue(5);
@@ -130,11 +123,9 @@ public class NewsFragment extends Fragment
             // Create AlertDialog for the NumberPicker
             new AlertDialog.Builder(getContext())
                     .setView(layout)
-                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener()
-                    {
+                    .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i)
-                        {
+                        public void onClick(DialogInterface dialogInterface, int i) {
                             getContext().getSharedPreferences("settings", Context.MODE_PRIVATE)
                                     .edit()
                                     .putInt("amountOfNewsItems", picker.getValue())
@@ -153,8 +144,7 @@ public class NewsFragment extends Fragment
         }
 
         // Default option
-        else
-        {
+        else {
             return super.onOptionsItemSelected(item);
         }
     }
@@ -162,19 +152,15 @@ public class NewsFragment extends Fragment
     /**
      * Async class to load the news items from the fontys api
      */
-    private class loadNews extends AsyncTask<Void, Void, Void>
-    {
+    private class loadNews extends AsyncTask<Void, Void, Void> {
         @Override
-        protected void onPreExecute()
-        {
+        protected void onPreExecute() {
             newsItems.clear();
         }
 
         @Override
-        protected Void doInBackground(Void... params)
-        {
-            try
-            {
+        protected Void doInBackground(Void... params) {
+            try {
                 JSONArray jArray = new JSONObject(FhictAPI.getStream(
                         "https://api.fhict.nl/newsfeeds/Fhict?items=" + getContext()
                                 .getSharedPreferences("settings", Context.MODE_PRIVATE)
@@ -183,8 +169,7 @@ public class NewsFragment extends Fragment
                                 "settings", Context.MODE_PRIVATE).getString("token", "")
                 )).getJSONArray("items");
 
-                for (int i = 0; i < jArray.length(); i++)
-                {
+                for (int i = 0; i < jArray.length(); i++) {
                     newsItems.add(new NewsItem(
                             jArray.getJSONObject(i).getString("pubDate"),
                             jArray.getJSONObject(i).getString("title"),
@@ -192,27 +177,22 @@ public class NewsFragment extends Fragment
                             jArray.getJSONObject(i).getString("content"),
                             jArray.getJSONObject(i).getString("author")));
                 }
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e(TAG, "doInBackground: Couldn't fetch news");
             }
 
             return null;
         }
 
-        protected void onPostExecute(Void params)
-        {
-            try
-            {
+        protected void onPostExecute(Void params) {
+            try {
                 adapter = new NewsAdapter(newsItems, getContext());
                 recyclerView.setAdapter(adapter);
                 progressBar.setVisibility(View.GONE);
-                for (int i = 0; i < newsItems.size(); i++)
-                {
+                for (int i = 0; i < newsItems.size(); i++) {
                     new loadThumbnail().execute(newsItems.get(i));
                 }
-            } catch (NullPointerException ex)
-            {
+            } catch (NullPointerException ex) {
                 Log.e(TAG, "onPostExecute: Couldn't load news, view changed before onPostExecute triggered?");
             }
         }
@@ -221,31 +201,25 @@ public class NewsFragment extends Fragment
     /**
      * Async class to load the thumbnail for the given NewsItem
      */
-    private class loadThumbnail extends AsyncTask<Object, Void, Bitmap>
-    {
+    private class loadThumbnail extends AsyncTask<Object, Void, Bitmap> {
         private NewsItem newsItem;
 
         @Override
-        protected Bitmap doInBackground(Object... params)
-        {
+        protected Bitmap doInBackground(Object... params) {
             SharedPreferences sp = getContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
             newsItem = (NewsItem) params[0];
             return FhictAPI.getPicture(newsItem.getThumbnailString(), sp.getString("token", ""));
         }
 
         @Override
-        protected void onPostExecute(Bitmap result)
-        {
-            try
-            {
-                if (newsItem != null && adapter != null)
-                {
+        protected void onPostExecute(Bitmap result) {
+            try {
+                if (newsItem != null && adapter != null) {
                     newsItem.setThumbnailString("");
                     newsItem.setThumbnail(result);
                     adapter.notifyDataSetChanged();
                 }
-            } catch (Exception ex)
-            {
+            } catch (Exception ex) {
                 Log.e(TAG, "onPostExecute: Couldn't load news thumbnails");
             }
         }

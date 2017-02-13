@@ -23,8 +23,7 @@ import s.pahlplatz.fhict_companion.utils.models.Day;
  * ItemViewType 0: The block is a break
  * ItemViewType 1: Normal block
  */
-public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-{
+public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = ScheduleAdapter.class.getSimpleName();
 
     private final Day day;
@@ -34,8 +33,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      *
      * @param day the day the schedule will show
      */
-    public ScheduleAdapter(Day day)
-    {
+    public ScheduleAdapter(Day day) {
         this.day = day;
     }
 
@@ -46,18 +44,15 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      * @return 1 if the block is a break, otherwise 0
      */
     @Override
-    public int getItemViewType(int position)
-    {
+    public int getItemViewType(int position) {
         if (day.getBlock(position).getSubject().equals("Break"))
             return 1;
         return 0;
     }
 
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
-        switch (viewType)
-        {
+    public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
             case 0:
                 return new ViewHolder0(LayoutInflater.from(parent.getContext()).inflate(R.layout.block_card_view, parent, false));
             case 1:
@@ -67,11 +62,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position)
-    {
+    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         String time = day.getBlock(position).getStart() + " - " + day.getBlock(position).getEnd();
-        switch (holder.getItemViewType())
-        {
+        switch (holder.getItemViewType()) {
             case 0:
                 ViewHolder0 viewHolder0 = (ViewHolder0) holder;
                 viewHolder0.time.setText(time);
@@ -81,8 +74,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 viewHolder0.desc.setText(day.getBlock(position).getDesc());
                 break;
             case 1:
-                try
-                {
+                try {
                     ViewHolder1 viewHolder1 = (ViewHolder1) holder;
                     String start = time.substring(0, 5);
                     String end = time.substring(8, 13);
@@ -92,8 +84,7 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     long difference = (date2.getTime() - date1.getTime()) / 60000;
                     String s = String.valueOf(difference) + " minute break";
                     viewHolder1.time.setText(s);
-                } catch (ParseException ex)
-                {
+                } catch (ParseException ex) {
                     Log.e(TAG, "onBindViewHolder: Exception occurred while parsing the string to a Date", ex);
                 }
                 break;
@@ -101,21 +92,18 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return day.size();
     }
 
-    private class ViewHolder0 extends RecyclerView.ViewHolder
-    {
+    private class ViewHolder0 extends RecyclerView.ViewHolder {
         private final TextView time;
         private final TextView course;
         private final TextView room;
         private final TextView teacher;
         private final TextView desc;
 
-        private ViewHolder0(View view)
-        {
+        private ViewHolder0(View view) {
             super(view);
             time = (TextView) view.findViewById(R.id.block_card_times);
             course = (TextView) view.findViewById(R.id.block_card_course);
@@ -125,12 +113,10 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
-    private class ViewHolder1 extends RecyclerView.ViewHolder
-    {
+    private class ViewHolder1 extends RecyclerView.ViewHolder {
         private final TextView time;
 
-        private ViewHolder1(View view)
-        {
+        private ViewHolder1(View view) {
             super(view);
             time = (TextView) view.findViewById(R.id.break_card_times);
         }

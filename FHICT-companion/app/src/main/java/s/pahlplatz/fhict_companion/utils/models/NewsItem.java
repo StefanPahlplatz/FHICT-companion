@@ -11,8 +11,7 @@ import org.jsoup.nodes.Document;
  * Class to store details of a news item
  */
 
-public class NewsItem
-{
+public class NewsItem {
     private final String pubDate;
     private final String title;
     private final String content;
@@ -23,8 +22,7 @@ public class NewsItem
     /**
      * Default constructor
      */
-    public NewsItem(String pubDate, String title, String thumbnailString, String content, String author)
-    {
+    public NewsItem(String pubDate, String title, String thumbnailString, String content, String author) {
         this.pubDate = pubDate;
         this.title = title;
         this.thumbnailString = thumbnailString;
@@ -34,43 +32,35 @@ public class NewsItem
         this.content = doc.body().text();
     }
 
-    public String getPubDate()
-    {
+    public String getPubDate() {
         return pubDate;
     }
 
-    public String getTitle()
-    {
+    public String getTitle() {
         return title;
     }
 
-    public String getThumbnailString()
-    {
+    public String getThumbnailString() {
         return thumbnailString;
     }
 
-    public void setThumbnailString(String thumbnailString)
-    {
+    public void setThumbnailString(String thumbnailString) {
         this.thumbnailString = thumbnailString;
     }
 
-    public Bitmap getThumbnail()
-    {
+    public Bitmap getThumbnail() {
         return thumbnail;
     }
 
-    public void setThumbnail(Bitmap thumbnail)
-    {
+    public void setThumbnail(Bitmap thumbnail) {
         this.thumbnail = thumbnail;
     }
 
-    public String getContent()
-    {
+    public String getContent() {
         return content;
     }
 
-    public String getAuthor()
-    {
+    public String getAuthor() {
         return author;
     }
 }

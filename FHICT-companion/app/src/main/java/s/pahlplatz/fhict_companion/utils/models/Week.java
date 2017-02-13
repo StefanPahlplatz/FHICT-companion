@@ -17,8 +17,7 @@ import java.util.regex.Pattern;
  * Wrapper for weeks in the schedule
  */
 
-public class Week
-{
+public class Week {
     private static final String TAG = Week.class.getSimpleName();
 
     private int weekNr;
@@ -33,8 +32,7 @@ public class Week
      * @param startParam start date as string
      * @param endParam   end date as string
      */
-    public Week(String weekNr, String startParam, String endParam)
-    {
+    public Week(String weekNr, String startParam, String endParam) {
         // Assign the week nr
         Pattern p = Pattern.compile("\\d+");
         Matcher m = p.matcher(weekNr);
@@ -44,20 +42,16 @@ public class Week
         DateFormat format = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
 
         // Assign the start date
-        try
-        {
+        try {
             this.start = format.parse(startParam);
-        } catch (ParseException ex)
-        {
+        } catch (ParseException ex) {
             Log.e(TAG, "Week: Exception occurred while converting the start date of the week to a date object", ex);
         }
 
         // Assign the end date
-        try
-        {
+        try {
             this.end = format.parse(endParam);
-        } catch (ParseException ex)
-        {
+        } catch (ParseException ex) {
             Log.e(TAG, "Week: Exception occurred while converting the end date of the week to a date object", ex);
         }
 
@@ -71,8 +65,7 @@ public class Week
      * @param date that you want to check as Date
      * @return index of the day, otherwise -1
      */
-    int hasDate(Date date)
-    {
+    int hasDate(Date date) {
         for (int i = 0; i < days.size(); i++)
             if (days.get(i).getDate().equals(date))
                 return i;
@@ -84,8 +77,7 @@ public class Week
      *
      * @return ArrayList of all days
      */
-    ArrayList<Day> getDays()
-    {
+    ArrayList<Day> getDays() {
         return days;
     }
 
@@ -95,8 +87,7 @@ public class Week
      * @param i index
      * @return Day
      */
-    public Day getDay(int i)
-    {
+    public Day getDay(int i) {
         if (i > days.size() - 1)
             return null;
         return days.get(i);
@@ -108,8 +99,7 @@ public class Week
      * @param block to add
      * @param i     index of the day you want to add the block to
      */
-    void addBlock(Block block, int i)
-    {
+    void addBlock(Block block, int i) {
         days.get(i).addBlock(block);
     }
 
@@ -118,42 +108,36 @@ public class Week
      *
      * @param day to add
      */
-    void addDay(Day day)
-    {
+    void addDay(Day day) {
         days.add(day);
     }
 
     /**
      * @return the week number
      */
-    int getWeekNr()
-    {
+    int getWeekNr() {
         return weekNr;
     }
 
     /**
      * @return the start date as Date
      */
-    public Date getStart()
-    {
+    public Date getStart() {
         return start;
     }
 
     /**
      * @return the end date as Date
      */
-    public Date getEnd()
-    {
+    public Date getEnd() {
         return end;
     }
 
     /**
      * Disposes of the week
      */
-    void dispose()
-    {
-        for (int i = 0; i < days.size(); i++)
-        {
+    void dispose() {
+        for (int i = 0; i < days.size(); i++) {
             days.get(i).dispose();
         }
         days.clear();
@@ -161,13 +145,11 @@ public class Week
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String retString = String.format(Locale.getDefault(), "week: %1d,\tstart: %2s,\tend: %3s\n",
                 getWeekNr(), getStart().toString(), getEnd().toString());
 
-        for (Day item : days)
-        {
+        for (Day item : days) {
             retString += "\t" + item.toString() + "\n";
         }
 

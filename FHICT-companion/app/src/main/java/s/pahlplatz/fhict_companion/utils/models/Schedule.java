@@ -5,14 +5,12 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Schedule
-{
+public class Schedule {
     private static final String TAG = Schedule.class.getSimpleName();
 
     private final ArrayList<Week> weeks;
 
-    public Schedule()
-    {
+    public Schedule() {
         weeks = new ArrayList<>();
     }
 
@@ -22,8 +20,7 @@ public class Schedule
      * @param i index
      * @return Week
      */
-    public Week getWeek(int i)
-    {
+    public Week getWeek(int i) {
         return weeks.get(i);
     }
 
@@ -32,8 +29,7 @@ public class Schedule
      *
      * @param week to add
      */
-    public void addWeek(Week week)
-    {
+    public void addWeek(Week week) {
         weeks.add(week);
     }
 
@@ -43,22 +39,17 @@ public class Schedule
      * @param block   to add
      * @param current Date of the block you want to add
      */
-    public void addBlock(Block block, Date current)
-    {
-        for (int i = 0; i < weeks.size(); i++)
-        {
+    public void addBlock(Block block, Date current) {
+        for (int i = 0; i < weeks.size(); i++) {
             // If the date is within the week
             if (current.compareTo(weeks.get(i).getStart()) != -1 &&
-                    current.compareTo(weeks.get(i).getEnd()) != 1)
-            {
+                    current.compareTo(weeks.get(i).getEnd()) != 1) {
                 // If the week already has the day
-                if (weeks.get(i).hasDate(current) != -1)
-                {
+                if (weeks.get(i).hasDate(current) != -1) {
                     weeks.get(i).addBlock(block, weeks.get(i).hasDate(current));
                 }
                 // Else create the day and add the block
-                else
-                {
+                else {
                     Day day = new Day(current);
                     day.addBlock(block);
                     weeks.get(i).addDay(day);
@@ -75,14 +66,10 @@ public class Schedule
      * @param date Date of the date you want to check
      * @return week number
      */
-    public int getWeekFromDate(Date date)
-    {
-        for (int i = 0; i < weeks.size(); i++)
-        {
-            if (i + 1 < weeks.size())
-            {
-                if (date.compareTo(weeks.get(i).getStart()) != -1 && date.compareTo(weeks.get(i + 1).getStart()) == -1)
-                {
+    public int getWeekFromDate(Date date) {
+        for (int i = 0; i < weeks.size(); i++) {
+            if (i + 1 < weeks.size()) {
+                if (date.compareTo(weeks.get(i).getStart()) != -1 && date.compareTo(weeks.get(i + 1).getStart()) == -1) {
                     return i;
                 }
             }
@@ -90,11 +77,14 @@ public class Schedule
         return -1;
     }
 
+    public int getAmountOfWeeks() {
+        return weeks.size();
+    }
+
     /**
      * Calls Day.mergeDuplicates on every one of the blocks in the schedule
      */
-    public void mergeBlocks()
-    {
+    public void mergeBlocks() {
         for (Week week : weeks)
             for (Day day : week.getDays())
                 day.mergeDuplicates();
@@ -103,8 +93,7 @@ public class Schedule
     /**
      * Calls Day.addBreaks on every one of the blocks in the schedule
      */
-    public void insertBreaks()
-    {
+    public void insertBreaks() {
         for (Week week : weeks)
             for (Day day : week.getDays())
                 day.addBreaks();
@@ -115,8 +104,7 @@ public class Schedule
      *
      * @return string[]
      */
-    public String[] getWeekNrs()
-    {
+    public String[] getWeekNrs() {
         ArrayList<String> retList = new ArrayList<>();
         for (Week week : weeks)
             retList.add("Week " + String.valueOf(week.getWeekNr()));
@@ -128,19 +116,16 @@ public class Schedule
     /**
      * Clear the weeks from the list
      */
-    public void clear()
-    {
+    public void clear() {
         for (int i = 0; i < weeks.size(); i++)
             weeks.get(i).dispose();
         weeks.clear();
     }
 
     @Override
-    public String toString()
-    {
+    public String toString() {
         String retString = "";
-        for (Week week : weeks)
-        {
+        for (Week week : weeks) {
             retString += week.toString() + "\n";
         }
         return retString;

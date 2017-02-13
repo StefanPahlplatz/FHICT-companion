@@ -20,8 +20,7 @@ import s.pahlplatz.fhict_companion.utils.models.NewsItem;
  * Adapter for newsItems in NewsFragment
  */
 
-public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
-{
+public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
     private final ArrayList<NewsItem> newsItems;
     private OnAdapterInteractionListener mListener;
 
@@ -31,15 +30,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
      * @param newsItems ArrayList of NewsItems you want to show
      * @param ctx       context used for the Listener
      */
-    public NewsAdapter(ArrayList<NewsItem> newsItems, Context ctx)
-    {
+    public NewsAdapter(ArrayList<NewsItem> newsItems, Context ctx) {
         this.newsItems = newsItems;
 
-        if (ctx instanceof OnAdapterInteractionListener)
-        {
+        if (ctx instanceof OnAdapterInteractionListener) {
             mListener = (OnAdapterInteractionListener) ctx;
-        } else
-        {
+        } else {
             throw new RuntimeException(ctx.toString() + " must implement OnFragmentInteractionListener");
         }
     }
@@ -52,8 +48,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
      * @return the new ViewHolder
      */
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType)
-    {
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(
                 parent.getContext()).inflate(R.layout.news_card_view, parent, false);
 
@@ -62,12 +57,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
 
     /**
      * Basically the onCreateView for the adapter
-     * @param holder custom viewHolder
+     *
+     * @param holder   custom viewHolder
      * @param position position in list
      */
     @Override
-    public void onBindViewHolder(final MyViewHolder holder, final int position)
-    {
+    public void onBindViewHolder(final MyViewHolder holder, final int position) {
         // Set the text
         holder.title.setText(newsItems.get(position).getTitle());
         String authorString = "By " + newsItems.get(position).getAuthor();
@@ -76,27 +71,23 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
         holder.pubDate.setText(newsItems.get(position).getPubDate().substring(0, 10));
 
         // Send MainActivity signal to swap fragments when the user clicks on the card
-        holder.cardView.setOnClickListener(new View.OnClickListener()
-        {
+        holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view)
-            {
+            public void onClick(View view) {
                 mListener.onAdapterInteractionListener(newsItems.get(holder.getAdapterPosition()));
             }
         });
     }
 
     @Override
-    public int getItemCount()
-    {
+    public int getItemCount() {
         return newsItems.size();
     }
 
     /**
      * Interface for when a card is clicked
      */
-    public interface OnAdapterInteractionListener
-    {
+    public interface OnAdapterInteractionListener {
 
         void onAdapterInteractionListener(NewsItem newsItem);
     }
@@ -106,16 +97,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder>
      * <p>
      * View holder for the adapter
      */
-    class MyViewHolder extends RecyclerView.ViewHolder
-    {
+    class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final TextView author;
         private final TextView pubDate;
         private final ImageView thumbnail;
         private final CardView cardView;
 
-        private MyViewHolder(View view)
-        {
+        private MyViewHolder(View view) {
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.news_card_image);
             title = (TextView) view.findViewById(R.id.news_card_title);

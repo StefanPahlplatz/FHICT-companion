@@ -19,59 +19,50 @@ import s.pahlplatz.fhict_companion.utils.models.Grade;
  * Adapter to display the grades in the grade fragment.
  */
 
-public class GradeAdapter extends BaseAdapter
-{
+public class GradeAdapter extends BaseAdapter {
     private final LayoutInflater layoutinflater;
     private final ArrayList<Grade> grades;
     private final Context ctx;
 
-    public GradeAdapter(Context ctx, ArrayList<Grade> grades)
-    {
+    public GradeAdapter(Context ctx, ArrayList<Grade> grades) {
         this.ctx = ctx;
         this.grades = grades;
         layoutinflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public int getCount()
-    {
+    public int getCount() {
         return grades.size();
     }
 
     @Override
-    public Object getItem(int i)
-    {
+    public Object getItem(int i) {
         return grades.get(i);
     }
 
     @Override
-    public long getItemId(int i)
-    {
+    public long getItemId(int i) {
         return i;
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup)
-    {
+    public View getView(int position, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
         // Initialize the viewHolder
-        if (view == null)
-        {
+        if (view == null) {
             viewHolder = new ViewHolder();
             view = layoutinflater.inflate(R.layout.grade_card_view, viewGroup, false);
             viewHolder.grade = (TextView) view.findViewById(R.id.grade_card_grade);
             viewHolder.course = (TextView) view.findViewById(R.id.grade_card_course);
             view.setTag(viewHolder);
-        } else
-        {
+        } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
         // Make the grade colour red if it's insufficient
         Double grade = grades.get(position).getGrade();
-        if (grade < 5.5)
-        {
+        if (grade < 5.5) {
             viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.colorRed));
         }
 
@@ -85,8 +76,7 @@ public class GradeAdapter extends BaseAdapter
         return view;
     }
 
-    private static class ViewHolder
-    {
+    private static class ViewHolder {
         TextView grade;
         TextView course;
     }
