@@ -8,7 +8,7 @@ import android.support.annotation.NonNull;
  * Class to store grades
  */
 
-public class Grade implements Comparable<Grade> {
+public class Grade {
     private final String name;
     private final double grade;
 
@@ -43,13 +43,34 @@ public class Grade implements Comparable<Grade> {
 
     /**
      * Custom compareTo method that compares grades by grade
+     * Sorts descending, highest grade first.
      *
-     * @param grade grade to compare to
+     * @param other grade to compare to
      * @return -1, 0 or 1
      */
-    public int compareTo(@NonNull Grade grade) {
-        double compareGrade = grade.getGrade();
+    public int sortByGradeDesc(@NonNull Grade other) {
+        return Double.compare(other.getGrade(), this.getGrade());
+    }
 
-        return (int) (this.getGrade() - compareGrade);
+    /**
+     * Custom compareTo method that compares grades by grade
+     * Sorts descending, highest grade first.
+     *
+     * @param other grade to compare to
+     * @return -1, 0 or 1
+     */
+    public int sortByGradeAsc(@NonNull Grade other) {
+        return Double.compare(this.getGrade(), other.getGrade());
+    }
+
+    /**
+     * Custom compareTo method that compares grades by name
+     * Sorts descending, names with a first.
+     *
+     * @param other grade to compare to
+     * @return -1, 0 or 1
+     */
+    public int sortByNameDesc(@NonNull Grade other) {
+        return this.getName().compareTo(other.getName());
     }
 }

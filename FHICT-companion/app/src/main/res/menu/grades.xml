@@ -12,9 +12,14 @@
         android:title="@string/sort_alphabetical"
         app:showAsAction="never"/>
     <item
-        android:id="@+id/action_grade_sort_grade"
+        android:id="@+id/action_grade_sort_grade_asc"
         android:orderInCategory="3"
-        android:title="@string/sort_by_grade"
+        android:title="@string/sort_by_grade_asc"
+        app:showAsAction="never"/>
+    <item
+        android:id="@+id/action_grade_sort_grade_desc"
+        android:orderInCategory="4"
+        android:title="@string/sort_by_grade_desc"
         app:showAsAction="never"/>
     <item
         android:id="@+id/action_settings"

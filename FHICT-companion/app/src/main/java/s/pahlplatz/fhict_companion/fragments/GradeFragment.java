@@ -91,12 +91,23 @@ public class GradeFragment extends Fragment {
             return true;
         }
 
-        // Sort by grade
-        else if (id == R.id.action_grade_sort_grade) {
+        // Sort by grade asc
+        else if (id == R.id.action_grade_sort_grade_asc) {
             Collections.sort(grades, new Comparator<Grade>() {
                 @Override
                 public int compare(Grade grade, Grade t1) {
-                    return (int) (t1.getGrade() - grade.getGrade());
+                    return grade.sortByGradeAsc(t1);
+                }
+            });
+            gradeAdapter.notifyDataSetChanged();
+        }
+
+        // Sort by grade desc
+        else if (id == R.id.action_grade_sort_grade_desc) {
+            Collections.sort(grades, new Comparator<Grade>() {
+                @Override
+                public int compare(Grade grade, Grade t1) {
+                    return grade.sortByGradeDesc(t1);
                 }
             });
             gradeAdapter.notifyDataSetChanged();
@@ -107,7 +118,7 @@ public class GradeFragment extends Fragment {
             Collections.sort(grades, new Comparator<Grade>() {
                 @Override
                 public int compare(Grade grade, Grade t1) {
-                    return grade.getName().compareTo(t1.getName());
+                    return grade.sortByNameDesc(t1);
                 }
             });
             gradeAdapter.notifyDataSetChanged();

@@ -21,7 +21,8 @@
     <string name="author_template">Author</string>
     <string name="amount">Amount</string>
     <string name="sort_alphabetical">Sort alphabetical</string>
-    <string name="sort_by_grade">Sort by grade</string>
+    <string name="sort_by_grade_asc">Sort by grade (ASC)</string>
+    <string name="sort_by_grade_desc">Sort by grade (DESC)</string>
     <string name="time_placeholder">time</string>
     <string name="course_placeholder">course</string>
     <string name="room_placeholder">room</string>
