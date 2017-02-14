@@ -60,6 +60,10 @@ public class GradeAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
+        // Prevent the application from crashing because the list is empty
+        if (grades.size() == 0)
+            return view;
+
         // Make the grade colour red if it's insufficient
         Double grade = grades.get(position).getGrade();
         if (grade < 5.5) {
