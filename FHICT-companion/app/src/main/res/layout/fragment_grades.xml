@@ -17,17 +17,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <GridView
-            android:id="@+id/grades_gridview"
+        <ListView
+            android:id="@+id/grades_listview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:horizontalSpacing="4dp"
-            android:numColumns="2"
-            android:padding="4dp"
-            android:scrollbars="none"
-            android:stretchMode="columnWidth"
-            android:verticalSpacing="4dp"/>
+            android:gravity="center"/>
 
     </android.support.v4.widget.SwipeRefreshLayout>
 

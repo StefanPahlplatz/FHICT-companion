@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 
 import org.json.JSONArray;
@@ -99,7 +100,6 @@ public class GradeFragment extends Fragment {
                     return grade.sortByGradeAsc(t1);
                 }
             });
-            gradeAdapter.notifyDataSetChanged();
         }
 
         // Sort by grade desc
@@ -110,7 +110,6 @@ public class GradeFragment extends Fragment {
                     return grade.sortByGradeDesc(t1);
                 }
             });
-            gradeAdapter.notifyDataSetChanged();
         }
 
         // Sort by name
@@ -121,8 +120,11 @@ public class GradeFragment extends Fragment {
                     return grade.sortByNameDesc(t1);
                 }
             });
-            gradeAdapter.notifyDataSetChanged();
         }
+
+        // Update the dataset
+        gradeAdapter.notifyDataSetChanged();
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -165,9 +167,9 @@ public class GradeFragment extends Fragment {
 
                 // Assign the adapter
                 assert view != null;
-                GridView gridView = (GridView) view.findViewById(R.id.grades_gridview);
+                ListView listView = (ListView) view.findViewById(R.id.grades_listview);
                 gradeAdapter = new GradeAdapter(getContext(), grades);
-                gridView.setAdapter(gradeAdapter);
+                listView.setAdapter(gradeAdapter);
 
                 // Hide progressbar
                 progressBar.setVisibility(View.INVISIBLE);

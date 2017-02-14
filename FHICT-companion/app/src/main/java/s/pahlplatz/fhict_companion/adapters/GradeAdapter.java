@@ -52,9 +52,9 @@ public class GradeAdapter extends BaseAdapter {
         // Initialize the viewHolder
         if (view == null) {
             viewHolder = new ViewHolder();
-            view = layoutinflater.inflate(R.layout.grade_card_view, viewGroup, false);
-            viewHolder.grade = (TextView) view.findViewById(R.id.grade_card_grade);
-            viewHolder.course = (TextView) view.findViewById(R.id.grade_card_course);
+            view = layoutinflater.inflate(R.layout.grade_row, viewGroup, false);
+            viewHolder.grade = (TextView) view.findViewById(R.id.grade_row_grade);
+            viewHolder.course = (TextView) view.findViewById(R.id.grade_row_course);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
