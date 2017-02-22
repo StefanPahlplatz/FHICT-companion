@@ -9,7 +9,7 @@ import java.util.Date;
  * Class that represents a day in the schedule
  */
 
-public class Day {
+public class Day implements java.io.Serializable {
     private Date date;
     private ArrayList<Block> blocks;
 

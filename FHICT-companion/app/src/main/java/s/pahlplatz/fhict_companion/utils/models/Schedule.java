@@ -5,7 +5,7 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Schedule {
+public class Schedule implements java.io.Serializable {
     private static final String TAG = Schedule.class.getSimpleName();
 
     private final ArrayList<Week> weeks;

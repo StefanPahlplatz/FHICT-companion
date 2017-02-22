@@ -6,7 +6,7 @@ package s.pahlplatz.fhict_companion.utils.models;
  * Class that represents a block in the schedule
  */
 
-public class Block {
+public class Block implements java.io.Serializable {
     private final String room;          // Room
     private final String subject;       // Subject
     private final String teacherAbbr;   // Teacher

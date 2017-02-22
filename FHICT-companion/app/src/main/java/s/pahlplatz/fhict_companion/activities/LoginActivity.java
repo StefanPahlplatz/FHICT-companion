@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.fragments.TokenFragment;
+import s.pahlplatz.fhict_companion.utils.NetworkState;
 
 /**
  * A login screen that offers login via pcn/password.
@@ -15,6 +16,14 @@ public class LoginActivity extends AppCompatActivity implements TokenFragment.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!NetworkState.isActive(getBaseContext())) {
+            Intent intent = new Intent(getBaseContext(), OfflineScheduleActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(intent);
+            finish();
+        }
+
         setContentView(R.layout.activity_login);
 
         if (savedInstanceState == null) {

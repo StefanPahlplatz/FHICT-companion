@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
  * Wrapper for weeks in the schedule
  */
 
-public class Week {
+public class Week implements java.io.Serializable {
     private static final String TAG = Week.class.getSimpleName();
 
     private int weekNr;

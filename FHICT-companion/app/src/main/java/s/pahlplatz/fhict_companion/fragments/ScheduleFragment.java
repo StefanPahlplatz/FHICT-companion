@@ -9,6 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -32,6 +35,8 @@ import java.util.Locale;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.ScheduleAdapter;
 import s.pahlplatz.fhict_companion.utils.FhictAPI;
+import s.pahlplatz.fhict_companion.utils.LocalPersistence;
+import s.pahlplatz.fhict_companion.utils.NetworkState;
 import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
 import s.pahlplatz.fhict_companion.utils.models.Block;
 import s.pahlplatz.fhict_companion.utils.models.Day;
@@ -63,7 +68,13 @@ public class ScheduleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        schedule = new Schedule();
+        
+        if (NetworkState.isActive(getContext())) {
+            schedule = new Schedule();
+        } else {
+            schedule = (Schedule) LocalPersistence.readObjectFromFile(getContext(), "schedule");
+        }
+
         days = new String[]{"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
     }
 
@@ -85,6 +96,8 @@ public class ScheduleFragment extends Fragment {
         Button nextWeek = (Button) view.findViewById(R.id.schedule_week_next);
         Button prevDay = (Button) view.findViewById(R.id.schedule_day_prev);
         Button nextDay = (Button) view.findViewById(R.id.schedule_day_next);
+
+        setHasOptionsMenu(true);
 
         // Configure day spinner
         ArrayAdapter<String> adapter_days = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, days);
@@ -181,9 +194,47 @@ public class ScheduleFragment extends Fragment {
         progressBar.setVisibility(View.VISIBLE);
 
         // Load the schedule
-        new LoadSchedule().execute();
+        if (NetworkState.isActive(getContext()))
+            new LoadSchedule().execute();
+        else
+            scheduleLoaded();
 
         return view;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.schedule, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        // Refresh the schedule
+        if (id == R.id.action_schedule_refresh) {
+            if (NetworkState.isActive(getContext()))
+                new LoadSchedule().execute();
+            else
+                Toast.makeText(getContext(), "Can't refresh without internet connection!",
+                        Toast.LENGTH_SHORT).show();
+            return true;
+        }
+
+        // News item amount
+        else if (id == R.id.action_schedule_download) {
+            if (NetworkState.isActive(getContext())) {
+                LocalPersistence.writeObjectToFile(getContext(), schedule, "schedule");
+                Toast.makeText(getActivity(), "Succesfully downloaded", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getContext(), "Can't download without internet!",
+                        Toast.LENGTH_SHORT).show();
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -248,6 +299,21 @@ public class ScheduleFragment extends Fragment {
         return -1;
     }
 
+    private void scheduleLoaded() {
+        // Assign adapter for dropdownWeeks
+        weeks = schedule.getWeekNrs();
+        ArrayAdapter<String> adapter_weeks = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, weeks);
+        dropdownWeeks.setAdapter(adapter_weeks);
+
+        setCurrentWeek();
+
+        showSchedule();
+
+        // Hide progressbar
+        progressBar.setVisibility(View.GONE);
+        noData.setVisibility(View.GONE);
+    }
+
     /**
      * Async class to load the schedule from the api
      */
@@ -284,21 +350,7 @@ public class ScheduleFragment extends Fragment {
             schedule.mergeBlocks();
             schedule.insertBreaks();
 
-            // Assign adapter for dropdownWeeks
-            weeks = schedule.getWeekNrs();
-            ArrayAdapter<String> adapter_weeks = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item, weeks);
-            dropdownWeeks.setAdapter(adapter_weeks);
-
-            setCurrentWeek();
-
-            showSchedule();
-
-            // Hide progressbar
-            progressBar.setVisibility(View.GONE);
-            noData.setVisibility(View.GONE);
-
-            // Log the schedule
-            //Log.i(TAG, "onPostExecute: \n" + schedule.toString());
+            scheduleLoaded();
         }
 
         /**
