@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="8dp"
+    android:layout_marginTop="4dp">
+
+    <!-- All constant textviews -->
+
+    <TextView
+        android:id="@+id/people_info_name_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="8dp"
+        android:text="@string/name"/>
+
+    <TextView
+        android:id="@+id/people_info_mail_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_info_name"
+        android:padding="8dp"
+        android:text="@string/mail"/>
+
+    <TextView
+        android:id="@+id/people_info_office_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_info_mail"
+        android:padding="8dp"
+        android:text="@string/office"/>
+
+    <TextView
+        android:id="@+id/people_info_phone_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_info_office"
+        android:padding="8dp"
+        android:text="@string/phone"/>
+
+    <TextView
+        android:id="@+id/people_info_dep_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_info_phone"
+        android:padding="8dp"
+        android:text="@string/department"/>
+
+    <TextView
+        android:id="@+id/people_info_title_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_info_dep"
+        android:padding="8dp"
+        android:text="@string/title"/>
+
+    <TextView
+        android:id="@+id/people_info_id_ph"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/people_info_title"
+        android:padding="8dp"
+        android:text="@string/id"/>
+
+    <!-- All modifiable textviews -->
+
+    <TextView
+        android:id="@+id/people_info_name"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="47dp"
+        android:layout_toEndOf="@+id/people_info_name_ph"
+        android:padding="8dp"
+        android:text="@string/name"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:id="@+id/people_info_mail"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/people_info_name"
+        android:layout_below="@+id/people_info_name"
+        android:padding="8dp"
+        android:text="@string/mail"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:id="@+id/people_info_office"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/people_info_mail"
+        android:layout_below="@+id/people_info_mail"
+        android:padding="8dp"
+        android:text="@string/office"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:id="@+id/people_info_phone"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/people_info_office"
+        android:layout_below="@+id/people_info_office"
+        android:padding="8dp"
+        android:text="@string/phone"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:id="@+id/people_info_dep"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/people_info_phone"
+        android:layout_below="@+id/people_info_phone"
+        android:padding="8dp"
+        android:text="@string/department"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:id="@+id/people_info_title"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/people_info_dep"
+        android:layout_below="@+id/people_info_dep"
+        android:padding="8dp"
+        android:text="@string/title"
+        android:textStyle="normal"/>
+
+    <TextView
+        android:id="@+id/people_info_id"
+        style="@style/TextAppearance.AppCompat.Medium"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/people_info_title"
+        android:layout_below="@+id/people_info_title"
+        android:padding="8dp"
+        android:text="@string/id"
+        android:textStyle="normal"/>
+
+</RelativeLayout>

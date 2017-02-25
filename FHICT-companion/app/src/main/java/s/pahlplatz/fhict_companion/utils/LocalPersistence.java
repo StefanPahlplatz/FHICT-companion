@@ -1,39 +1,30 @@
 package s.pahlplatz.fhict_companion.utils;
 
+import android.app.Activity;
+import android.content.Context;
+import android.util.Log;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import android.app.Activity;
-import android.content.Context;
 
 /**
- *
- * Writes/reads an object to/from a private local file
- *
- *
+ * Class to read and write objects to local storage.
  */
+
 public class LocalPersistence {
+    private static final String TAG = LocalPersistence.class.getSimpleName();
 
-
-    /**
-     *
-     * @param context
-     * @param object
-     * @param filename
-     */
-    public static void writeObjectToFile(Context context, Object object, String filename) {
-
+    public static void writeObjectToFile(Context ctx, Object object, String filename) {
         ObjectOutputStream objectOut = null;
         try {
-
-            FileOutputStream fileOut = context.openFileOutput(filename, Activity.MODE_PRIVATE);
+            FileOutputStream fileOut = ctx.openFileOutput(filename, Activity.MODE_PRIVATE);
             objectOut = new ObjectOutputStream(fileOut);
             objectOut.writeObject(object);
             fileOut.getFD().sync();
-
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
@@ -41,34 +32,22 @@ public class LocalPersistence {
                 try {
                     objectOut.close();
                 } catch (IOException e) {
-                    // do nowt
+                    e.printStackTrace();
                 }
             }
         }
     }
 
-
-    /**
-     *
-     * @param context
-     * @param filename
-     * @return
-     */
-    public static Object readObjectFromFile(Context context, String filename) {
-
+    public static Object readObjectFromFile(Context ctx, String filename) {
         ObjectInputStream objectIn = null;
         Object object = null;
         try {
-
-            FileInputStream fileIn = context.getApplicationContext().openFileInput(filename);
+            FileInputStream fileIn = ctx.getApplicationContext().openFileInput(filename);
             objectIn = new ObjectInputStream(fileIn);
             object = objectIn.readObject();
-
         } catch (FileNotFoundException e) {
-            // Do nothing
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
+            Log.e(TAG, "readObjectFromFile: No saved schedule found.");
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         } finally {
             if (objectIn != null) {
@@ -79,7 +58,6 @@ public class LocalPersistence {
                 }
             }
         }
-
         return object;
     }
 }

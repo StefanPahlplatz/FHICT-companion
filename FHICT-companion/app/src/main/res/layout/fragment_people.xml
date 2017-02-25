@@ -5,11 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="s.pahlplatz.fhict_companion.activities.MainActivity">
+    tools:context="s.pahlplatz.fhict_companion.views.activities.MainActivity">
 
     <EditText
         android:id="@+id/people_edittext_search"
@@ -17,8 +15,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="0dp"
         android:layout_toStartOf="@+id/people_button_search"
-        android:hint="@string/people_search_hint"
+        android:hint="@string/part_of_name_office_id"
         android:imeOptions="actionSearch"
         android:inputType="text"/>
 
@@ -26,20 +26,12 @@
         android:id="@+id/people_button_search"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="0dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:text="@string/search"
         android:textSize="12sp"/>
-
-    <ImageView
-        android:id="@+id/people_logo"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:alpha="0.5"
-        android:contentDescription="@string/fontys_logo"
-        android:padding="32dp"
-        android:paddingTop="-40dp"
-        android:src="@drawable/logo_fontys"/>
 
     <FrameLayout
         android:id="@+id/people_content"
@@ -55,6 +47,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"/>
+        android:layout_centerVertical="true"
+        android:padding="16dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>

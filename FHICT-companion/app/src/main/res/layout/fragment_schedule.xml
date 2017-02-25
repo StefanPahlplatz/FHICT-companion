@@ -2,7 +2,7 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:context="s.pahlplatz.fhict_companion.fragments.ScheduleFragment">
+                tools:context="s.pahlplatz.fhict_companion.views.fragments.ScheduleFragment">
 
     <!-- Week settings -->
 
@@ -13,7 +13,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:text="@string/previous"/>
+        android:text="@string/previous"
+        android:background="@android:color/transparent"/>
 
     <Button
         android:id="@+id/schedule_week_next"
@@ -23,17 +24,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
-        android:text="@string/next"/>
-
-    <Spinner
-        android:id="@+id/schedule_spinner_week"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
-        android:layout_toEndOf="@id/schedule_week_prev"
-        android:layout_toStartOf="@+id/schedule_week_next"
-        android:spinnerMode="dropdown"/>
+        android:text="@string/next"
+        android:background="@android:color/transparent"/>
 
     <!-- Day of the week settings -->
 
@@ -44,7 +36,8 @@
         android:layout_below="@id/schedule_week_prev"
         android:layout_marginStart="4dp"
         android:layout_marginTop="4dp"
-        android:text="@string/previous"/>
+        android:text="@string/previous"
+        android:background="@android:color/transparent"/>
 
     <Button
         android:id="@+id/schedule_day_next"
@@ -54,18 +47,8 @@
         android:layout_below="@id/schedule_week_next"
         android:layout_marginEnd="4dp"
         android:layout_marginTop="4dp"
-        android:text="@string/next"/>
-
-    <Spinner
-        android:id="@+id/schedule_spinner_day"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/schedule_week_prev"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="8dp"
-        android:layout_toEndOf="@id/schedule_week_prev"
-        android:layout_toStartOf="@+id/schedule_week_next"
-        android:spinnerMode="dropdown"/>
+        android:text="@string/next"
+        android:background="@android:color/transparent"/>
 
     <!-- Other stuff -->
 
@@ -76,20 +59,14 @@
         android:layout_centerHorizontal="true"
         android:layout_centerInParent="true"
         android:layout_centerVertical="true"
+        android:textAlignment="center"
+        android:gravity="center"
         android:layout_marginTop="32dp"
         android:text="@string/no_data"
+        android:maxLines="2"
+        android:lines="2"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:visibility="gone"/>
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/schedule_recycler"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@id/schedule_day_prev"
-        android:layout_marginTop="4dp"
-        android:clipToPadding="false"
-        android:overScrollMode="never"
-        android:scrollbars="vertical"/>
+        android:visibility="invisible"/>
 
     <ProgressBar
         android:id="@+id/schedule_pbar"
@@ -98,5 +75,37 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:padding="16dp"/>
+
+    <TextView
+        android:id="@+id/schedule_textview_week"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/week_unknown"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_alignBottom="@+id/schedule_week_prev"/>
+
+    <TextView
+        android:id="@+id/schedule_textview_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/day_example"
+        android:textAlignment="center"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="12dp"
+        android:layout_alignBottom="@+id/schedule_day_prev"/>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/schedule_recycler"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipToPadding="false"
+        android:padding="4dp"
+        android:overScrollMode="never"
+        android:scrollbars="vertical"
+        android:layout_below="@+id/schedule_day_prev"/>
 
 </RelativeLayout>

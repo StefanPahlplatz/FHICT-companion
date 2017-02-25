@@ -11,7 +11,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.R;
-import s.pahlplatz.fhict_companion.utils.models.Grade;
+import s.pahlplatz.fhict_companion.models.Grade;
 
 /**
  * Created by Stefan on 11-12-2016.
@@ -52,7 +52,7 @@ public class GradeAdapter extends BaseAdapter {
         // Initialize the viewHolder
         if (view == null) {
             viewHolder = new ViewHolder();
-            view = layoutinflater.inflate(R.layout.grade_row, viewGroup, false);
+            view = layoutinflater.inflate(R.layout.row_grade, viewGroup, false);
             viewHolder.grade = (TextView) view.findViewById(R.id.grade_row_grade);
             viewHolder.course = (TextView) view.findViewById(R.id.grade_row_course);
             view.setTag(viewHolder);

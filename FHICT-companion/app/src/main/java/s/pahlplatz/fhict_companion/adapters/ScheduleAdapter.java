@@ -13,15 +13,16 @@ import java.util.Date;
 import java.util.Locale;
 
 import s.pahlplatz.fhict_companion.R;
-import s.pahlplatz.fhict_companion.utils.models.Day;
+import s.pahlplatz.fhict_companion.models.Day;
 
 /**
  * Created by Stefan on 24-12-2016.
  * <p>
- * Adapter for the schedule
+ * Adapter for the schedule.
  * <p>
- * ItemViewType 0: The block is a break
- * ItemViewType 1: Normal block
+ * The adapter can contain 2 types of blocks, normal classes and breaks;<br>
+ * ItemViewType 0: The block is a normal block.<br>
+ * ItemViewType 1: The block is a break.
  */
 public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final String TAG = ScheduleAdapter.class.getSimpleName();
@@ -29,34 +30,32 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private final Day day;
 
     /**
-     * Default constructor
+     * Default constructor.
      *
-     * @param day the day the schedule will show
+     * @param day the day the schedule will show.
      */
     public ScheduleAdapter(Day day) {
         this.day = day;
     }
 
     /**
-     * Determines if the current item is a break or not
+     * Determines if the current item is a break or not.
      *
-     * @param position of the block in the day
-     * @return 1 if the block is a break, otherwise 0
+     * @param position of the block in the day.
+     * @return 1 if the block is a break, return 0 if it's a normal block.
      */
     @Override
     public int getItemViewType(int position) {
-        if (day.getBlock(position).getSubject().equals("Break"))
-            return 1;
-        return 0;
+        return day.getBlock(position).getSubject().equals("Break") ? 1 : 0;
     }
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0:
-                return new ViewHolder0(LayoutInflater.from(parent.getContext()).inflate(R.layout.block_card_view, parent, false));
+                return new ViewHolder0(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_schedule_block, parent, false));
             case 1:
-                return new ViewHolder1(LayoutInflater.from(parent.getContext()).inflate(R.layout.break_card_view, parent, false));
+                return new ViewHolder1(LayoutInflater.from(parent.getContext()).inflate(R.layout.card_schedule_break, parent, false));
         }
         return null;
     }
@@ -96,6 +95,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         return day.size();
     }
 
+    /**
+     * View holder for normal blocks.
+     */
     private class ViewHolder0 extends RecyclerView.ViewHolder {
         private final TextView time;
         private final TextView course;
@@ -113,6 +115,9 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         }
     }
 
+    /**
+     * View holder for breaks.
+     */
     private class ViewHolder1 extends RecyclerView.ViewHolder {
         private final TextView time;
 

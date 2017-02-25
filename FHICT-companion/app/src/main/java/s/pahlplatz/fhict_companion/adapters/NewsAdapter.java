@@ -12,7 +12,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.R;
-import s.pahlplatz.fhict_companion.utils.models.NewsItem;
+import s.pahlplatz.fhict_companion.models.NewsItem;
 
 /**
  * Created by Stefan on 1-12-2016.
@@ -50,7 +50,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(
-                parent.getContext()).inflate(R.layout.news_card_view, parent, false);
+                parent.getContext()).inflate(R.layout.card_news_item, parent, false);
 
         return new MyViewHolder(itemView);
     }
@@ -79,6 +79,11 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         });
     }
 
+    /**
+     * Returns the amount of news items in the adapter.
+     *
+     * @return integer.
+     */
     @Override
     public int getItemCount() {
         return newsItems.size();
