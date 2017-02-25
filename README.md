@@ -9,8 +9,8 @@ Android application for Fontys ICT students.
 - View the fontys news.
 
 ## Pictures:
-<img src="https://cloud.githubusercontent.com/assets/23485653/22804260/9237f3ca-ef18-11e6-9fe3-c51f713c49ad.png" width="160">
-<img src="https://cloud.githubusercontent.com/assets/23485653/21742932/0ba6fca4-d4f9-11e6-920d-61f9db82fb9e.png" width="160">
+<img src="https://cloud.githubusercontent.com/assets/23485653/23334369/02f66bce-fb9d-11e6-8e7b-f940fe273107.png" width="160">
+<img src="https://cloud.githubusercontent.com/assets/23485653/23334373/1b2530d6-fb9d-11e6-8dda-42678a00177d.png" width="160">
 <img src="https://cloud.githubusercontent.com/assets/23485653/21742933/0ba85af4-d4f9-11e6-9557-12b95079deb1.png" width="160">
 
 ## How to run:
