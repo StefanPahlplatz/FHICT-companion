@@ -39,7 +39,7 @@ public class PeopleListController {
     }
 
     /**
-     * Returns the adapter needed for the listview
+     * Returns the adapter needed for the listview.
      *
      * @return array adapter.
      */

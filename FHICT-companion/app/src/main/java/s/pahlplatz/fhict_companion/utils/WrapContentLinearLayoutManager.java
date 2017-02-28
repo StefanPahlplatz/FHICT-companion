@@ -11,7 +11,7 @@ import android.util.Log;
  * Custom LinearLayoutManager to prevent error:
  * <p>
  * java.lang.IndexOutOfBoundsException: Inconsistency detected.
- * Invalid view holder adapter positionViewHolder
+ * Invalid view holder adapter positionViewHolder.
  */
 
 public class WrapContentLinearLayoutManager extends LinearLayoutManager {

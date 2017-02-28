@@ -36,10 +36,10 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
-        // Set toolbar title
+        // Set toolbar title.
         getActivity().setTitle("Schedule");
 
-        // Assign UI elements
+        // Assign UI elements.
         progressBar = (ProgressBar) view.findViewById(R.id.schedule_pbar);
         weekIndicator = (TextView) view.findViewById(R.id.schedule_textview_week);
         dayIndicator = (TextView) view.findViewById(R.id.schedule_textview_day);
@@ -47,7 +47,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
 
         setHasOptionsMenu(true);
 
-        // Configure button actions
+        // Configure button actions.
         final Button prevWeek = (Button) view.findViewById(R.id.schedule_week_prev);
         prevWeek.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,12 +80,12 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
             }
         });
 
-        // Configure recyclerView
+        // Configure recyclerView.
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
 
-        // Create schedule controller
+        // Create schedule controller.
         controller = new ScheduleController(getActivity(), this);
 
         if (!NetworkState.ONLINE) {

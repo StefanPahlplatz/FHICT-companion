@@ -8,7 +8,7 @@ import org.jsoup.nodes.Document;
 /**
  * Created by Stefan on 1-12-2016.
  * <p>
- * Class to store details of a news item
+ * Class to store details of a news item.
  */
 
 public class NewsItem {
@@ -20,7 +20,7 @@ public class NewsItem {
     private Bitmap thumbnail;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public NewsItem(String pubDate, String title, String thumbnailString, String content, String author) {
         this.pubDate = pubDate;

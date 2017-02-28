@@ -13,8 +13,8 @@ public class NetworkState {
     /**
      * Checks if the device has an active internet connection.
      *
-     * @param ctx context
-     * @return active connection
+     * @param ctx context.
+     * @return active connection.
      */
     public static boolean isActive(Context ctx) {
         ConnectivityManager connectivityManager

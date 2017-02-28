@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by Stefan on 4-12-2016.
  * <p>
- * Class that represents a day in the schedule
+ * Class that represents a day in the schedule.
  */
 
 public class Day implements java.io.Serializable {
@@ -19,44 +19,38 @@ public class Day implements java.io.Serializable {
     }
 
     /**
-     * Returns the day corresponding to the index
+     * Returns the day corresponding to the index.
      *
-     * @param i index of the block
-     * @return Block object
+     * @param i index of the block.
+     * @return Block object.
      */
     public Block getBlock(int i) {
         return blocks.get(i);
     }
 
     /**
-     * Returns the amount of blocks in the day
-     *
-     * @return integer
+     * Returns the amount of blocks in the day.
      */
     public int size() {
         return blocks.size();
     }
 
     /**
-     * Returns the Date of the day
-     *
-     * @return Date object
+     * Returns the Date of the day.
      */
     Date getDate() {
         return date;
     }
 
     /**
-     * Adds the given block to the day
-     *
-     * @param block Block
+     * Adds the given block to the day.
      */
     void addBlock(Block block) {
         blocks.add(block);
     }
 
     /**
-     * Merges consecutive 2 blocks if the times follow up and the subjects are the same
+     * Merges two consecutive blocks if the times follow up and the subjects are the same.
      */
     void mergeDuplicates() {
         for (int i = 0; i < blocks.size(); i++) {
@@ -72,7 +66,7 @@ public class Day implements java.io.Serializable {
     }
 
     /**
-     * Inserts breaks where the end and start of different blocks do not line up
+     * Inserts breaks where the end and start of different blocks do not line up.
      */
     void addBreaks() {
         for (int i = 0; i < blocks.size(); i++) {
@@ -88,7 +82,7 @@ public class Day implements java.io.Serializable {
     }
 
     /**
-     * Disposes of the day
+     * Disposes of the day by.
      */
     void dispose() {
         date = null;

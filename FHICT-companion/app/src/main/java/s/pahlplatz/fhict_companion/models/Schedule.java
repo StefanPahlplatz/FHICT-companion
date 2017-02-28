@@ -45,14 +45,14 @@ public class Schedule implements java.io.Serializable {
      */
     public void addBlock(Block block, Date current) {
         for (int i = 0; i < weeks.size(); i++) {
-            // If the date is within the week
+            // If the date is within the week.
             if (current.compareTo(weeks.get(i).getStart()) != -1 &&
                     current.compareTo(weeks.get(i).getEnd()) != 1) {
-                // If the week already has the day
+                // If the week already has the day.
                 if (weeks.get(i).hasDate(current) != -1) {
                     weeks.get(i).addBlock(block, weeks.get(i).hasDate(current));
                 }
-                // Else create the day and add the block
+                // Else create the day and add the block.
                 else {
                     Day day = new Day(current);
                     day.addBlock(block);
@@ -109,8 +109,6 @@ public class Schedule implements java.io.Serializable {
 
     /**
      * Returns a string[] of all the weeks in the schedule (e.g. 'Week 3').
-     *
-     * @return string[].
      */
     public String[] getWeekNrs() {
         ArrayList<String> retList = new ArrayList<>();

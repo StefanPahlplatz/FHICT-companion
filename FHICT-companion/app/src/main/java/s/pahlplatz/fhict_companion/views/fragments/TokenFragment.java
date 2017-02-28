@@ -44,7 +44,7 @@ public class TokenFragment extends Fragment {
                 progressBar.setVisibility(View.INVISIBLE);
 
                 if (url.contains("access_token=") && !authComplete) {
-                    // Store current url
+                    // Store current url.
                     Uri uri = Uri.parse(url);
 
                     // Searches the query string for the first value with the given key.
@@ -84,7 +84,7 @@ public class TokenFragment extends Fragment {
 
         web.loadUrl(OAUTH_URL + "?redirect_uri=" + REDIRECT_URI + "&response_type=token&client_id=" + CLIENT_ID + "&scope=" + OAUTH_SCOPE);
 
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment.
         return frameLayout;
     }
 

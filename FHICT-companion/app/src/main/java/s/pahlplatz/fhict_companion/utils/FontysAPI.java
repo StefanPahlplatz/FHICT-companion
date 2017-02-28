@@ -20,24 +20,24 @@ public class FontysAPI {
     private static final String TAG = FontysAPI.class.getSimpleName();
 
     /**
-     * Get the JSON stream from the fontys API
+     * Get the JSON stream from the fontys API.
      *
-     * @param link  to request the data
-     * @param token the users unique token
-     * @return JSON stream
+     * @param link  to request the data.
+     * @param token the users unique token.
+     * @return JSON stream.
      */
     public static String getStream(String link, String token) {
         InputStream inputStream;
         try {
             URL url = new URL(link);
 
-            // Create Http connection
+            // Create Http connection.
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestProperty("Accept", "application/json");
             connection.setRequestProperty("Authorization", "Bearer " + token);
             connection.connect();
 
-            // Get the result
+            // Get the result.
             inputStream = connection.getInputStream();
         } catch (Exception ex) {
             Log.e(TAG, "getStream: Couldn't get data from fontys api.", ex);
@@ -47,10 +47,9 @@ public class FontysAPI {
     }
 
     /**
-     * Converts the stream to a string
+     * Converts the stream to a string.
      *
-     * @param is InputStream to convert
-     * @return String
+     * @param is InputStream to convert.
      */
     private static String convertStreamToString(InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
@@ -74,11 +73,11 @@ public class FontysAPI {
     }
 
     /**
-     * Gets the picture from the fontys API
+     * Gets the picture from the fontys API.
      *
-     * @param link  of the picture
-     * @param token the users unique token
-     * @return a bitmap of the image
+     * @param link  of the picture.
+     * @param token the users unique token.
+     * @return a bitmap of the image.
      */
     public static Bitmap getPicture(String link, String token) {
         try {

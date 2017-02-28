@@ -35,7 +35,7 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
 
         progressBar = (ProgressBar) view.findViewById(R.id.news_pbar);
 
-        // Configure recyclerView
+        // Configure recyclerView.
         recyclerView = (RecyclerView) view.findViewById(R.id.news_recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));

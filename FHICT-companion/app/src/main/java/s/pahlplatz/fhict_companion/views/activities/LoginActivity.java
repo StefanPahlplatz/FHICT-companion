@@ -36,7 +36,7 @@ public class LoginActivity extends AppCompatActivity implements TokenFragment.On
 
     @Override
     public void onFragmentInteraction(String token) {
-        // Store the user token
+        // Store the user token.
         getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
 
         Intent intent = new Intent(getBaseContext(), MainActivity.class);

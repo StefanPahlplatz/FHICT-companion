@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 /**
- * Person class to store data about a person
+ * Person class to store data about a person.
  */
 public class Person implements Parcelable {
     public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
@@ -27,7 +27,7 @@ public class Person implements Parcelable {
     private String id;
 
     /**
-     * Default constructor
+     * Default constructor.
      */
     public Person(String name, String mail, String office, String phone, String dep, String title, String id) {
         this.name = name;
@@ -40,9 +40,9 @@ public class Person implements Parcelable {
     }
 
     /**
-     * Constructor used for parcels
+     * Constructor used for parcels.
      *
-     * @param in Parcel
+     * @param in Parcel.
      */
     private Person(Parcel in) {
         super();
@@ -50,9 +50,9 @@ public class Person implements Parcelable {
     }
 
     /**
-     * Read and store the data
+     * Read and store the data.
      *
-     * @param in Parcel
+     * @param in Parcel.
      */
     private void readFromParcel(Parcel in) {
         name = in.readString();

@@ -49,7 +49,7 @@ public class GradeAdapter extends BaseAdapter {
     public View getView(int position, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder;
 
-        // Initialize the viewHolder
+        // Initialize the viewHolder.
         if (view == null) {
             viewHolder = new ViewHolder();
             view = layoutinflater.inflate(R.layout.row_grade, viewGroup, false);
@@ -60,21 +60,21 @@ public class GradeAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        // Prevent the application from crashing because the list is empty
+        // Prevent the application from crashing because the list is empty.
         if (grades.size() == 0)
             return view;
 
-        // Make the grade colour red if it's insufficient
+        // Make the grade colour red if it's insufficient.
         Double grade = grades.get(position).getGrade();
         if (grade < 5.5) {
             viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.colorRed));
         }
 
-        // Display the grade
+        // Display the grade.
         String gradeString = String.valueOf(grade);
         viewHolder.grade.setText(gradeString);
 
-        // Display the course
+        // Display the course.
         viewHolder.course.setText(grades.get(position).getName());
 
         return view;

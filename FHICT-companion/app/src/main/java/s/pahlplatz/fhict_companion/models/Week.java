@@ -40,21 +40,21 @@ public class Week implements java.io.Serializable {
 
         DateFormat format = new SimpleDateFormat("yyyy-M-d", Locale.getDefault());
 
-        // Assign the start date
+        // Assign the start date.
         try {
             this.start = format.parse(startParam);
         } catch (ParseException ex) {
             Log.e(TAG, "Week: Exception occurred while converting the start date of the week to a date object", ex);
         }
 
-        // Assign the end date
+        // Assign the end date.
         try {
             this.end = format.parse(endParam);
         } catch (ParseException ex) {
             Log.e(TAG, "Week: Exception occurred while converting the end date of the week to a date object", ex);
         }
 
-        // Initialize the ArrayList
+        // Initialize the ArrayList.
         days = new ArrayList<>();
     }
 

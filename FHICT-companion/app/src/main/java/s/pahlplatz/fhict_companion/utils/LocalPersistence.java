@@ -14,10 +14,16 @@ import java.io.ObjectOutputStream;
 /**
  * Class to read and write objects to local storage.
  */
-
 public class LocalPersistence {
     private static final String TAG = LocalPersistence.class.getSimpleName();
 
+    /**
+     * Writes an object tp the device's storage.
+     *
+     * @param ctx      context.
+     * @param object   serializable object.
+     * @param filename name of the file to store the object in.
+     */
     public static void writeObjectToFile(Context ctx, Object object, String filename) {
         ObjectOutputStream objectOut = null;
         try {
@@ -38,6 +44,13 @@ public class LocalPersistence {
         }
     }
 
+    /**
+     * Read object from a file on the device.
+     *
+     * @param ctx      context.
+     * @param filename name of the file that contains the object.
+     * @return object from the file.
+     */
     public static Object readObjectFromFile(Context ctx, String filename) {
         ObjectInputStream objectIn = null;
         Object object = null;

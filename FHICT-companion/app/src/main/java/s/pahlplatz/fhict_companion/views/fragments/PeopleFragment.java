@@ -28,20 +28,20 @@ public class PeopleFragment extends Fragment implements PeopleController.Progres
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+        // Inflate the layout for this fragment.
         View view = inflater.inflate(R.layout.fragment_people, container, false);
 
-        // Set toolbar title
+        // Set toolbar title.
         getActivity().setTitle("People");
 
         controller = new PeopleController(getContext(), this);
 
-        // Assign UI elements
+        // Assign UI elements.
         progressBar = (ProgressBar) view.findViewById(R.id.people_pbar);
         final Button btnSearch = (Button) view.findViewById(R.id.people_button_search);
         etQuery = (EditText) view.findViewById(R.id.people_edittext_search);
 
-        // Configure search editText
+        // Configure search editText.
         etQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
@@ -53,7 +53,7 @@ public class PeopleFragment extends Fragment implements PeopleController.Progres
             }
         });
 
-        // Configure search button
+        // Configure search button.
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

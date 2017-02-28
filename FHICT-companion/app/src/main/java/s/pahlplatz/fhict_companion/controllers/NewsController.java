@@ -52,7 +52,7 @@ public class NewsController {
         picker.setValue(ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
                 .getInt("amountOfNewsItems", 10));
 
-        // Create the FrameLayout for the NumberPicker to be hosted in
+        // Create the FrameLayout for the NumberPicker to be hosted in.
         final FrameLayout layout = new FrameLayout(ctx);
         layout.addView(picker, new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -60,7 +60,7 @@ public class NewsController {
                 Gravity.CENTER
         ));
 
-        // Create AlertDialog for the NumberPicker
+        // Create AlertDialog for the NumberPicker.
         new AlertDialog.Builder(ctx)
                 .setView(layout)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
@@ -71,7 +71,7 @@ public class NewsController {
                                 .putInt("amountOfNewsItems", picker.getValue())
                                 .apply();
 
-                        // Load news with new amount of items
+                        // Load news with new amount of items.
                         new LoadNews().execute();
                     }
                 })
