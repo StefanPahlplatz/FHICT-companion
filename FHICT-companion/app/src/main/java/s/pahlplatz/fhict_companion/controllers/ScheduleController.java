@@ -178,6 +178,7 @@ public class ScheduleController {
      */
     private int getDayAsInt(String dayAsString) {
         for (int i = 0; i < days.length; i++) {
+            if (dayAsString.substring(0, 3).equals(days[i].substring(0, 3))) {
                 return i;
             }
         }
