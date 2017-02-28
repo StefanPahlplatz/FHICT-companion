@@ -105,10 +105,17 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.action_schedule_download) {
-            controller.save();
+        switch (item.getItemId()) {
+            case R.id.action_schedule_download:
+                controller.save();
+                return true;
+
+            case R.id.action_schedule_today:
+                controller.setToday();
+                return true;
         }
-        return true;
+
+        return false;
     }
 
     /**

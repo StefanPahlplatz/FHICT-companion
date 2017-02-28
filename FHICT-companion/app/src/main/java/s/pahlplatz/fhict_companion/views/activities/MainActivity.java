@@ -103,6 +103,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         // Hide 'go online' or 'go offline' depending on the device.
         menu.findItem(R.id.action_go_online).setVisible(!NetworkState.ONLINE);
         menu.findItem(R.id.action_go_offline).setVisible(NetworkState.ONLINE);
+
+        // Hide 'today' option if fragment is not the schedule.
+        Fragment f = getSupportFragmentManager().findFragmentById(R.id.app_bar_main_content_frame);
+        menu.findItem(R.id.action_schedule_today).setVisible(f instanceof ScheduleFragment);
+
         return true;
     }
 

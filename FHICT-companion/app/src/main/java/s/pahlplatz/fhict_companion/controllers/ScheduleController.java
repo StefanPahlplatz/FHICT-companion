@@ -26,7 +26,7 @@ import s.pahlplatz.fhict_companion.utils.NetworkState;
 
 public class ScheduleController {
     private static final String TAG = ScheduleController.class.getSimpleName();
-    private final String[] days = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    private final static String[] days = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
 
     private Context ctx;
     private Schedule schedule;
@@ -57,10 +57,20 @@ public class ScheduleController {
             } else {
                 weeks = schedule.getWeekNrs();
 
-                setCurrentDay();
-                setCurrentWeek();
+                setToday();
             }
         }
+    }
+
+    /**
+     * Views today's schedule.
+     */
+    public void setToday() {
+        day = getCurrentDay();
+        week = getCurrentWeek();
+
+        scheduleListener.onDaySpinner(days[day]);
+        scheduleListener.onWeekSpinner(weeks[week]);
     }
 
     public void prevWeek() {
@@ -120,33 +130,22 @@ public class ScheduleController {
     }
 
     /**
-     * Sets the current day as selected.
-     * Also appends '(today)' to the current day.
+     * Returns the current day as int.
      */
-    private void setCurrentDay() {
-        day = getDayAsInt(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date().getTime()));
-        days[day] += " (today)";
-        scheduleListener.onDaySpinner(days[day]);
+    private int getCurrentDay() {
+        return getDayAsInt(new SimpleDateFormat("EEEE", Locale.ENGLISH).format(new Date().getTime()));
     }
 
     /**
-     * Set the current week as selected.
-     * Also appends '(current)' to the current week.
+     * Returns the current week as int.
      */
-    private void setCurrentWeek() {
-        week = schedule.getWeekFromDate(new Date());
-
-        if (week == -1) {
-            scheduleListener.onWeekSpinner("Week ?");
-            Log.e(TAG, "setCurrentWeek: Couldn't find right week.");
-        } else if (weeks == null) {
-            Log.e(TAG, "setCurrentWeek: weeks array is null.");
-        } else {
-            weeks[week] += " (current)";
-            scheduleListener.onWeekSpinner(weeks[week]);
-        }
+    private int getCurrentWeek() {
+        return schedule.getWeekFromDate(new Date());
     }
 
+    /**
+     * Saved the schedule to the device.
+     */
     public void save() {
         LocalPersistence.writeObjectToFile(ctx, schedule, "schedule");
         Toast.makeText(ctx, "Download completed!", Toast.LENGTH_SHORT).show();
@@ -173,16 +172,16 @@ public class ScheduleController {
     /**
      * Convert the day string into an int.
      *
-     * @param day string, for example 'Monday'
-     * @return day represented as integer
+     * @param dayAsString string, for example 'Monday'.
+     * @return day represented as integer.
+     * @throws RuntimeException when it can't find the given day.
      */
-    private int getDayAsInt(String day) {
+    private int getDayAsInt(String dayAsString) {
         for (int i = 0; i < days.length; i++) {
-            if (day.equals(days[i])) {
                 return i;
             }
         }
-        return -1;
+        throw new RuntimeException(TAG + " Couldn't find day: '" + dayAsString + "'.");
     }
 
     /**
@@ -239,6 +238,7 @@ public class ScheduleController {
 
             setCurrentWeek();
             setCurrentDay();
+
             scheduleListener.onShowSchedule();
         }
 
@@ -289,6 +289,34 @@ public class ScheduleController {
                 } catch (JSONException ex) {
                     Log.e(TAG, "Week: Exception occurred while parsing JSON", ex);
                 }
+            }
+        }
+
+        /**
+         * Sets the current day as selected.
+         * Also appends '(today)' to the current day.
+         */
+        private void setCurrentDay() {
+            day = getCurrentDay();
+            days[day] += " (today)";
+            scheduleListener.onDaySpinner(days[day]);
+        }
+
+        /**
+         * Set the current week as selected.
+         * Also appends '(current)' to the current week.
+         */
+        private void setCurrentWeek() {
+            week = getCurrentWeek();
+
+            if (week == -1) {
+                scheduleListener.onWeekSpinner("Week ?");
+                Log.e(TAG, "setCurrentWeek: Couldn't find right week.");
+            } else if (weeks == null) {
+                Log.e(TAG, "setCurrentWeek: weeks array is null.");
+            } else {
+                weeks[week] += " (current)";
+                scheduleListener.onWeekSpinner(weeks[week]);
             }
         }
     }
