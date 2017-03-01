@@ -65,18 +65,16 @@
 
     <!-- Settings headers -->
     <string name="pref_header_schedule">Schedule</string>
-    <string name="pref_header_data_sync">Data &amp; sync</string>
-    <string name="pref_title_system_sync_settings">System sync settings</string>
+    <string name="pref_header_grades">Grades</string>
 
     <!-- Schedule settings -->
     <string name="pref_schedule_show_breaks_sum">Show breaks in between classes when possible.</string>
     <string name="pref_schedule_show_breaks_title">Show breaks</string>
     <string name="pref_schedule_merge_sum">Merge blocks if they are the same.</string>
     <string name="pref_schedule_merge_title">Merge blocks</string>
-    <string name="pref_schedule_show_empty_sum">Show days in the schedule, even if they have no info.</string>
-    <string name="pref_schedule_show_empty_title">Show empty days</string>
     <string name="pref_schedule_highlight_breaks_sum">Show breaks in a different colour.</string>
     <string name="pref_schedule_highlight_breaks_title">Highlight breaks</string>
-    <!---->
+
+    <!-- Grade settings-->
 
 </resources>

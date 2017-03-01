@@ -1,6 +1,8 @@
 package s.pahlplatz.fhict_companion.adapters;
 
 import android.content.Context;
+import android.graphics.Typeface;
+import android.preference.PreferenceManager;
 import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,8 +22,6 @@ import s.pahlplatz.fhict_companion.models.Grade;
  */
 
 public class GradeAdapter extends BaseAdapter {
-    private static final Double INSUFFICIENT = 5.5;
-
     private final LayoutInflater layoutinflater;
     private final ArrayList<Grade> grades;
     private final Context ctx;
@@ -68,10 +68,25 @@ public class GradeAdapter extends BaseAdapter {
             return v;
         }
 
-        // Make the grade colour red if it's insufficient.
         Double grade = grades.get(position).getGrade();
-        if (grade < INSUFFICIENT) {
-            viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.colorRed));
+        viewHolder.grade.setTypeface(null, Typeface.BOLD);
+
+        if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("colour_grades", true)) {
+            if (grade < 5.5) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeRed));
+            } else if (grade < 6) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeOrange));
+            } else if (grade < 7) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeYellow));
+            } else if (grade < 8) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeLime));
+            } else if (grade < 9) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeLightGreen500));
+            } else if (grade < 10) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeLightGreen600));
+            } else if (grade == 10) {
+                viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.gradeGreen));
+            }
         }
 
         // Display the grade.

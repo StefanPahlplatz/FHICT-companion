@@ -5,4 +5,9 @@
         android:icon="@drawable/ic_schedule_black_24dp"
         android:title="@string/pref_header_schedule" />
 
+    <header
+        android:fragment="s.pahlplatz.fhict_companion.views.activities.SettingsActivity$GradesPreferenceFragment"
+        android:icon="@drawable/ic_school_black_24dp"
+        android:title="@string/pref_header_grades" />
+
 </preference-headers>

@@ -2,12 +2,6 @@
 
     <SwitchPreference
         android:defaultValue="true"
-        android:key="show_empty_days"
-        android:summary="@string/pref_schedule_show_empty_sum"
-        android:title="@string/pref_schedule_show_empty_title" />
-
-    <SwitchPreference
-        android:defaultValue="true"
         android:key="merge_same_blocks"
         android:summary="@string/pref_schedule_merge_sum"
         android:title="@string/pref_schedule_merge_title" />
