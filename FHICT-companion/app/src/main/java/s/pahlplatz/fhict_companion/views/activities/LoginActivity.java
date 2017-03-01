@@ -14,7 +14,7 @@ import s.pahlplatz.fhict_companion.views.fragments.TokenFragment;
 public class LoginActivity extends AppCompatActivity implements TokenFragment.OnFragmentInteractionListener {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity implements TokenFragment.On
     }
 
     @Override
-    public void onFragmentInteraction(String token) {
+    public void onFragmentInteraction(final String token) {
         // Store the user token.
         getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
 

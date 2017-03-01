@@ -13,7 +13,7 @@ public class Day implements java.io.Serializable {
     private Date date;
     private ArrayList<Block> blocks;
 
-    public Day(Date date) {
+    public Day(final Date date) {
         this.date = date;
         blocks = new ArrayList<>();
     }
@@ -24,7 +24,7 @@ public class Day implements java.io.Serializable {
      * @param i index of the block.
      * @return Block object.
      */
-    public Block getBlock(int i) {
+    public Block getBlock(final int i) {
         return blocks.get(i);
     }
 
@@ -45,7 +45,7 @@ public class Day implements java.io.Serializable {
     /**
      * Adds the given block to the day.
      */
-    void addBlock(Block block) {
+    void addBlock(final Block block) {
         blocks.add(block);
     }
 
@@ -55,8 +55,8 @@ public class Day implements java.io.Serializable {
     void mergeDuplicates() {
         for (int i = 0; i < blocks.size(); i++) {
             if (i + 1 < blocks.size()) {
-                if (blocks.get(i).getSubject().equals(blocks.get(i + 1).getSubject()) &&
-                        blocks.get(i).getEnd().equals(blocks.get(i + 1).getStart())) {
+                if (blocks.get(i).getSubject().equals(blocks.get(i + 1).getSubject())
+                        && blocks.get(i).getEnd().equals(blocks.get(i + 1).getStart())) {
                     blocks.get(i).setEnd(blocks.get(i + 1).getEnd());
                     blocks.remove(i + 1);
                     i = 0;
@@ -71,9 +71,9 @@ public class Day implements java.io.Serializable {
     void addBreaks() {
         for (int i = 0; i < blocks.size(); i++) {
             if (i + 1 < blocks.size()) {
-                if (!blocks.get(i).getEnd().equals(blocks.get(i + 1).getStart()) &&
-                        !blocks.get(i).getSubject().equals("zelfwerk") &&
-                        !blocks.get(i).getStart().equals(blocks.get(i + 1).getStart())) {
+                if (!blocks.get(i).getEnd().equals(blocks.get(i + 1).getStart())
+                        && !blocks.get(i).getSubject().equals("zelfwerk")
+                        && !blocks.get(i).getStart().equals(blocks.get(i + 1).getStart())) {
                     blocks.add(i + 1, new Block(blocks.get(i).getEnd(), blocks.get(i + 1).getStart()));
                     i = 0;
                 }

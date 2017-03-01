@@ -15,6 +15,9 @@ import s.pahlplatz.fhict_companion.models.NewsItem;
  * A simple {@link Fragment} subclass.
  */
 public class NewsDetailsFragment extends Fragment {
+    /** The amount of characters to extract the date in 'yyyy-mm-dd' from the pubDate. **/
+    private static final int DATE_PART = 10;
+
     private String title, content, author, pubDate;
 
     /**
@@ -24,7 +27,7 @@ public class NewsDetailsFragment extends Fragment {
      * @param newsItem News Item that contains the details about the selected news.
      * @return A new instance of fragment NewsDetailsFragment.
      */
-    public static NewsDetailsFragment newInstance(NewsItem newsItem) {
+    public static NewsDetailsFragment newInstance(final NewsItem newsItem) {
         NewsDetailsFragment fragment = new NewsDetailsFragment();
         Bundle args = new Bundle();
         args.putString("title", newsItem.getTitle());
@@ -36,7 +39,7 @@ public class NewsDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             title = getArguments().getString("title");
@@ -47,26 +50,26 @@ public class NewsDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news_details, container, false);
 
         // Title
-        TextView tv_Title = (TextView) view.findViewById(R.id.news_details_title);
-        tv_Title.setText(title);
+        TextView tvTitle = (TextView) view.findViewById(R.id.news_details_title);
+        tvTitle.setText(title);
 
         // Author
-        TextView tv_Author = (TextView) view.findViewById(R.id.news_details_author);
+        TextView tvAuthor = (TextView) view.findViewById(R.id.news_details_author);
         String authorString = "By " + author;
-        tv_Author.setText(authorString);
+        tvAuthor.setText(authorString);
 
         // Publish date
-        TextView tv_Publish = (TextView) view.findViewById(R.id.news_details_pubdate);
-        tv_Publish.setText(pubDate.substring(0, 10));
+        TextView tvPublish = (TextView) view.findViewById(R.id.news_details_pubdate);
+        tvPublish.setText(pubDate.substring(0, DATE_PART));
 
         // Content
-        TextView tv_Content = (TextView) view.findViewById(R.id.news_details_desc);
-        tv_Content.setText(content);
+        TextView tvContent = (TextView) view.findViewById(R.id.news_details_desc);
+        tvContent.setText(content);
 
         return view;
     }

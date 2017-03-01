@@ -22,7 +22,8 @@ public class NewsItem {
     /**
      * Default constructor.
      */
-    public NewsItem(String pubDate, String title, String thumbnailString, String content, String author) {
+    public NewsItem(final String pubDate, final String title, final String thumbnailString,
+                    final String content, final String author) {
         this.pubDate = pubDate;
         this.title = title;
         this.thumbnailString = thumbnailString;
@@ -44,7 +45,7 @@ public class NewsItem {
         return thumbnailString;
     }
 
-    public void setThumbnailString(String thumbnailString) {
+    public void setThumbnailString(final String thumbnailString) {
         this.thumbnailString = thumbnailString;
     }
 
@@ -52,7 +53,7 @@ public class NewsItem {
         return thumbnail;
     }
 
-    public void setThumbnail(Bitmap thumbnail) {
+    public void setThumbnail(final Bitmap thumbnail) {
         this.thumbnail = thumbnail;
     }
 

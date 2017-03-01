@@ -18,7 +18,7 @@ public class Grade {
      * @param name  of the class.
      * @param grade >= 0 and =< 10.
      */
-    public Grade(String name, double grade) {
+    public Grade(final String name, final double grade) {
         this.name = name;
         this.grade = grade;
     }
@@ -44,7 +44,7 @@ public class Grade {
      * @param other grade to compare to.
      * @return -1, 0 or 1.
      */
-    public int sortByGradeDesc(@NonNull Grade other) {
+    public int sortByGradeDesc(@NonNull final Grade other) {
         return Double.compare(other.getGrade(), this.getGrade());
     }
 
@@ -55,7 +55,7 @@ public class Grade {
      * @param other grade to compare to.
      * @return -1, 0 or 1.
      */
-    public int sortByGradeAsc(@NonNull Grade other) {
+    public int sortByGradeAsc(@NonNull final Grade other) {
         return Double.compare(this.getGrade(), other.getGrade());
     }
 
@@ -66,7 +66,7 @@ public class Grade {
      * @param other grade to compare to.
      * @return -1, 0 or 1.
      */
-    public int sortByNameDesc(@NonNull Grade other) {
+    public int sortByNameDesc(@NonNull final Grade other) {
         return this.getName().compareTo(other.getName());
     }
 }

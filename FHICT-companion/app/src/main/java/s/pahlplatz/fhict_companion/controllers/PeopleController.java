@@ -35,7 +35,7 @@ public class PeopleController {
      * @param ctx                 context that implements OnPeopleSearchListener.
      * @param progressbarListener calling view that implements ProgressbarListener.
      */
-    public PeopleController(Context ctx, ProgressbarListener progressbarListener) {
+    public PeopleController(final Context ctx, final ProgressbarListener progressbarListener) {
         this.ctx = ctx;
         this.progressbarListener = progressbarListener;
 
@@ -52,7 +52,7 @@ public class PeopleController {
      *
      * @param query search parameter.
      */
-    public void search(String query) {
+    public void search(final String query) {
         if (!query.equals("")) {
             new LoadResults().execute(query);
 
@@ -88,7 +88,7 @@ public class PeopleController {
         }
 
         @Override
-        protected JSONArray doInBackground(String... params) {
+        protected JSONArray doInBackground(final String... params) {
             JSONArray jArray = null;
             String query = params[0];
 
@@ -106,7 +106,7 @@ public class PeopleController {
         }
 
         @Override
-        protected void onPostExecute(JSONArray jArray) {
+        protected void onPostExecute(final JSONArray jArray) {
             if (jArray != null) {
                 if (jArray.length() == 0) {
                     Toast.makeText(ctx, "No results found", Toast.LENGTH_SHORT).show();

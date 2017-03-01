@@ -14,8 +14,12 @@ import java.io.ObjectOutputStream;
 /**
  * Class to read and write objects to local storage.
  */
-public class LocalPersistence {
+public final class LocalPersistence {
     private static final String TAG = LocalPersistence.class.getSimpleName();
+
+    private LocalPersistence() {
+        // Not called.
+    }
 
     /**
      * Writes an object tp the device's storage.
@@ -24,7 +28,7 @@ public class LocalPersistence {
      * @param object   serializable object.
      * @param filename name of the file to store the object in.
      */
-    public static void writeObjectToFile(Context ctx, Object object, String filename) {
+    public static void writeObjectToFile(final Context ctx, final Object object, final String filename) {
         ObjectOutputStream objectOut = null;
         try {
             FileOutputStream fileOut = ctx.openFileOutput(filename, Activity.MODE_PRIVATE);
@@ -51,7 +55,7 @@ public class LocalPersistence {
      * @param filename name of the file that contains the object.
      * @return object from the file.
      */
-    public static Object readObjectFromFile(Context ctx, String filename) {
+    public static Object readObjectFromFile(final Context ctx, final String filename) {
         ObjectInputStream objectIn = null;
         Object object = null;
         try {

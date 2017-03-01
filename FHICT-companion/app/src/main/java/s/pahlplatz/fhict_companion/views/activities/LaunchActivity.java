@@ -14,7 +14,7 @@ public class LaunchActivity extends AppCompatActivity {
     private static final String TAG = LaunchActivity.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         boolean hasConnection = NetworkState.isActive(getBaseContext());

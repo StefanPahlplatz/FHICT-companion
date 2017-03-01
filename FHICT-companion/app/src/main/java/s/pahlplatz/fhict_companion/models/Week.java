@@ -30,7 +30,7 @@ public class Week implements java.io.Serializable {
      * @param startParam start date as string.
      * @param endParam   end date as string.
      */
-    public Week(String weekNr, String startParam, String endParam) {
+    public Week(final String weekNr, final String startParam, final String endParam) {
         // Assign the week nr
         Pattern p = Pattern.compile("\\d+");
         Matcher m = p.matcher(weekNr);
@@ -64,7 +64,7 @@ public class Week implements java.io.Serializable {
      * @param date that you want to check as Date.
      * @return index of the day, otherwise -1.
      */
-    int hasDate(Date date) {
+    int hasDate(final Date date) {
         for (int i = 0; i < days.size(); i++) {
             if (days.get(i).getDate().equals(date)) {
                 return i;
@@ -88,7 +88,7 @@ public class Week implements java.io.Serializable {
      * @param i index.
      * @return Day.
      */
-    public Day getDay(int i) {
+    public Day getDay(final int i) {
         if (i > days.size() - 1) {
             return null;
         }
@@ -101,7 +101,7 @@ public class Week implements java.io.Serializable {
      * @param block to add.
      * @param i     index of the day you want to add the block to.
      */
-    void addBlock(Block block, int i) {
+    void addBlock(final Block block, final int i) {
         days.get(i).addBlock(block);
     }
 
@@ -110,7 +110,7 @@ public class Week implements java.io.Serializable {
      *
      * @param day to add.
      */
-    void addDay(Day day) {
+    void addDay(final Day day) {
         days.add(day);
     }
 

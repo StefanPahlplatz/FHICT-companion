@@ -21,13 +21,17 @@ import s.pahlplatz.fhict_companion.R;
  */
 public class TokenFragment extends Fragment {
     private static final String TAG = TokenFragment.class.getSimpleName();
+    private static final String CLIENT_ID = "i874073-studentapp";
+    private static final String REDIRECT_URI = "https://tas.fhict.nl/oob.html";
+    private static final String OAUTH_URL = "https://identity.fhict.nl/connect/authorize";
+    private static final String OAUTH_SCOPE = "fhict fhict_personal";
 
     private OnFragmentInteractionListener mListener;
 
     @SuppressLint("SetJavaScriptEnabled")
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         FrameLayout frameLayout = (FrameLayout) inflater.inflate(R.layout.fragment_token, container, false);
         WebView web = (WebView) frameLayout.findViewById(R.id.token_webview);
         final ProgressBar progressBar = (ProgressBar) frameLayout.findViewById(R.id.token_pbar);
@@ -35,11 +39,11 @@ public class TokenFragment extends Fragment {
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
         web.setWebViewClient(new WebViewClient() {
-            boolean authComplete = false;
-            String authCode;
+            private boolean authComplete = false;
+            private String authCode;
 
             @Override
-            public void onPageFinished(WebView view, String url) {
+            public void onPageFinished(final WebView view, final String url) {
                 super.onPageFinished(view, url);
                 progressBar.setVisibility(View.INVISIBLE);
 
@@ -77,19 +81,15 @@ public class TokenFragment extends Fragment {
             }
         });
 
-        String CLIENT_ID = "i874073-studentapp";
-        String REDIRECT_URI = "https://tas.fhict.nl/oob.html";
-        String OAUTH_URL = "https://identity.fhict.nl/connect/authorize";
-        String OAUTH_SCOPE = "fhict fhict_personal";
-
-        web.loadUrl(OAUTH_URL + "?redirect_uri=" + REDIRECT_URI + "&response_type=token&client_id=" + CLIENT_ID + "&scope=" + OAUTH_SCOPE);
+        web.loadUrl(OAUTH_URL + "?redirect_uri=" + REDIRECT_URI + "&response_type=token&client_id="
+                + CLIENT_ID + "&scope=" + OAUTH_SCOPE);
 
         // Inflate the layout for this fragment.
         return frameLayout;
     }
 
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(final Context context) {
         super.onAttach(context);
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
@@ -104,6 +104,9 @@ public class TokenFragment extends Fragment {
         mListener = null;
     }
 
+    /**
+     * Interface to be implemented by the caller to know when we got the token.
+     */
     public interface OnFragmentInteractionListener {
         void onFragmentInteraction(String token);
     }

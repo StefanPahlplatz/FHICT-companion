@@ -24,9 +24,14 @@ import s.pahlplatz.fhict_companion.utils.FontysAPI;
 import s.pahlplatz.fhict_companion.utils.LocalPersistence;
 import s.pahlplatz.fhict_companion.utils.NetworkState;
 
+/**
+ * Controller for the schedule fragment.
+ */
 public class ScheduleController {
     private static final String TAG = ScheduleController.class.getSimpleName();
-    private final static String[] days = new String[] {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};
+    private static final int SHORT_DAY = 3;
+    private static final String[] DAYS = new String[] {"Monday", "Tuesday", "Wednesday",
+            "Thursday", "Friday", "Saturday", "Sunday"};
 
     private Context ctx;
     private Schedule schedule;
@@ -41,11 +46,11 @@ public class ScheduleController {
      * @param ctx      context.
      * @param listener reference to the caller.
      */
-    public ScheduleController(Context ctx, ScheduleListener listener) {
+    public ScheduleController(final Context ctx, final ScheduleListener listener) {
         this.ctx = ctx;
         this.scheduleListener = listener;
 
-        if (NetworkState.ONLINE) {
+        if (NetworkState.isOnline()) {
             new LoadSchedule().execute();
         } else {
             // Try to load a schedule from storage.
@@ -69,8 +74,10 @@ public class ScheduleController {
         day = getCurrentDay();
         week = getCurrentWeek();
 
-        scheduleListener.onDaySpinner(days[day]);
-        scheduleListener.onWeekSpinner(weeks[week]);
+        scheduleListener.onDaySpinner(DAYS[day]);
+        if (weeks != null) {
+            scheduleListener.onWeekSpinner(weeks[week]);
+        }
     }
 
     public void prevWeek() {
@@ -99,7 +106,7 @@ public class ScheduleController {
         if (schedule != null) {
             day--;
             if (day < 0) {
-                day = days.length - 1;
+                day = DAYS.length - 1;
 
                 // If we're not in the first week
                 if (week - 1 >= 0) {
@@ -108,7 +115,7 @@ public class ScheduleController {
                     Toast.makeText(ctx, "Can't view further back.", Toast.LENGTH_SHORT).show();
                 }
             }
-            scheduleListener.onDaySpinner(days[day]);
+            scheduleListener.onDaySpinner(DAYS[day]);
             scheduleListener.onShowSchedule();
         }
     }
@@ -116,7 +123,7 @@ public class ScheduleController {
     public void nextDay() {
         if (schedule != null) {
             day++;
-            if (day > days.length - 1) {
+            if (day > DAYS.length - 1) {
                 day = 0;
                 if (week + 1 < schedule.getAmountOfWeeks()) {
                     scheduleListener.onWeekSpinner(weeks[++week]);
@@ -124,7 +131,7 @@ public class ScheduleController {
                     Toast.makeText(ctx, "Can't view any further.", Toast.LENGTH_SHORT).show();
                 }
             }
-            scheduleListener.onDaySpinner(days[day]);
+            scheduleListener.onDaySpinner(DAYS[day]);
             scheduleListener.onShowSchedule();
         }
     }
@@ -176,9 +183,9 @@ public class ScheduleController {
      * @return day represented as integer.
      * @throws RuntimeException when it can't find the given day.
      */
-    private int getDayAsInt(String dayAsString) {
-        for (int i = 0; i < days.length; i++) {
-            if (dayAsString.substring(0, 3).equals(days[i].substring(0, 3))) {
+    private int getDayAsInt(final String dayAsString) {
+        for (int i = 0; i < DAYS.length; i++) {
+            if (dayAsString.substring(0, SHORT_DAY).equals(DAYS[i].substring(0, SHORT_DAY))) {
                 return i;
             }
         }
@@ -212,7 +219,7 @@ public class ScheduleController {
         }
 
         @Override
-        protected Void doInBackground(Void... voids) {
+        protected Void doInBackground(final Void... voids) {
             try {
                 // Get JSONObject from fontys API
                 JSONObject jObject = new JSONObject(FontysAPI.getStream(
@@ -233,7 +240,7 @@ public class ScheduleController {
         }
 
         @Override
-        protected void onPostExecute(Void params) {
+        protected void onPostExecute(final Void params) {
             schedule.mergeBlocks();
             schedule.insertBreaks();
 
@@ -248,7 +255,7 @@ public class ScheduleController {
          *
          * @param jWeeks JSONArray that contains data about the weeks.
          */
-        private void addWeeks(JSONArray jWeeks) {
+        private void addWeeks(final JSONArray jWeeks) {
             try {
                 for (int i = 0; i < jWeeks.length(); i++) {
                     String weekNr = jWeeks.getJSONObject(i).getString("title");
@@ -266,7 +273,7 @@ public class ScheduleController {
          *
          * @param jDays JSONArray that contains data about the blocks.
          */
-        private void addBlocks(JSONArray jDays) {
+        private void addBlocks(final JSONArray jDays) {
             DateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
 
             for (int i = 0; i < jDays.length(); i++) {
@@ -299,8 +306,8 @@ public class ScheduleController {
          */
         private void setCurrentDay() {
             day = getCurrentDay();
-            days[day] += " (today)";
-            scheduleListener.onDaySpinner(days[day]);
+            DAYS[day] += " (today)";
+            scheduleListener.onDaySpinner(DAYS[day]);
         }
 
         /**

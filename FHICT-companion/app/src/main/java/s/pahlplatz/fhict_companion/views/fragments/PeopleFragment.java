@@ -27,7 +27,8 @@ public class PeopleFragment extends Fragment implements PeopleController.Progres
     private EditText etQuery;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         // Inflate the layout for this fragment.
         View view = inflater.inflate(R.layout.fragment_people, container, false);
 
@@ -44,7 +45,7 @@ public class PeopleFragment extends Fragment implements PeopleController.Progres
         // Configure search editText.
         etQuery.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+            public boolean onEditorAction(final TextView textView, final int i, final KeyEvent keyEvent) {
                 if (i == EditorInfo.IME_ACTION_SEARCH) {
                     search();
                     return true;
@@ -56,7 +57,7 @@ public class PeopleFragment extends Fragment implements PeopleController.Progres
         // Configure search button.
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 search();
             }
         });
@@ -65,7 +66,7 @@ public class PeopleFragment extends Fragment implements PeopleController.Progres
     }
 
     @Override
-    public void progressbarVisibility(boolean visible) {
+    public void progressbarVisibility(final boolean visible) {
         progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 

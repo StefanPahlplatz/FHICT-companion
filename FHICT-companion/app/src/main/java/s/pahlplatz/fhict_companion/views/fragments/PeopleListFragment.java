@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import s.pahlplatz.fhict_companion.controllers.PeopleListController;
 import s.pahlplatz.fhict_companion.models.Person;
 
+/**
+ * Fragment to let users search the fontys database for employee information.
+ */
 public class PeopleListFragment extends Fragment {
     private PeopleListController controller;
 
@@ -23,7 +26,7 @@ public class PeopleListFragment extends Fragment {
      * @param persons list of persons to display in the listview.
      * @return PeopleListFragment.
      */
-    public static PeopleListFragment newInstance(ArrayList<Person> persons) {
+    public static PeopleListFragment newInstance(final ArrayList<Person> persons) {
         PeopleListFragment fragment = new PeopleListFragment();
         Bundle args = new Bundle();
         args.putParcelableArrayList("persons", persons);
@@ -32,7 +35,7 @@ public class PeopleListFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
@@ -42,12 +45,13 @@ public class PeopleListFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         ListView lv = new ListView(getActivity());
         lv.setAdapter(controller.getAdapter());
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(final AdapterView<?> adapterView, final View view, final int i, final long l) {
                 controller.onItemSelected(i);
             }
         });

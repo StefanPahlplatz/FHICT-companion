@@ -58,5 +58,6 @@
     <string name="sort_alphabetical">Sort alphabetical</string>
     <string name="sort_by_grade_asc">Sort by grade (ASC)</string>
     <string name="sort_by_grade_desc">Sort by grade (DESC)</string>
+    <string name="go_to_today">Go to today</string>
 
 </resources>

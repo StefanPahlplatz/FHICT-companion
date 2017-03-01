@@ -7,6 +7,9 @@ package s.pahlplatz.fhict_companion.models;
  */
 
 public class Block implements java.io.Serializable {
+    private static final int START_OF_TIME = 11;
+    private static final int END_OF_TIME = 16;
+
     private final String room;          // Room
     private final String subject;       // Subject
     private final String teacherAbbr;   // Teacher
@@ -16,12 +19,13 @@ public class Block implements java.io.Serializable {
     /**
      * Default constructor.
      */
-    public Block(String room, String subject, String teacherAbbr, String start, String end) {
+    public Block(final String room, final String subject, final String teacherAbbr,
+                 final String start, final String end) {
         this.room = room;
         this.subject = subject;
         this.teacherAbbr = teacherAbbr;
-        this.start = start.substring(11, 16);
-        this.end = end.substring(11, 16);
+        this.start = start.substring(START_OF_TIME, END_OF_TIME);
+        this.end = end.substring(START_OF_TIME, END_OF_TIME);
     }
 
     /**
@@ -30,7 +34,7 @@ public class Block implements java.io.Serializable {
      * @param start full datetime string.
      * @param end   full datetime string.
      */
-    Block(String start, String end) {
+    Block(final String start, final String end) {
         this.room = "";
         this.subject = "Break";
         this.teacherAbbr = "";
@@ -52,7 +56,7 @@ public class Block implements java.io.Serializable {
      *
      * @param end String in hh:mm format.
      */
-    public void setEnd(String end) {
+    public void setEnd(final String end) {
         this.end = end;
     }
 
@@ -88,10 +92,11 @@ public class Block implements java.io.Serializable {
 
     @Override
     public String toString() {
-        if (subject.equals("Break"))
+        if (subject.equals("Break")) {
             return "Break";
-        else
+        } else {
             return String.format("Subject: %-10s\tRoom: %-10s\tTeacher: %-10s\tStart: %-10s\tEnd: %-10s",
                     subject, room, teacherAbbr, start, end);
+        }
     }
 }

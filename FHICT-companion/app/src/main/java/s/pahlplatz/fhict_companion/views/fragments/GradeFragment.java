@@ -26,8 +26,8 @@ public class GradeFragment extends Fragment implements GradeController.GradeCont
     private GradeController controller;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_grade, container, false);
 
         getActivity().setTitle("Grades");
@@ -49,32 +49,33 @@ public class GradeFragment extends Fragment implements GradeController.GradeCont
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         inflater.inflate(R.menu.grades, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_grade_refresh:
                 controller.refresh();
-                break;
+                return true;
 
             case R.id.action_grade_sort_grade_asc:
                 controller.sortGradesAsc();
-                break;
+                return true;
 
             case R.id.action_grade_sort_grade_desc:
                 controller.sortGradesDesc();
-                break;
+                return true;
 
             case R.id.action_grade_sort_alphabetical:
                 controller.sortGradesAlp();
-                break;
-        }
+                return true;
 
-        return super.onOptionsItemSelected(item);
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     /**
@@ -82,7 +83,7 @@ public class GradeFragment extends Fragment implements GradeController.GradeCont
      * @param visible bool.
      */
     @Override
-    public void onProgressbarVisibility(boolean visible) {
+    public void onProgressbarVisibility(final boolean visible) {
         View view = getView();
 
         if (view != null) {
@@ -101,7 +102,7 @@ public class GradeFragment extends Fragment implements GradeController.GradeCont
      * @param adapter to be assigned.
      */
     @Override
-    public void onAdapterChanged(GradeAdapter adapter) {
+    public void onAdapterChanged(final GradeAdapter adapter) {
         View view = getView();
 
         if (view != null) {

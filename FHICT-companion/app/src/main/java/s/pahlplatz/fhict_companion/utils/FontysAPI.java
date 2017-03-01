@@ -16,8 +16,12 @@ import java.net.URL;
  * <p>
  * Static class to connect to the fontys api and retrieve the JSON files.
  */
-public class FontysAPI {
+public final class FontysAPI {
     private static final String TAG = FontysAPI.class.getSimpleName();
+
+    private FontysAPI() {
+        // Not called.
+    }
 
     /**
      * Get the JSON stream from the fontys API.
@@ -26,7 +30,7 @@ public class FontysAPI {
      * @param token the users unique token.
      * @return JSON stream.
      */
-    public static String getStream(String link, String token) {
+    public static String getStream(final String link, final String token) {
         InputStream inputStream;
         try {
             URL url = new URL(link);
@@ -51,7 +55,7 @@ public class FontysAPI {
      *
      * @param is InputStream to convert.
      */
-    private static String convertStreamToString(InputStream is) {
+    private static String convertStreamToString(final InputStream is) {
         BufferedReader reader = new BufferedReader(new InputStreamReader(is));
         StringBuilder sb = new StringBuilder();
 
@@ -79,7 +83,7 @@ public class FontysAPI {
      * @param token the users unique token.
      * @return a bitmap of the image.
      */
-    public static Bitmap getPicture(String link, String token) {
+    public static Bitmap getPicture(final String link, final String token) {
         try {
             URL url = new URL(link);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();

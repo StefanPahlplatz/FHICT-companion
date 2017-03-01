@@ -21,6 +21,9 @@ import s.pahlplatz.fhict_companion.models.NewsItem;
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
+    /** The amount of characters to extract the date in 'yyyy-mm-dd' from the pubDate. **/
+    private static final int DATE_PART = 10;
+
     private final ArrayList<NewsItem> newsItems;
     private OnAdapterInteractionListener mListener;
 
@@ -30,7 +33,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
      * @param newsItems ArrayList of NewsItems you want to show.
      * @param ctx       context used for the Listener.
      */
-    public NewsAdapter(ArrayList<NewsItem> newsItems, Context ctx) {
+    public NewsAdapter(final ArrayList<NewsItem> newsItems, final Context ctx) {
         this.newsItems = newsItems;
 
         if (ctx instanceof OnAdapterInteractionListener) {
@@ -48,7 +51,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
      * @return the new ViewHolder.
      */
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
         View itemView = LayoutInflater.from(
                 parent.getContext()).inflate(R.layout.card_news_item, parent, false);
 
@@ -68,12 +71,12 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
         String authorString = "By " + newsItems.get(position).getAuthor();
         holder.author.setText(authorString);
         holder.thumbnail.setImageBitmap(newsItems.get(position).getThumbnail());
-        holder.pubDate.setText(newsItems.get(position).getPubDate().substring(0, 10));
+        holder.pubDate.setText(newsItems.get(position).getPubDate().substring(0, DATE_PART));
 
         // Send MainActivity signal to swap fragments when the user clicks on the card.
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 mListener.onAdapterInteractionListener(newsItems.get(holder.getAdapterPosition()));
             }
         });
@@ -102,14 +105,14 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> 
      * <p>
      * View holder for the adapter.
      */
-    class MyViewHolder extends RecyclerView.ViewHolder {
+    final class MyViewHolder extends RecyclerView.ViewHolder {
         private final TextView title;
         private final TextView author;
         private final TextView pubDate;
         private final ImageView thumbnail;
         private final CardView cardView;
 
-        private MyViewHolder(View view) {
+        private MyViewHolder(final View view) {
             super(view);
             thumbnail = (ImageView) view.findViewById(R.id.news_card_image);
             title = (TextView) view.findViewById(R.id.news_card_title);

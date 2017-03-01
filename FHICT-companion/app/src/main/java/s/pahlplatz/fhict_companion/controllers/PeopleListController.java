@@ -26,7 +26,7 @@ public class PeopleListController {
      * @param ctx     context that implements OnFragmentInteractionListener.
      * @param persons list of persons to display in the listview.
      */
-    public PeopleListController(Context ctx, ArrayList<Person> persons) {
+    public PeopleListController(final Context ctx, final ArrayList<Person> persons) {
         this.ctx = ctx;
         this.persons = persons;
 
@@ -48,7 +48,7 @@ public class PeopleListController {
                 new ArrayAdapter(ctx, android.R.layout.simple_list_item_2, android.R.id.text1, persons) {
                     @NonNull
                     @Override
-                    public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+                    public View getView(final int position, final View convertView, @NonNull final ViewGroup parent) {
                         View view = super.getView(position, convertView, parent);
                         TextView text1 = (TextView) view.findViewById(android.R.id.text1);
                         TextView text2 = (TextView) view.findViewById(android.R.id.text2);
@@ -65,7 +65,7 @@ public class PeopleListController {
      *
      * @param i index in the listview/list.
      */
-    public void onItemSelected(int i) {
+    public void onItemSelected(final int i) {
         mListener.onFragmentInteraction(persons.get(i));
     }
 

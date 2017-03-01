@@ -21,6 +21,9 @@ import s.pahlplatz.fhict_companion.controllers.ScheduleController;
 import s.pahlplatz.fhict_companion.utils.NetworkState;
 import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
 
+/**
+ * Fragment to show the user's schedule.
+ */
 public class ScheduleFragment extends Fragment implements ScheduleController.ScheduleListener {
     private static final String TAG = ScheduleFragment.class.getSimpleName();
 
@@ -32,8 +35,8 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
     private TextView noData;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_schedule, container, false);
 
         // Set toolbar title.
@@ -51,7 +54,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
         final Button prevWeek = (Button) view.findViewById(R.id.schedule_week_prev);
         prevWeek.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 controller.prevWeek();
             }
         });
@@ -59,7 +62,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
         final Button nextWeek = (Button) view.findViewById(R.id.schedule_week_next);
         nextWeek.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 controller.nextWeek();
             }
         });
@@ -67,7 +70,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
         final Button prevDay = (Button) view.findViewById(R.id.schedule_day_prev);
         prevDay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 controller.prevDay();
             }
         });
@@ -75,7 +78,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
         final Button nextDay = (Button) view.findViewById(R.id.schedule_day_next);
         nextDay.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 controller.nextDay();
             }
         });
@@ -83,13 +86,13 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
         // Configure recyclerView.
         recyclerView = (RecyclerView) view.findViewById(R.id.schedule_recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
 
         // Create schedule controller.
         controller = new ScheduleController(getActivity(), this);
 
-        if (!NetworkState.ONLINE) {
-            // Have to call this here, for some reason it crashes when called from the constructor of ScheduleController...
+        if (!NetworkState.isOnline()) {
             onShowSchedule();
         }
 
@@ -97,14 +100,14 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         inflater.inflate(R.menu.schedule, menu);
-        menu.findItem(R.id.action_schedule_download).setVisible(NetworkState.ONLINE);
+        menu.findItem(R.id.action_schedule_download).setVisible(NetworkState.isOnline());
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_schedule_download:
                 controller.save();
@@ -113,9 +116,10 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
             case R.id.action_schedule_today:
                 controller.setToday();
                 return true;
-        }
 
-        return false;
+            default:
+                return false;
+        }
     }
 
     /**
@@ -144,7 +148,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
      * @param day item to be shown.
      */
     @Override
-    public void onDaySpinner(String day) {
+    public void onDaySpinner(final String day) {
         dayIndicator.setText(day);
     }
 
@@ -155,7 +159,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
      * @param week item to be selected.
      */
     @Override
-    public void onWeekSpinner(String week) {
+    public void onWeekSpinner(final String week) {
         weekIndicator.setText(week);
     }
 

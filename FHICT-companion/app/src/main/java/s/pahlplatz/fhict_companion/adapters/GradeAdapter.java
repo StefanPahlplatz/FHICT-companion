@@ -20,11 +20,13 @@ import s.pahlplatz.fhict_companion.models.Grade;
  */
 
 public class GradeAdapter extends BaseAdapter {
+    private static final Double INSUFFICIENT = 5.5;
+
     private final LayoutInflater layoutinflater;
     private final ArrayList<Grade> grades;
     private final Context ctx;
 
-    public GradeAdapter(Context ctx, ArrayList<Grade> grades) {
+    public GradeAdapter(final Context ctx, final ArrayList<Grade> grades) {
         this.ctx = ctx;
         this.grades = grades;
         layoutinflater = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -36,37 +38,39 @@ public class GradeAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int i) {
+    public Object getItem(final int i) {
         return grades.get(i);
     }
 
     @Override
-    public long getItemId(int i) {
+    public long getItemId(final int i) {
         return i;
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(final int position, final View view, final ViewGroup viewGroup) {
         ViewHolder viewHolder;
+        View v = view;
 
         // Initialize the viewHolder.
-        if (view == null) {
+        if (v == null) {
             viewHolder = new ViewHolder();
-            view = layoutinflater.inflate(R.layout.row_grade, viewGroup, false);
-            viewHolder.grade = (TextView) view.findViewById(R.id.grade_row_grade);
-            viewHolder.course = (TextView) view.findViewById(R.id.grade_row_course);
-            view.setTag(viewHolder);
+            v = layoutinflater.inflate(R.layout.row_grade, viewGroup, false);
+            viewHolder.grade = (TextView) v.findViewById(R.id.grade_row_grade);
+            viewHolder.course = (TextView) v.findViewById(R.id.grade_row_course);
+            v.setTag(viewHolder);
         } else {
-            viewHolder = (ViewHolder) view.getTag();
+            viewHolder = (ViewHolder) v.getTag();
         }
 
         // Prevent the application from crashing because the list is empty.
-        if (grades.size() == 0)
-            return view;
+        if (grades.size() == 0) {
+            return v;
+        }
 
         // Make the grade colour red if it's insufficient.
         Double grade = grades.get(position).getGrade();
-        if (grade < 5.5) {
+        if (grade < INSUFFICIENT) {
             viewHolder.grade.setTextColor(ContextCompat.getColor(ctx, R.color.colorRed));
         }
 
@@ -77,11 +81,14 @@ public class GradeAdapter extends BaseAdapter {
         // Display the course.
         viewHolder.course.setText(grades.get(position).getName());
 
-        return view;
+        return v;
     }
 
+    /**
+     * View holder to access the components.
+     */
     private static class ViewHolder {
-        TextView grade;
-        TextView course;
+        private TextView grade;
+        private TextView course;
     }
 }

@@ -17,12 +17,12 @@ import android.util.Log;
 public class WrapContentLinearLayoutManager extends LinearLayoutManager {
     private static final String TAG = WrapContentLinearLayoutManager.class.getSimpleName();
 
-    public WrapContentLinearLayoutManager(Context context, int orientation, boolean reverseLayout) {
+    public WrapContentLinearLayoutManager(final Context context, final int orientation, final boolean reverseLayout) {
         super(context, orientation, reverseLayout);
     }
 
     @Override
-    public void onLayoutChildren(RecyclerView.Recycler recycler, RecyclerView.State state) {
+    public void onLayoutChildren(final RecyclerView.Recycler recycler, final RecyclerView.State state) {
         try {
             super.onLayoutChildren(recycler, state);
         } catch (IndexOutOfBoundsException ex) {

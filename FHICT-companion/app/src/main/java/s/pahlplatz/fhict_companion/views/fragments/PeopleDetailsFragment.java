@@ -17,7 +17,7 @@ import s.pahlplatz.fhict_companion.models.Person;
 public class PeopleDetailsFragment extends Fragment {
     private Person person;
 
-    public static PeopleDetailsFragment newInstance(Person person) {
+    public static PeopleDetailsFragment newInstance(final Person person) {
         PeopleDetailsFragment fragment = new PeopleDetailsFragment();
         Bundle args = new Bundle();
         args.putParcelable("person", person);
@@ -26,7 +26,7 @@ public class PeopleDetailsFragment extends Fragment {
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             person = getArguments().getParcelable("person");
@@ -34,8 +34,8 @@ public class PeopleDetailsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_people_details, container, false);
 
         TextView name, mail, office, phone, dep, title, id;

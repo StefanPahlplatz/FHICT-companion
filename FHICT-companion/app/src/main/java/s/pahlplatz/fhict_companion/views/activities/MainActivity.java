@@ -45,19 +45,23 @@ import s.pahlplatz.fhict_companion.views.fragments.PeopleFragment;
 import s.pahlplatz.fhict_companion.views.fragments.PeopleListFragment;
 import s.pahlplatz.fhict_companion.views.fragments.ScheduleFragment;
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener,
+/**
+ * MainActivity that hosts the normal app fragments.
+ */
+public final class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener,
         PeopleController.OnPeopleSearchListener,
         PeopleListController.OnFragmentInteractionListener,
         NewsAdapter.OnAdapterInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
 
-        NetworkState.ONLINE = getIntent().getBooleanExtra("online", false);
+        NetworkState.setOnline(getIntent().getBooleanExtra("online", false));
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_main_toolbar);
         setSupportActionBar(toolbar);
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.getMenu().findItem(R.id.nav_schedule).setChecked(true);
 
-        if (NetworkState.ONLINE) {
+        if (NetworkState.isOnline()) {
             // Load user data.
             new LoadUserData().execute();
             new LoadProfilePicture().execute();
@@ -96,13 +100,13 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
         // Hide 'go online' or 'go offline' depending on the device.
-        menu.findItem(R.id.action_go_online).setVisible(!NetworkState.ONLINE);
-        menu.findItem(R.id.action_go_offline).setVisible(NetworkState.ONLINE);
+        menu.findItem(R.id.action_go_online).setVisible(!NetworkState.isOnline());
+        menu.findItem(R.id.action_go_offline).setVisible(NetworkState.isOnline());
 
         // Hide 'today' option if fragment is not the schedule.
         Fragment f = getSupportFragmentManager().findFragmentById(R.id.app_bar_main_content_frame);
@@ -112,35 +116,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                return true;
 
-        // Settings.
-        if (id == R.id.action_settings) {
-            return true;
+            case R.id.action_go_online:
+                if (NetworkState.isActive(getBaseContext())) {
+                    restart();
+                } else {
+                    Toast.makeText(this, "Can't connect to the internet.", Toast.LENGTH_SHORT).show();
+                }
+                return true;
+
+            case R.id.action_go_offline:
+                Intent intent = getIntent();
+                intent.putExtra("online", false);
+                this.finish();
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        // Go online.
-        else if (id == R.id.action_go_online) {
-            if (NetworkState.isActive(getBaseContext())) {
-                restart();
-            } else {
-                Toast.makeText(this, "Can't connect to the internet.", Toast.LENGTH_SHORT).show();
-            }
-        }
-
-        // Go offline.
-        else if (id == R.id.action_go_offline) {
-            Intent intent = getIntent();
-            intent.putExtra("online", false);
-            this.finish();
-            startActivity(intent);
-        }
-
-        return super.onOptionsItemSelected(item);
     }
 
     /**
@@ -149,7 +147,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param persons list of people that match the query.
      */
     @Override
-    public void onPeopleSearchListener(ArrayList<Person> persons) {
+    public void onPeopleSearchListener(final ArrayList<Person> persons) {
         // Search has 1 result.
         if (persons.size() == 1) {
             Fragment fragment = null;
@@ -160,7 +158,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
 
-            PeopleListFragment myFragment = (PeopleListFragment) getSupportFragmentManager().findFragmentByTag("people_overview");
+            PeopleListFragment myFragment = (PeopleListFragment) getSupportFragmentManager().
+                    findFragmentByTag("people_overview");
             if (myFragment != null && myFragment.isVisible()) {
                 fragmentManager
                         .beginTransaction()
@@ -188,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param p the selected person.
      */
     @Override
-    public void onFragmentInteraction(Person p) {
+    public void onFragmentInteraction(final Person p) {
         ArrayList<Person> person = new ArrayList<>();
         person.add(p);
         onPeopleSearchListener(person);
@@ -200,7 +199,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      * @param newsItem selected item.
      */
     @Override
-    public void onAdapterInteractionListener(NewsItem newsItem) {
+    public void onAdapterInteractionListener(final NewsItem newsItem) {
         // Switch fragment
         getSupportFragmentManager()
                 .beginTransaction()
@@ -223,7 +222,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_main_toolbar);
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(final View view) {
                 // Go to previous fragment
                 MainActivity.super.onBackPressed();
 
@@ -236,13 +235,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    /**
+     * Sets up the drawer layout, actionbar and toolbar.
+     */
     private void configureToolbar() {
         // Assign drawerLayout
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
 
         // Configure actionBar
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_main_toolbar);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
     }
@@ -258,7 +261,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull final MenuItem item) {
         Class fragmentClass = null;
 
         int id = item.getItemId();
@@ -285,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      *
      * @param fragmentClass fragment class to replace the current.
      */
-    private void replaceFragment(Class fragmentClass) {
+    private void replaceFragment(final Class fragmentClass) {
         try {
             if (fragmentClass != null) {
                 Fragment fragment = (Fragment) fragmentClass.newInstance();
@@ -303,11 +306,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private class LoadUserData extends AsyncTask<Void, Void, Map<String, String>> {
         @Override
-        protected Map<String, String> doInBackground(Void... params) {
+        protected Map<String, String> doInBackground(final Void... params) {
             Map<String, String> retMap = new HashMap<>();
             try {
                 // Convert the InputStream to a JSONArray
-                JSONObject jObject = new JSONObject(FontysAPI.getStream("https://api.fhict.nl/people/me", getSharedPreferences("settings", MODE_PRIVATE).getString("token", "")));
+                JSONObject jObject = new JSONObject(FontysAPI.getStream("https://api.fhict.nl/people/me",
+                        getSharedPreferences("settings", MODE_PRIVATE).getString("token", "")));
 
                 // Store info
                 SharedPreferences.Editor edit = getSharedPreferences("settings", MODE_PRIVATE).edit();
@@ -327,7 +331,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         @Override
-        protected void onPostExecute(Map<String, String> map) {
+        protected void onPostExecute(final Map<String, String> map) {
             TextView name = (TextView) findViewById(R.id.nav_header_name);
             name.setText(map.get("displayName"));
 
@@ -341,13 +345,15 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     private class LoadProfilePicture extends AsyncTask<Void, Void, Bitmap> {
         @Override
-        protected Bitmap doInBackground(Void... params) {
+        protected Bitmap doInBackground(final Void... params) {
             SharedPreferences sp = getBaseContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
-            return FontysAPI.getPicture("https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg", sp.getString("token", ""));
+            return FontysAPI.getPicture(
+                    "https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg",
+                    sp.getString("token", ""));
         }
 
         @Override
-        protected void onPostExecute(Bitmap result) {
+        protected void onPostExecute(final Bitmap result) {
             CircleImageView image = (CircleImageView) findViewById(R.id.nav_header_profile_image);
             image.setImageBitmap(result);
         }

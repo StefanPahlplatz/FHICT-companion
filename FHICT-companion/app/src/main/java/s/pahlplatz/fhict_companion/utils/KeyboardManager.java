@@ -10,12 +10,16 @@ import android.view.inputmethod.InputMethodManager;
  * Static class to manually hide the keyboard.
  */
 public final class KeyboardManager {
+    private KeyboardManager() {
+        // Not called.
+    }
+
     /**
-     * Hides the keyboard
+     * Hides the keyboard.
      *
      * @param activity current activity
      */
-    public static void hide(Activity activity) {
+    public static void hide(final Activity activity) {
         InputMethodManager imm = (InputMethodManager) activity.getSystemService(Activity.INPUT_METHOD_SERVICE);
 
         //Find the currently focused view, so we can grab the correct window token from it.

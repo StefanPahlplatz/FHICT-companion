@@ -5,6 +5,9 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Schedule model to host all information about the schedule.
+ */
 public class Schedule implements java.io.Serializable {
     private static final String TAG = Schedule.class.getSimpleName();
 
@@ -21,7 +24,7 @@ public class Schedule implements java.io.Serializable {
      * @param i index.
      * @return Week.
      */
-    public Week getWeek(int i) {
+    public Week getWeek(final int i) {
         if (weeks.size() == 0) {
             return null;
         }
@@ -33,7 +36,7 @@ public class Schedule implements java.io.Serializable {
      *
      * @param week to add.
      */
-    public void addWeek(Week week) {
+    public void addWeek(final Week week) {
         weeks.add(week);
     }
 
@@ -43,17 +46,16 @@ public class Schedule implements java.io.Serializable {
      * @param block   to add.
      * @param current date of the block you want to add.
      */
-    public void addBlock(Block block, Date current) {
+    public void addBlock(final Block block, final Date current) {
         for (int i = 0; i < weeks.size(); i++) {
             // If the date is within the week.
-            if (current.compareTo(weeks.get(i).getStart()) != -1 &&
-                    current.compareTo(weeks.get(i).getEnd()) != 1) {
-                // If the week already has the day.
+            if (current.compareTo(weeks.get(i).getStart()) != -1
+                    && current.compareTo(weeks.get(i).getEnd()) != 1) {
                 if (weeks.get(i).hasDate(current) != -1) {
+                    // If the week already has the day.
                     weeks.get(i).addBlock(block, weeks.get(i).hasDate(current));
-                }
-                // Else create the day and add the block.
-                else {
+                } else {
+                    // Else create the day and add the block.
                     Day day = new Day(current);
                     day.addBlock(block);
                     weeks.get(i).addDay(day);
@@ -70,10 +72,11 @@ public class Schedule implements java.io.Serializable {
      * @param date Date of the date you want to check.
      * @return week number. Returns -1 if the week is not found.
      */
-    public int getWeekFromDate(Date date) {
+    public int getWeekFromDate(final Date date) {
         for (int i = 0; i < weeks.size(); i++) {
             if (i + 1 < weeks.size()) {
-                if (date.compareTo(weeks.get(i).getStart()) != -1 && date.compareTo(weeks.get(i + 1).getStart()) == -1) {
+                if (date.compareTo(weeks.get(i).getStart()) != -1
+                        && date.compareTo(weeks.get(i + 1).getStart()) == -1) {
                     return i;
                 }
             }
@@ -116,7 +119,7 @@ public class Schedule implements java.io.Serializable {
             retList.add("Week " + String.valueOf(week.getWeekNr()));
         }
 
-        String retArray[] = new String[retList.size()];
+        String[] retArray = new String[retList.size()];
         return retList.toArray(retArray);
     }
 

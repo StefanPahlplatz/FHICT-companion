@@ -19,15 +19,17 @@ import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.controllers.NewsController;
 import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
 
-public class NewsFragment extends Fragment implements NewsController.NewsControllerListener{
-
+/**
+ * Fragment to show the Fontys news.
+ */
+public class NewsFragment extends Fragment implements NewsController.NewsControllerListener {
     private NewsController controller;
     private RecyclerView recyclerView;
     private ProgressBar progressBar;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+                             final Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_news, container, false);
 
         getActivity().setTitle("News");
@@ -38,7 +40,8 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
         // Configure recyclerView.
         recyclerView = (RecyclerView) view.findViewById(R.id.news_recycler);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new WrapContentLinearLayoutManager(getContext(),
+                LinearLayoutManager.VERTICAL, false));
 
         controller = new NewsController(getContext(), this);
 
@@ -46,13 +49,13 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+    public void onCreateOptionsMenu(final Menu menu, final MenuInflater inflater) {
         inflater.inflate(R.menu.news, menu);
         super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == R.id.action_news_amount) {
             controller.newsAmountDialog();
             return true;
@@ -62,7 +65,7 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
     }
 
     @Override
-    public void onAdapterChanged(NewsAdapter adapter) {
+    public void onAdapterChanged(final NewsAdapter adapter) {
         recyclerView.setAdapter(adapter);
     }
 
@@ -74,7 +77,7 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
     }
 
     @Override
-    public void onProgressbarVisibility(boolean visible) {
+    public void onProgressbarVisibility(final boolean visible) {
         progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 }

@@ -28,12 +28,15 @@ import s.pahlplatz.fhict_companion.utils.FontysAPI;
 
 public class NewsController {
     private static final String TAG = NewsController.class.getSimpleName();
+    private static final int MIN_NEWS_ARTICLES = 5;
+    private static final int MAX_NEWS_ARTICLES = 15;
+    private static final int DEFAULT_NEWS_ARTICLES = 10;
 
     private NewsControllerListener controllerListener;
     private Context ctx;
     private ArrayList<NewsItem> newsItems;
 
-    public NewsController(Context ctx, NewsControllerListener listener) {
+    public NewsController(final Context ctx, final NewsControllerListener listener) {
         this.ctx = ctx;
         this.newsItems = new ArrayList<>();
         this.controllerListener = listener;
@@ -47,10 +50,10 @@ public class NewsController {
     public void newsAmountDialog() {
         // Create NumberPicker
         final NumberPicker picker = new NumberPicker(ctx);
-        picker.setMinValue(5);
-        picker.setMaxValue(15);
+        picker.setMinValue(MIN_NEWS_ARTICLES);
+        picker.setMaxValue(MAX_NEWS_ARTICLES);
         picker.setValue(ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                .getInt("amountOfNewsItems", 10));
+                .getInt("amountOfNewsItems", DEFAULT_NEWS_ARTICLES));
 
         // Create the FrameLayout for the NumberPicker to be hosted in.
         final FrameLayout layout = new FrameLayout(ctx);
@@ -65,7 +68,7 @@ public class NewsController {
                 .setView(layout)
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
+                    public void onClick(final DialogInterface dialogInterface, final int i) {
                         ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
                                 .edit()
                                 .putInt("amountOfNewsItems", picker.getValue())
@@ -79,6 +82,9 @@ public class NewsController {
                 .show();
     }
 
+    /**
+     * Interface implemented by the news host to communicate with the host.
+     */
     public interface NewsControllerListener {
         void onAdapterChanged(NewsAdapter adapter);
 
@@ -99,13 +105,13 @@ public class NewsController {
         }
 
         @Override
-        protected Void doInBackground(Void... params) {
+        protected Void doInBackground(final Void... params) {
             try {
                 // Get JSONArray from API.
                 JSONArray jArray = new JSONObject(FontysAPI.getStream(
                         "https://api.fhict.nl/newsfeeds/Fhict?items=" + ctx
                                 .getSharedPreferences("settings", Context.MODE_PRIVATE)
-                                .getInt("amountOfNewsItems", 10),
+                                .getInt("amountOfNewsItems", DEFAULT_NEWS_ARTICLES),
                         ctx.getSharedPreferences(
                                 "settings", Context.MODE_PRIVATE).getString("token", "")
                 )).getJSONArray("items");
@@ -125,7 +131,7 @@ public class NewsController {
             return null;
         }
 
-        protected void onPostExecute(Void params) {
+        protected void onPostExecute(final Void params) {
             controllerListener.onProgressbarVisibility(false);
 
             // Set the adapter.
@@ -147,14 +153,14 @@ public class NewsController {
         private NewsItem newsItem;
 
         @Override
-        protected Bitmap doInBackground(Object... params) {
+        protected Bitmap doInBackground(final Object... params) {
             SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
             newsItem = (NewsItem) params[0];
             return FontysAPI.getPicture(newsItem.getThumbnailString(), sp.getString("token", ""));
         }
 
         @Override
-        protected void onPostExecute(Bitmap result) {
+        protected void onPostExecute(final Bitmap result) {
             try {
                 if (newsItem != null) {
                     newsItem.setThumbnailString("");

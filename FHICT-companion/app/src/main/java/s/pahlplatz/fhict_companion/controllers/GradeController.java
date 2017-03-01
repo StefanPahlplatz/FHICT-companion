@@ -16,7 +16,7 @@ import s.pahlplatz.fhict_companion.utils.FontysAPI;
 
 /**
  * Created by Stefan on 25-2-2017.
- *
+ * <p>
  * Controller for grade fragment.
  */
 public class GradeController {
@@ -26,7 +26,7 @@ public class GradeController {
     private Context ctx;
     private ArrayList<Grade> grades;
 
-    public GradeController(Context ctx, GradeControllerListener listener) {
+    public GradeController(final Context ctx, final GradeControllerListener listener) {
         this.ctx = ctx;
         this.grades = new ArrayList<>();
         this.controllerListener = listener;
@@ -45,7 +45,7 @@ public class GradeController {
     public void sortGradesAsc() {
         Collections.sort(grades, new Comparator<Grade>() {
             @Override
-            public int compare(Grade grade, Grade t1) {
+            public int compare(final Grade grade, final Grade t1) {
                 return grade.sortByGradeAsc(t1);
             }
         });
@@ -58,7 +58,7 @@ public class GradeController {
     public void sortGradesDesc() {
         Collections.sort(grades, new Comparator<Grade>() {
             @Override
-            public int compare(Grade grade, Grade t1) {
+            public int compare(final Grade grade, final Grade t1) {
                 return grade.sortByGradeDesc(t1);
             }
         });
@@ -71,7 +71,7 @@ public class GradeController {
     public void sortGradesAlp() {
         Collections.sort(grades, new Comparator<Grade>() {
             @Override
-            public int compare(Grade grade, Grade t1) {
+            public int compare(final Grade grade, final Grade t1) {
                 return grade.sortByNameDesc(t1);
             }
         });
@@ -98,7 +98,7 @@ public class GradeController {
         }
 
         @Override
-        public Void doInBackground(Void... params) {
+        public Void doInBackground(final Void... params) {
             try {
                 JSONArray jArray = new JSONArray(FontysAPI.getStream(
                         "https://api.fhict.nl/grades/me",
@@ -106,7 +106,8 @@ public class GradeController {
                                 "settings", Context.MODE_PRIVATE).getString("token", "")));
 
                 for (int i = 0; i < jArray.length(); i++) {
-                    grades.add(new Grade(jArray.getJSONObject(i).getString("item"), jArray.getJSONObject(i).getDouble("grade")));
+                    grades.add(new Grade(jArray.getJSONObject(i).getString("item"),
+                            jArray.getJSONObject(i).getDouble("grade")));
                 }
             } catch (Exception ex) {
                 Log.e(TAG, "doInBackground: A problem occurred while parsing the JSON file.", ex);
@@ -116,7 +117,7 @@ public class GradeController {
         }
 
         @Override
-        public void onPostExecute(Void params) {
+        public void onPostExecute(final Void params) {
             GradeAdapter adapter = new GradeAdapter(ctx, grades);
             controllerListener.onAdapterChanged(adapter);
             controllerListener.onProgressbarVisibility(false);

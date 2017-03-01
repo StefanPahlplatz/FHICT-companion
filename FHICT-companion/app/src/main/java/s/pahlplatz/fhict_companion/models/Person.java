@@ -8,11 +8,11 @@ import android.os.Parcelable;
  */
 public class Person implements Parcelable {
     public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
-        public Person createFromParcel(Parcel in) {
+        public Person createFromParcel(final Parcel in) {
             return new Person(in);
         }
 
-        public Person[] newArray(int size) {
+        public Person[] newArray(final int size) {
 
             return new Person[size];
         }
@@ -29,7 +29,8 @@ public class Person implements Parcelable {
     /**
      * Default constructor.
      */
-    public Person(String name, String mail, String office, String phone, String dep, String title, String id) {
+    public Person(final String name, final String mail, final String office, final String phone,
+                  final String dep, final String title, final String id) {
         this.name = name;
         this.mail = mail;
         this.office = office;
@@ -44,7 +45,7 @@ public class Person implements Parcelable {
      *
      * @param in Parcel.
      */
-    private Person(Parcel in) {
+    private Person(final Parcel in) {
         super();
         readFromParcel(in);
     }
@@ -54,7 +55,7 @@ public class Person implements Parcelable {
      *
      * @param in Parcel.
      */
-    private void readFromParcel(Parcel in) {
+    private void readFromParcel(final Parcel in) {
         name = in.readString();
         mail = in.readString();
         office = in.readString();
@@ -70,7 +71,7 @@ public class Person implements Parcelable {
         return 0;
     }
 
-    public void writeToParcel(Parcel dest, int flags) {
+    public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(name);
         dest.writeString(mail);
         dest.writeString(office);
