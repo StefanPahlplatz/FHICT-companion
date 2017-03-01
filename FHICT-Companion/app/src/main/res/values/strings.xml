@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FHICT-Companion</string>
+    <string name="app_name">FHICT Companion</string>
 
     <!-- MainActivity -->
     <string name="title_activity_main">MainActivity</string>
