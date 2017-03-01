@@ -51,8 +51,6 @@
     <string name="amount">Amount of articles</string>
     <string name="title_activity_news_details">NewsDetailsActivity</string>
     <string name="section_format">Hello World from section: %1$d</string>
-    <string name="week_unknown">Week ?</string>
-    <string name="day_example">Monday</string>
     <string name="author_template">Author</string>
 
     <!-- Grades -->
@@ -66,6 +64,8 @@
     <!-- Settings headers -->
     <string name="pref_header_schedule">Schedule</string>
     <string name="pref_header_grades">Grades</string>
+    <string name="pref_header_account">Account</string>
+    <string name="pref_header_network">Network</string>
 
     <!-- Schedule settings -->
     <string name="pref_schedule_show_breaks_sum">Show breaks in between classes when possible.</string>
@@ -74,7 +74,28 @@
     <string name="pref_schedule_merge_title">Merge blocks</string>
     <string name="pref_schedule_highlight_breaks_sum">Show breaks in a different colour.</string>
     <string name="pref_schedule_highlight_breaks_title">Highlight breaks</string>
+    <string name="pref_schedule_always_download_sum">Always download the schedule when its different from the currently saved one.</string>
+    <string name="pref_schedule_always_download_title">Always download schedule</string>
 
     <!-- Grade settings-->
+    <string-array name="pref_grades_sort_titles">
+        <item>None</item>
+        <item>Alphabetical</item>
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+    <string-array name="pref_grades_sort_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 
+    <!-- Account settings -->
+    <string name="pref_account_logout">Log out</string>
+
+    <!-- Network settings -->
+    <string name="pref_network_always_offline_sum">Launch app in offline mode even if an internet connection is available. (Gets turned off if you press \'Go online\').</string>
+    <string name="pref_network_always_offline_title">Always offline</string>
+    <string name="settings">Settings</string>
 </resources>

@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -61,10 +62,10 @@ public final class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        if (getSharedPreferences("pref", MODE_PRIVATE).getBoolean("online", true)) {
-            NetworkState.setOnline(NetworkState.isActive(this));
-        } else {
+        if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("always_offline", false)) {
             NetworkState.setOnline(false);
+        } else {
+            NetworkState.setOnline(NetworkState.isActive(this));
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_main_toolbar);
@@ -129,7 +130,10 @@ public final class MainActivity extends AppCompatActivity
 
             case R.id.action_go_online:
                 if (NetworkState.isActive(getBaseContext())) {
-                    getSharedPreferences("pref", MODE_PRIVATE).edit().putBoolean("online", true).apply();
+                    PreferenceManager.getDefaultSharedPreferences(this)
+                            .edit()
+                            .putBoolean("always_offline", false)
+                            .apply();
                     restart();
                 } else {
                     Toast.makeText(this, "Can't connect to the internet.", Toast.LENGTH_SHORT).show();
@@ -138,7 +142,10 @@ public final class MainActivity extends AppCompatActivity
 
             case R.id.action_go_offline:
                 Intent intent = getIntent();
-                getSharedPreferences("pref", MODE_PRIVATE).edit().putBoolean("online", false).apply();
+                PreferenceManager.getDefaultSharedPreferences(this)
+                        .edit()
+                        .putBoolean("always_offline", true)
+                        .apply();
                 this.finish();
                 startActivity(intent);
                 return true;
@@ -184,7 +191,11 @@ public final class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
             android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_overview").commit();
+            try {
+                fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_overview").commit();
+            } catch (IllegalStateException ex) {
+                Log.e(TAG, "onPeopleSearchListener: ", ex);
+            }
         }
     }
 
@@ -281,6 +292,10 @@ public final class MainActivity extends AppCompatActivity
             fragmentClass = NewsFragment.class;
         } else if (id == R.id.nav_grades) {
             fragmentClass = GradeFragment.class;
+        } else if (id == R.id.nav_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
         }
 
         replaceFragment(fragmentClass);

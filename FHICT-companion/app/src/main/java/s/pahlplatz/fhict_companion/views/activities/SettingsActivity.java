@@ -3,6 +3,7 @@ package s.pahlplatz.fhict_companion.views.activities;
 
 import android.annotation.TargetApi;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.os.Build;
@@ -14,6 +15,7 @@ import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AlertDialog;
 import android.view.MenuItem;
 
 import java.util.List;
@@ -152,7 +154,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     protected boolean isValidFragment(final String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || SchedulePreferenceFragment.class.getName().equals(fragmentName)
-                || GradesPreferenceFragment.class.getName().equals(fragmentName);
+                || GradesPreferenceFragment.class.getName().equals(fragmentName)
+                || AccountPreferenceFragment.class.getName().equals(fragmentName)
+                || NetworkPreferenceFragment.class.getName().equals(fragmentName);
     }
 
     /**
@@ -171,8 +175,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         public boolean onOptionsItemSelected(final MenuItem item) {
             switch (item.getItemId()) {
                 case android.R.id.home:
-                    //startActivity(new Intent(getActivity(), SettingsActivity.class));
-                    getActivity().finish();
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    return true;
 
                 default:
                     return super.onOptionsItemSelected(item);
@@ -190,6 +194,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_grades);
             setHasOptionsMenu(true);
+
+            bindPreferenceSummaryToValue(findPreference("grade_sort"));
         }
 
         @Override
@@ -197,6 +203,86 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             switch (item.getItemId()) {
                 case android.R.id.home:
                     startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
+    }
+
+    /**
+     * Grade settings.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class AccountPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_account);
+            setHasOptionsMenu(true);
+
+            Preference p = findPreference("logout");
+            p.setSummary("Currently logged in as " + getContext()
+                    .getSharedPreferences("settings", MODE_PRIVATE).getString("displayName", ""));
+            p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                @Override
+                public boolean onPreferenceClick(final Preference preference) {
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(final DialogInterface dialog, final int which) {
+                            if (which == DialogInterface.BUTTON_POSITIVE) {
+                                // Start login intent
+                                Intent loginIntent = new Intent(getActivity(), LoginActivity.class);
+                                loginIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                startActivity(loginIntent);
+                                getActivity().finish();
+                            }
+                        }
+                    };
+
+                    AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                    builder.setMessage("Are you sure you want to log out?")
+                            .setPositiveButton("Yes", dialogClickListener)
+                            .setNegativeButton("No", dialogClickListener)
+                            .show();
+
+                    return true;
+                }
+            });
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(final MenuItem item) {
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+        }
+    }
+
+    /**
+     * Network settings.
+     */
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
+    public static class NetworkPreferenceFragment extends PreferenceFragment {
+        @Override
+        public void onCreate(final Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            addPreferencesFromResource(R.xml.pref_network);
+            setHasOptionsMenu(true);
+        }
+
+        @Override
+        public boolean onOptionsItemSelected(final MenuItem item) {
+            switch (item.getItemId()) {
+                case android.R.id.home:
+                    startActivity(new Intent(getActivity(), SettingsActivity.class));
+                    return true;
 
                 default:
                     return super.onOptionsItemSelected(item);

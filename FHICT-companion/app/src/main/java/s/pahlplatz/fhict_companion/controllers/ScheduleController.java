@@ -259,6 +259,13 @@ public class ScheduleController {
             setCurrentDay();
 
             scheduleListener.onShowSchedule();
+
+            // Save the schedule if option is selected.
+            if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("always_download_schedule", false)) {
+                if (LocalPersistence.readObjectFromFile(ctx, "schedule") != schedule) {
+                    LocalPersistence.writeObjectToFile(ctx, schedule, "schedule");
+                }
+            }
         }
 
         /**

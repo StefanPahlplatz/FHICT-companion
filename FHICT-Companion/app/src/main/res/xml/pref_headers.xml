@@ -10,4 +10,14 @@
         android:icon="@drawable/ic_school_black_24dp"
         android:title="@string/pref_header_grades" />
 
+    <header
+        android:fragment="s.pahlplatz.fhict_companion.views.activities.SettingsActivity$AccountPreferenceFragment"
+        android:icon="@drawable/ic_people_black_24dp"
+        android:title="@string/pref_header_account" />
+
+    <header
+        android:fragment="s.pahlplatz.fhict_companion.views.activities.SettingsActivity$NetworkPreferenceFragment"
+        android:icon="@drawable/ic_signal_wifi_3_bar_black_24dp"
+        android:title="@string/pref_header_network" />
+
 </preference-headers>

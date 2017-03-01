@@ -17,7 +17,7 @@
         android:title="@string/action_settings"
         app:showAsAction="never" />
 
-    <!-- Schedule today -->
+    <!-- Schedule today icon -->
     <item
         android:id="@+id/action_schedule_today"
         android:icon="@drawable/ic_today_white_24dp"

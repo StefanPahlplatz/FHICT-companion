@@ -2,6 +2,7 @@ package s.pahlplatz.fhict_companion.controllers;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -21,6 +22,10 @@ import s.pahlplatz.fhict_companion.utils.FontysAPI;
  */
 public class GradeController {
     private static final String TAG = GradeController.class.getSimpleName();
+    private static final int NONE = 0;
+    private static final int ALPH = 1;
+    private static final int ASC = 2;
+    private static final int DESC = 3;
 
     private GradeControllerListener controllerListener;
     private Context ctx;
@@ -118,8 +123,25 @@ public class GradeController {
 
         @Override
         public void onPostExecute(final Void params) {
-            GradeAdapter adapter = new GradeAdapter(ctx, grades);
-            controllerListener.onAdapterChanged(adapter);
+            switch (Integer.valueOf(PreferenceManager.getDefaultSharedPreferences(ctx).getString("grade_sort", "0"))) {
+                case ALPH:
+                    sortGradesAlp();
+                    break;
+
+                case ASC:
+                    sortGradesAsc();
+                    break;
+
+                case DESC:
+                    sortGradesDesc();
+                    break;
+
+                case NONE:
+                default:
+                    GradeAdapter a = new GradeAdapter(ctx, grades);
+                    controllerListener.onAdapterChanged(a);
+                    break;
+            }
             controllerListener.onProgressbarVisibility(false);
         }
     }

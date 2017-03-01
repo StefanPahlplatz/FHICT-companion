@@ -4,19 +4,25 @@
         android:defaultValue="true"
         android:key="merge_same_blocks"
         android:summary="@string/pref_schedule_merge_sum"
-        android:title="@string/pref_schedule_merge_title" />
+        android:title="@string/pref_schedule_merge_title"/>
 
     <SwitchPreference
         android:defaultValue="true"
         android:key="show_breaks"
         android:summary="@string/pref_schedule_show_breaks_sum"
-        android:title="@string/pref_schedule_show_breaks_title" />
+        android:title="@string/pref_schedule_show_breaks_title"/>
 
     <SwitchPreference
         android:defaultValue="true"
         android:dependency="show_breaks"
         android:key="highlight_breaks"
         android:summary="@string/pref_schedule_highlight_breaks_sum"
-        android:title="@string/pref_schedule_highlight_breaks_title" />
+        android:title="@string/pref_schedule_highlight_breaks_title"/>
+
+    <SwitchPreference
+        android:defaultValue="true"
+        android:key="always_download_schedule"
+        android:summary="@string/pref_schedule_always_download_sum"
+        android:title="@string/pref_schedule_always_download_title"/>
 
 </PreferenceScreen>
