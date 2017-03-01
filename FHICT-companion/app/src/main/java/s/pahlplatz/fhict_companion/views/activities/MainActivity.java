@@ -61,7 +61,11 @@ public final class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
-        NetworkState.setOnline(getIntent().getBooleanExtra("online", false));
+        if (getSharedPreferences("pref", MODE_PRIVATE).getBoolean("online", true)) {
+            NetworkState.setOnline(NetworkState.isActive(this));
+        } else {
+            NetworkState.setOnline(false);
+        }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_main_toolbar);
         setSupportActionBar(toolbar);
@@ -119,10 +123,13 @@ public final class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(final MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
                 return true;
 
             case R.id.action_go_online:
                 if (NetworkState.isActive(getBaseContext())) {
+                    getSharedPreferences("pref", MODE_PRIVATE).edit().putBoolean("online", true).apply();
                     restart();
                 } else {
                     Toast.makeText(this, "Can't connect to the internet.", Toast.LENGTH_SHORT).show();
@@ -131,7 +138,7 @@ public final class MainActivity extends AppCompatActivity
 
             case R.id.action_go_offline:
                 Intent intent = getIntent();
-                intent.putExtra("online", false);
+                getSharedPreferences("pref", MODE_PRIVATE).edit().putBoolean("online", false).apply();
                 this.finish();
                 startActivity(intent);
                 return true;

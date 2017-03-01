@@ -21,8 +21,8 @@ public class LaunchActivity extends AppCompatActivity {
         Log.i(TAG, "onCreate: ACTIVE INTERNET CONNECTION: " + hasConnection);
 
         Intent intent = new Intent(getBaseContext(), hasConnection ? LoginActivity.class : MainActivity.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.putExtra("online", hasConnection);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
         startActivity(intent);
         this.finish();

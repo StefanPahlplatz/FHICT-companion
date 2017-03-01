@@ -50,6 +50,13 @@ public class Day implements java.io.Serializable {
     }
 
     /**
+     * Whether the day contains information or not.
+     */
+    boolean isEmpty() {
+        return blocks.size() == 0;
+    }
+
+    /**
      * Merges two consecutive blocks if the times follow up and the subjects are the same.
      */
     void mergeDuplicates() {
@@ -82,7 +89,7 @@ public class Day implements java.io.Serializable {
     }
 
     /**
-     * Disposes of the day by.
+     * Disposes of the day.
      */
     void dispose() {
         date = null;

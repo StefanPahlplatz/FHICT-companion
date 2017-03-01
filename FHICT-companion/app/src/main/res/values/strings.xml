@@ -1,10 +1,16 @@
 <resources>
     <string name="app_name">FHICT-Companion</string>
-    <string name="title_activity_main">MainActivity</string>
 
+    <!-- MainActivity -->
+    <string name="title_activity_main">MainActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
+    <!-- Toolbar -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_download">Download</string>
+    <string name="action_go_offline">Go offline</string>
+    <string name="action_go_online">Go online</string>
     <string name="action_settings">Settings</string>
 
     <!-- Navigation drawer -->
@@ -24,10 +30,6 @@
     <string name="teacher_placeholder">teacher</string>
     <string name="exam">exam</string>
     <string name="no_schedule_found">No offline schedule found.\nPlease go online to download.</string>
-    <string name="action_refresh">Refresh</string>
-    <string name="action_download">Download</string>
-    <string name="action_go_offline">Go offline</string>
-    <string name="action_go_online">Go online</string>
 
     <!-- People -->
     <string name="part_of_name_office_id">Part of name/office/id</string>
@@ -59,5 +61,22 @@
     <string name="sort_by_grade_asc">Sort by grade (ASC)</string>
     <string name="sort_by_grade_desc">Sort by grade (DESC)</string>
     <string name="go_to_today">Go to today</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Settings headers -->
+    <string name="pref_header_schedule">Schedule</string>
+    <string name="pref_header_data_sync">Data &amp; sync</string>
+    <string name="pref_title_system_sync_settings">System sync settings</string>
+
+    <!-- Schedule settings -->
+    <string name="pref_schedule_show_breaks_sum">Show breaks in between classes when possible.</string>
+    <string name="pref_schedule_show_breaks_title">Show breaks</string>
+    <string name="pref_schedule_merge_sum">Merge blocks if they are the same.</string>
+    <string name="pref_schedule_merge_title">Merge blocks</string>
+    <string name="pref_schedule_show_empty_sum">Show days in the schedule, even if they have no info.</string>
+    <string name="pref_schedule_show_empty_title">Show empty days</string>
+    <string name="pref_schedule_highlight_breaks_sum">Show breaks in a different colour.</string>
+    <string name="pref_schedule_highlight_breaks_title">Highlight breaks</string>
+    <!---->
 
 </resources>

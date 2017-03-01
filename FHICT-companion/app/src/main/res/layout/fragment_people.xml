@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,23 +14,23 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
         android:layout_marginEnd="0dp"
+        android:layout_marginStart="8dp"
         android:layout_toStartOf="@+id/people_button_search"
         android:hint="@string/part_of_name_office_id"
         android:imeOptions="actionSearch"
-        android:inputType="text"/>
+        android:inputType="text" />
 
     <Button
         android:id="@+id/people_button_search"
         android:layout_width="wrap_content"
         android:layout_height="43dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="0dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="0dp"
         android:text="@string/search"
-        android:textSize="12sp"/>
+        android:textSize="12sp" />
 
     <FrameLayout
         android:id="@+id/people_content"
@@ -39,8 +38,7 @@
         android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_edittext_search"
-        android:layout_marginTop="16dp">
-    </FrameLayout>
+        android:layout_marginTop="16dp"/>
 
     <ProgressBar
         android:id="@+id/people_pbar"
@@ -49,6 +47,6 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:padding="16dp"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
 </RelativeLayout>

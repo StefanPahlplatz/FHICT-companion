@@ -2,6 +2,7 @@ package s.pahlplatz.fhict_companion.controllers;
 
 import android.content.Context;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -29,6 +30,9 @@ import s.pahlplatz.fhict_companion.utils.NetworkState;
  */
 public class ScheduleController {
     private static final String TAG = ScheduleController.class.getSimpleName();
+    /**
+     * Turns 'Monday' into 'Mon' for comparison.
+     */
     private static final int SHORT_DAY = 3;
     private static final String[] DAYS = new String[] {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
@@ -39,7 +43,9 @@ public class ScheduleController {
     private int week = 0;
     private int day = 0;
 
-    // Reference to the view hosting the schedule.
+    /**
+     * Reference to the view hosting the schedule.
+     */
     private ScheduleListener scheduleListener;
 
     /**
@@ -169,7 +175,7 @@ public class ScheduleController {
             if (sWeek != null) {
                 Day sDay = sWeek.getDay(day);
                 if (sDay != null) {
-                    return new ScheduleAdapter(sDay);
+                    return new ScheduleAdapter(sDay, ctx);
                 }
             }
         }
@@ -241,8 +247,13 @@ public class ScheduleController {
 
         @Override
         protected void onPostExecute(final Void params) {
-            schedule.mergeBlocks();
-            schedule.insertBreaks();
+            if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("merge_same_blocks", true)) {
+                schedule.mergeBlocks();
+            }
+
+            if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("show_breaks", true)) {
+                schedule.insertBreaks();
+            }
 
             setCurrentWeek();
             setCurrentDay();
@@ -278,19 +289,18 @@ public class ScheduleController {
 
             for (int i = 0; i < jDays.length(); i++) {
                 try {
-                    // Get data from array
+                    // Get data from array.
                     String room = jDays.getJSONObject(i).getString("room").replace("_", " ");
                     String subject = jDays.getJSONObject(i).getString("subject");
-                    //String desc = jDays.getJSONObject(i).getString("description");
                     String teacherAbbr = jDays.getJSONObject(i).getString("teacherAbbreviation");
                     String start = jDays.getJSONObject(i).getString("start");
                     String end = jDays.getJSONObject(i).getString("end");
                     Date date = format.parse(start);
 
-                    // Wrap all info in a block object
+                    // Wrap all info in a block object.
                     Block block = new Block(room, subject, teacherAbbr, start, end);
 
-                    // Add block to the schedule
+                    // Add block to the schedule.
                     schedule.addBlock(block, date);
                 } catch (ParseException ex) {
                     Log.e(TAG, "Week: Exception occurred while converting the start date string to a date object", ex);
@@ -306,7 +316,9 @@ public class ScheduleController {
          */
         private void setCurrentDay() {
             day = getCurrentDay();
-            DAYS[day] += " (today)";
+            if (!DAYS[day].contains("(today)")) {
+                DAYS[day] += " (today)";
+            }
             scheduleListener.onDaySpinner(DAYS[day]);
         }
 

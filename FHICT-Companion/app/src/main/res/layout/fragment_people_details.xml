@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:padding="8dp"
-    android:layout_marginTop="4dp">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginTop="4dp"
+    android:orientation="vertical"
+    android:padding="8dp">
 
     <!-- All constant textviews -->
 
@@ -16,7 +16,7 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:padding="8dp"
-        android:text="@string/name"/>
+        android:text="@string/name" />
 
     <TextView
         android:id="@+id/people_info_mail_ph"
@@ -26,7 +26,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_info_name"
         android:padding="8dp"
-        android:text="@string/mail"/>
+        android:text="@string/mail" />
 
     <TextView
         android:id="@+id/people_info_office_ph"
@@ -36,7 +36,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_info_mail"
         android:padding="8dp"
-        android:text="@string/office"/>
+        android:text="@string/office" />
 
     <TextView
         android:id="@+id/people_info_phone_ph"
@@ -46,7 +46,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_info_office"
         android:padding="8dp"
-        android:text="@string/phone"/>
+        android:text="@string/phone" />
 
     <TextView
         android:id="@+id/people_info_dep_ph"
@@ -56,7 +56,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_info_phone"
         android:padding="8dp"
-        android:text="@string/department"/>
+        android:text="@string/department" />
 
     <TextView
         android:id="@+id/people_info_title_ph"
@@ -66,7 +66,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_info_dep"
         android:padding="8dp"
-        android:text="@string/title"/>
+        android:text="@string/title" />
 
     <TextView
         android:id="@+id/people_info_id_ph"
@@ -76,7 +76,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/people_info_title"
         android:padding="8dp"
-        android:text="@string/id"/>
+        android:text="@string/id" />
 
     <!-- All modifiable textviews -->
 
@@ -90,7 +90,7 @@
         android:layout_toEndOf="@+id/people_info_name_ph"
         android:padding="8dp"
         android:text="@string/name"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/people_info_mail"
@@ -101,7 +101,7 @@
         android:layout_below="@+id/people_info_name"
         android:padding="8dp"
         android:text="@string/mail"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/people_info_office"
@@ -112,7 +112,7 @@
         android:layout_below="@+id/people_info_mail"
         android:padding="8dp"
         android:text="@string/office"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/people_info_phone"
@@ -123,7 +123,7 @@
         android:layout_below="@+id/people_info_office"
         android:padding="8dp"
         android:text="@string/phone"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/people_info_dep"
@@ -134,7 +134,7 @@
         android:layout_below="@+id/people_info_phone"
         android:padding="8dp"
         android:text="@string/department"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/people_info_title"
@@ -145,7 +145,7 @@
         android:layout_below="@+id/people_info_dep"
         android:padding="8dp"
         android:text="@string/title"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/people_info_id"
@@ -156,6 +156,6 @@
         android:layout_below="@+id/people_info_title"
         android:padding="8dp"
         android:text="@string/id"
-        android:textStyle="normal"/>
+        android:textStyle="normal" />
 
 </RelativeLayout>

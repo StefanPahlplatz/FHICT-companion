@@ -1,5 +1,9 @@
 package s.pahlplatz.fhict_companion.adapters;
 
+import android.content.Context;
+import android.preference.PreferenceManager;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -33,14 +36,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int MILISEC_TO_MINUTE = 60000;
 
     private final Day day;
+    private final Context ctx;
 
     /**
      * Default constructor.
      *
      * @param day the day the schedule will show.
      */
-    public ScheduleAdapter(final Day day) {
+    public ScheduleAdapter(final Day day, final Context ctx) {
         this.day = day;
+        this.ctx = ctx;
     }
 
     /**
@@ -60,9 +65,16 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             case NORMAL:
                 return new ViewHolderNormal(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.card_schedule_block, parent, false));
+
             case BREAK:
-                return new ViewHolderBreak(LayoutInflater.from(parent.getContext())
+                ViewHolderBreak viewHolderBreak = new ViewHolderBreak(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.card_schedule_break, parent, false));
+                if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("highlight_breaks", true)) {
+                    viewHolderBreak.card.setBackgroundTintList(
+                            ContextCompat.getColorStateList(ctx, R.color.colorGreen));
+                }
+                return viewHolderBreak;
+
             default:
                 return null;
         }
@@ -70,35 +82,54 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        String time = day.getBlock(position).getStart() + " - " + day.getBlock(position).getEnd();
         switch (holder.getItemViewType()) {
             case NORMAL:
                 ViewHolderNormal viewHolder0 = (ViewHolderNormal) holder;
-                viewHolder0.time.setText(time);
+                viewHolder0.time.setText(getTime(position));
                 viewHolder0.course.setText(day.getBlock(position).getSubject());
                 viewHolder0.room.setText(day.getBlock(position).getRoom());
                 viewHolder0.teacher.setText(day.getBlock(position).getTeacherAbbr());
                 break;
 
             case BREAK:
-                try {
-                    ViewHolderBreak viewHolder1 = (ViewHolderBreak) holder;
-                    String start = time.substring(0, END_OF_START_TIME);
-                    String end = time.substring(START_OF_END_TIME);
-                    SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
-                    Date date1 = format.parse(start);
-                    Date date2 = format.parse(end);
-                    long difference = (date2.getTime() - date1.getTime()) / MILISEC_TO_MINUTE;
-                    String s = String.valueOf(difference) + " minute break";
-                    viewHolder1.time.setText(s);
-                } catch (ParseException ex) {
-                    Log.e(TAG, "onBindViewHolder: Exception occurred while parsing the string to a Date", ex);
-                }
+                ViewHolderBreak viewHolderBreak = (ViewHolderBreak) holder;
+                viewHolderBreak.time.setText(calculateBreakTime(position));
                 break;
 
             default:
                 throw new RuntimeException(TAG + "Invalid holder type.");
         }
+    }
+
+    /**
+     * Gets the formatted start and end time of the block. e.g. "10:30 - 12:00".
+     *
+     * @param position in the block array.
+     * @return formatted time.
+     */
+    private String getTime(final int position) {
+        return day.getBlock(position).getStart() + " - " + day.getBlock(position).getEnd();
+    }
+
+    /**
+     * Calculates how long the break is for.
+     *
+     * @param position in the block array.
+     * @return break time.
+     */
+    private String calculateBreakTime(final int position) {
+        long difference = 0;
+        String start = getTime(position).substring(0, END_OF_START_TIME);
+        String end = getTime(position).substring(START_OF_END_TIME);
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm", Locale.getDefault());
+        try {
+            Date date1 = format.parse(start);
+            Date date2 = format.parse(end);
+            difference = (date2.getTime() - date1.getTime()) / MILISEC_TO_MINUTE;
+        } catch (Exception ex) {
+            Log.e(TAG, "calculateBreakTime: Error while parsing date.", ex);
+        }
+        return String.valueOf(difference) + " minute break";
     }
 
     @Override
@@ -129,10 +160,12 @@ public class ScheduleAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
      */
     private final class ViewHolderBreak extends RecyclerView.ViewHolder {
         private final TextView time;
+        private final CardView card;
 
         private ViewHolderBreak(final View view) {
             super(view);
             time = (TextView) view.findViewById(R.id.break_card_times);
+            card = (CardView) view.findViewById(R.id.break_card_view);
         }
     }
 }
