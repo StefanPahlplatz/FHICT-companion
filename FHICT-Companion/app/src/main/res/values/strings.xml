@@ -1,0 +1,101 @@
+<resources>
+    <string name="app_name">FHICT-Companion</string>
+
+    <!-- MainActivity -->
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <!-- Toolbar -->
+    <string name="action_refresh">Refresh</string>
+    <string name="action_download">Download</string>
+    <string name="action_go_offline">Go offline</string>
+    <string name="action_go_online">Go online</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- Navigation drawer -->
+    <string name="app_in_offline_mode">App in offline mode</string>
+    <string name="news">News</string>
+    <string name="grades">Grades</string>
+    <string name="schedule">Schedule</string>
+    <string name="people">People</string>
+
+    <!-- Schedule -->
+    <string name="previous"><![CDATA[<]]></string>
+    <string name="next"><![CDATA[>]]></string>
+    <string name="no_data">No data</string>
+    <string name="time_placeholder">time</string>
+    <string name="course_placeholder">course</string>
+    <string name="room_placeholder">room</string>
+    <string name="teacher_placeholder">teacher</string>
+    <string name="exam">exam</string>
+    <string name="no_schedule_found">No offline schedule found.\nPlease go online to download.</string>
+
+    <!-- People -->
+    <string name="part_of_name_office_id">Part of name/office/id</string>
+    <string name="search">Search</string>
+
+    <!-- People details -->
+    <string name="mail">Mail:</string>
+    <string name="id">Id:</string>
+    <string name="title">Title:</string>
+    <string name="department">Department:</string>
+    <string name="phone">Phone:</string>
+    <string name="office">Office:</string>
+    <string name="name">Name:</string>
+
+    <!-- News -->
+    <string name="thumbnail">Thumbnail</string>
+    <string name="description_placeholder">Description text and stuff</string>
+    <string name="header_placeholder">Header</string>
+    <string name="amount">Amount of articles</string>
+    <string name="title_activity_news_details">NewsDetailsActivity</string>
+    <string name="section_format">Hello World from section: %1$d</string>
+    <string name="author_template">Author</string>
+
+    <!-- Grades -->
+    <string name="example_grade">8</string>
+    <string name="sort_alphabetical">Sort alphabetical</string>
+    <string name="sort_by_grade_asc">Sort by grade (ASC)</string>
+    <string name="sort_by_grade_desc">Sort by grade (DESC)</string>
+    <string name="go_to_today">Go to today</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!-- Settings headers -->
+    <string name="pref_header_schedule">Schedule</string>
+    <string name="pref_header_grades">Grades</string>
+    <string name="pref_header_account">Account</string>
+    <string name="pref_header_network">Network</string>
+
+    <!-- Schedule settings -->
+    <string name="pref_schedule_show_breaks_sum">Show breaks in between classes when possible.</string>
+    <string name="pref_schedule_show_breaks_title">Show breaks</string>
+    <string name="pref_schedule_merge_sum">Merge blocks if they are the same.</string>
+    <string name="pref_schedule_merge_title">Merge blocks</string>
+    <string name="pref_schedule_highlight_breaks_sum">Show breaks in a different colour.</string>
+    <string name="pref_schedule_highlight_breaks_title">Highlight breaks</string>
+    <string name="pref_schedule_always_download_sum">Always download the schedule when its different from the currently saved one.</string>
+    <string name="pref_schedule_always_download_title">Always download schedule</string>
+
+    <!-- Grade settings-->
+    <string-array name="pref_grades_sort_titles">
+        <item>None</item>
+        <item>Alphabetical</item>
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+    <string-array name="pref_grades_sort_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+
+    <!-- Account settings -->
+    <string name="pref_account_logout">Log out</string>
+
+    <!-- Network settings -->
+    <string name="pref_network_always_offline_sum">Launch app in offline mode even if an internet connection is available. (Gets turned off if you press \'Go online\').</string>
+    <string name="pref_network_always_offline_title">Always offline</string>
+    <string name="settings">Settings</string>
+</resources>
