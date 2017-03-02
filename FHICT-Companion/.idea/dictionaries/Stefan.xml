@@ -2,7 +2,9 @@
   <dictionary name="Stefan">
     <words>
       <w>alph</w>
+      <w>creds</w>
       <w>milisec</w>
+      <w>webbrowser</w>
     </words>
   </dictionary>
 </component>

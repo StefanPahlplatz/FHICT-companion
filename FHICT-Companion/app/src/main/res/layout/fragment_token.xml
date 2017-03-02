@@ -1,8 +1,8 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="s.pahlplatz.fhict_companion.views.fragments.TokenFragment">
+    tools:context="s.pahlplatz.fhict_companion.views.activities.LoginActivity">
 
     <WebView
         android:id="@+id/token_webview"
@@ -13,7 +13,19 @@
         android:id="@+id/token_pbar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
         android:visibility="visible" />
 
-</FrameLayout>
+    <TextView
+        android:id="@+id/token_loading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:textAlignment="center"
+        android:text="@string/logging_in"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:visibility="invisible"/>
+
+</RelativeLayout>

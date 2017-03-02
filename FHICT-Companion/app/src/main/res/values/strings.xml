@@ -100,4 +100,5 @@
     <!-- Network settings -->
     <string name="pref_network_always_offline_sum">Launch app in offline mode even if an internet connection is available. (Gets turned off if you press \'Go online\').</string>
     <string name="pref_network_always_offline_title">Always offline</string>
+    <string name="logging_in">Logging in...</string>
 </resources>
