@@ -5,8 +5,8 @@
       <map>
         <entry key="active-configuration" value="LOCAL_FILE:F:/OneDrive/Programming/Java/sun_checks_nav_services_adapted.xml:Lorenzo" />
         <entry key="checkstyle-version" value="7.5.1" />
-        <entry key="location-0" value="CLASSPATH:/sun_checks.xml:The default Checkstyle rules" />
-        <entry key="location-1" value="LOCAL_FILE:F:/OneDrive/Programming/Java/sun_checks_nav_services_adapted.xml:Lorenzo" />
+        <entry key="location-0" value="LOCAL_FILE:F:/OneDrive/Programming/Java/sun_checks_nav_services_adapted.xml:Lorenzo" />
+        <entry key="location-1" value="CLASSPATH:/sun_checks.xml:The default Checkstyle rules" />
         <entry key="scanscope" value="JavaOnly" />
         <entry key="suppress-errors" value="true" />
         <entry key="thirdparty-classpath" value="" />
