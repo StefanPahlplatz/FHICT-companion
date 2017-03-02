@@ -45,6 +45,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final String FULL_URL = OAUTH_URL + "?redirect_uri=" + REDIRECT_URI + "&response_type=token&client_id="
             + CLIENT_ID + "&scope=" + OAUTH_SCOPE;
     private static final int RC_SAVE = 1;
+    private static final int RC_READ = 3;
 
     private boolean mIsRequesting;
     private boolean mIsResolving;
@@ -128,17 +129,26 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                             + "document.getElementById('password').value);};");
 
 
+                    // =================================================================
+                    // AUTHORIZATION PAGE
+                    // =================================================================
                 } else if (url.contains("connect/authorize?redirect_uri")) {
                     if (autoLogin) {
                         web.loadUrl("javascript: {var button = document.getElementsByClassName('btn btn-success')[0].click();};");
                     }
 
+                    // =================================================================
+                    // ACCESS DENIED!
+                    // =================================================================
                 } else if (url.contains("error=access_denied")) {
                     Log.e(TAG, "ACCESS_DENIED_HERE");
                     authComplete = true;
                     //TODO: hide the deny access button with js injection.
 
 
+                    // =================================================================
+                    // WE'RE ON THE FINAL PAGE
+                    // =================================================================
                 } else if (url.contains("access_token=") && !authComplete) {
                     // Get the auth token.
                     authCode = getAuthCode(url);
@@ -216,6 +226,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         });
     }
 
+    /**
+     * Processes the info from requestCredentials().
+     */
     private void resolveResult(final Status status, final int requestCode) {
         // We don't want to fire multiple resolutions at once since that
         // can result in stacked dialogs after rotation or another
@@ -234,27 +247,28 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             } catch (IntentSender.SendIntentException e) {
                 Log.e(TAG, "STATUS: Failed to send resolution.", e);
             }
-        } else {
-            Log.e(TAG, "STATUS: FAIL");
-            if (requestCode == RC_SAVE) {
-                //goToContent();
-                Log.i(TAG, "resolveResult: would call goToContent");
-            }
         }
     }
 
     public void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         Log.d(TAG, "onActivityResult:" + requestCode + ":" + resultCode + ":" + data);
-        if (requestCode == RC_SAVE) {
+
+        if (requestCode == RC_READ) {
+            if (resultCode == RESULT_OK) {
+                credential = data.getParcelableExtra(Credential.EXTRA_KEY);
+            } else {
+                Log.e(TAG, "Credential Read: NOT OK");
+            }
+            // Load the url to let the user sign in.
+            web.loadUrl(FULL_URL);
+        } else if (requestCode == RC_SAVE) {
             Log.d(TAG, "Result code: " + resultCode);
             if (resultCode == RESULT_OK) {
                 Log.d(TAG, "Credential Save: OK");
             } else {
                 Log.e(TAG, "Credential Save Failed");
             }
-            //goToContent();
-            Log.i(TAG, "resolveResult: would call goToContent");
         }
         mIsResolving = false;
     }
@@ -306,19 +320,22 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 progressBar.setVisibility(View.VISIBLE);
                                 TextView loading = (TextView) findViewById(R.id.token_loading);
                                 loading.setVisibility(View.VISIBLE);
-
-
+                                // Load the url to let the user sign in.
+                                web.loadUrl(FULL_URL);
+                            } else if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
+                                    // This is most likely the case where the user has multiple saved
+                                    // credentials and needs to pick one.
+                                    resolveResult(status, RC_READ);
                             } else if (status.getStatusCode() == CommonStatusCodes.SIGN_IN_REQUIRED) {
                                 // This is most likely the case where the user does not currently
                                 // have any saved credentials and thus needs to provide a username
                                 // and password to sign in.
                                 Log.d(TAG, "Sign in required");
+                                // Load the url to let the user sign in.
+                                web.loadUrl(FULL_URL);
                             } else {
                                 Log.w(TAG, "Unrecognized status code: " + status.getStatusCode());
                             }
-
-                            // Load the url to let the user sign in.
-                            web.loadUrl(FULL_URL);
                         }
                     }
             );
