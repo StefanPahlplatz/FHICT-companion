@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebView;
@@ -76,6 +77,14 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Adjust browser settings.
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
+        web.setVerticalScrollBarEnabled(false);
+        // disable scroll on touch
+        web.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                return (event.getAction() == MotionEvent.ACTION_MOVE);
+            }
+        });
         BrowserHelper.clearCookies(this);
 
         // Configure the web client.
@@ -124,31 +133,35 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     }
 
                     // Subscribe to the 'Log in' click event to capture the credentials.
-                    web.loadUrl("javascript: var buttonClick = document.getElementById('SubmitCreds').onclick = "
+                    // Also hides some elements.
+                    web.loadUrl("javascript: var checkbox = document.getElementsByClassName('checkbox')[0].style.visibility = 'hidden';"
+                            + "var body = document.getElementsByClassName('controls')[2].style.visibility = 'hidden';"
+                            + "var sec = document.getElementsByClassName('control-label')[2].style.visibility = 'hidden';"
+                            + "var buttonClick = document.getElementById('SubmitCreds').onclick = "
                             + "function(){window.INTERFACE.processJavascriptCallback(document.getElementById('username').value,"
-                            + "document.getElementById('password').value);};");
+                            + "document.getElementById('password').value)} ");
 
 
-                    // =================================================================
-                    // AUTHORIZATION PAGE
-                    // =================================================================
+                // =================================================================
+                // AUTHORIZATION PAGE
+                // =================================================================
                 } else if (url.contains("connect/authorize?redirect_uri")) {
                     if (autoLogin) {
                         web.loadUrl("javascript: {var button = document.getElementsByClassName('btn btn-success')[0].click();};");
                     }
 
-                    // =================================================================
-                    // ACCESS DENIED!
-                    // =================================================================
+                // =================================================================
+                // ACCESS DENIED!
+                // =================================================================
                 } else if (url.contains("error=access_denied")) {
                     Log.e(TAG, "ACCESS_DENIED_HERE");
                     authComplete = true;
                     //TODO: hide the deny access button with js injection.
 
 
-                    // =================================================================
-                    // WE'RE ON THE FINAL PAGE
-                    // =================================================================
+                // =================================================================
+                // WE'RE ON THE FINAL PAGE
+                // =================================================================
                 } else if (url.contains("access_token=") && !authComplete) {
                     // Get the auth token.
                     authCode = getAuthCode(url);
