@@ -78,10 +78,10 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
         web.setVerticalScrollBarEnabled(false);
-        // disable scroll on touch
+        // Disable scrolling.
         web.setOnTouchListener(new View.OnTouchListener() {
             @Override
-            public boolean onTouch(View v, MotionEvent event) {
+            public boolean onTouch(final View v, final MotionEvent event) {
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
@@ -99,6 +99,8 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onPageStarted(final WebView view, final String url, final Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                view.setVisibility(View.INVISIBLE);
+
                 if (url.contains("CookieAuth.dll?GetLogon")) {
                     web.addJavascriptInterface(new MyJavaScriptInterface(), "INTERFACE");
                 }
@@ -126,21 +128,23 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 // =================================================================
                 if (url.contains("CookieAuth.dll?GetLogon")) {
                     if (autoLogin && credential != null) {
+                        // Auto login script.
                         web.loadUrl(
                                 "javascript: {var login = document.getElementById('username').value='" + credential.getId() + "';"
                                         + "var password = document.getElementById('password').value='" + credential.getPassword() + "';"
                                         + "var button = document.getElementById('SubmitCreds').click();};");
+                    } else {
+                        // Subscribe to the 'Log in' click event to capture the credentials.
+                        // Also hides some elements.
+                        web.loadUrl("javascript: var checkbox = document.getElementsByClassName('checkbox')[0].style.visibility = 'hidden';"
+                                + "var body = document.getElementsByClassName('controls')[2].style.visibility = 'hidden';"
+                                + "var sec = document.getElementsByClassName('control-label')[2].style.visibility = 'hidden';"
+                                + "var pme = document.getElementsByTagName('iframe')[0].style.visibility = 'hidden';"
+                                + "var buttonClick = document.getElementById('SubmitCreds').onclick = "
+                                + "function(){window.INTERFACE.processJavascriptCallback(document.getElementById('username').value,"
+                                + "document.getElementById('password').value)} ");
+                        showBrowser();
                     }
-
-                    // Subscribe to the 'Log in' click event to capture the credentials.
-                    // Also hides some elements.
-                    web.loadUrl("javascript: var checkbox = document.getElementsByClassName('checkbox')[0].style.visibility = 'hidden';"
-                            + "var body = document.getElementsByClassName('controls')[2].style.visibility = 'hidden';"
-                            + "var sec = document.getElementsByClassName('control-label')[2].style.visibility = 'hidden';"
-                            + "var buttonClick = document.getElementById('SubmitCreds').onclick = "
-                            + "function(){window.INTERFACE.processJavascriptCallback(document.getElementById('username').value,"
-                            + "document.getElementById('password').value)} ");
-
 
                 // =================================================================
                 // AUTHORIZATION PAGE
@@ -148,6 +152,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else if (url.contains("connect/authorize?redirect_uri")) {
                     if (autoLogin) {
                         web.loadUrl("javascript: {var button = document.getElementsByClassName('btn btn-success')[0].click();};");
+                    } else {
+                        web.loadUrl("javascript: var button = document.getElementsByClassName('btn btn-danger')[0].style.visibility = 'hidden';"
+                            + "var btn2 = document.getElementsByClassName('pull-right btn btn-default')[0].style.visibility = 'hidden';"
+                            + "var headerBar = document.getElementsByClassName('navbar navbar-default navbar-fixed-top')[0].style.visibility = 'hidden';"
+                            + "var text = document.getElementsByClassName('col-md-8 col-xs-8')[0].style.visibility = 'hidden';");
+                        showBrowser();
                     }
 
                 // =================================================================
@@ -156,8 +166,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                 } else if (url.contains("error=access_denied")) {
                     Log.e(TAG, "ACCESS_DENIED_HERE");
                     authComplete = true;
-                    //TODO: hide the deny access button with js injection.
-
+                    showBrowser();
 
                 // =================================================================
                 // WE'RE ON THE FINAL PAGE
@@ -195,6 +204,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     } else {
                         saveToken(authCode);    // Save the access token.
                     }
+                }
+            }
+
+            private void showBrowser() {
+                if (!autoLogin && !web.getUrl().contains("tas.fhict.nl/oob.html")) {
+                    web.setVisibility(View.VISIBLE);
                 }
             }
         });
