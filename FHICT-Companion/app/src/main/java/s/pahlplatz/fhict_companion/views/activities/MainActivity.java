@@ -145,13 +145,11 @@ public final class MainActivity extends AppCompatActivity
                 return true;
 
             case R.id.action_go_offline:
-                Intent intent = getIntent();
                 PreferenceManager.getDefaultSharedPreferences(this)
                         .edit()
                         .putBoolean("always_offline", true)
                         .apply();
-                this.finish();
-                startActivity(intent);
+                restart();
                 return true;
 
             default:
@@ -190,7 +188,7 @@ public final class MainActivity extends AppCompatActivity
     public void onAdapterInteractionListener(final NewsItem newsItem) {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.app_bar_main_content_frame, NewsDetailsFragment.newInstance(newsItem))
+                .add(R.id.app_bar_main_content_frame, NewsDetailsFragment.newInstance(newsItem))
                 .addToBackStack("parent")
                 .commit();
         showUpButton();

@@ -27,14 +27,14 @@ public class GradeController {
     private static final int ASC = 2;
     private static final int DESC = 3;
 
-    private GradeControllerListener controllerListener;
+    private GradeControllerListener listener;
     private Context ctx;
     private ArrayList<Grade> grades;
 
     public GradeController(final Context ctx, final GradeControllerListener listener) {
         this.ctx = ctx;
         this.grades = new ArrayList<>();
-        this.controllerListener = listener;
+        this.listener = listener;
     }
 
     /**
@@ -54,7 +54,7 @@ public class GradeController {
                 return grade.sortByGradeAsc(t1);
             }
         });
-        controllerListener.onAdapterChanged(new GradeAdapter(ctx, grades));
+        listener.onAdapterChanged(new GradeAdapter(ctx, grades));
     }
 
     /**
@@ -67,7 +67,7 @@ public class GradeController {
                 return grade.sortByGradeDesc(t1);
             }
         });
-        controllerListener.onAdapterChanged(new GradeAdapter(ctx, grades));
+        listener.onAdapterChanged(new GradeAdapter(ctx, grades));
     }
 
     /**
@@ -80,7 +80,7 @@ public class GradeController {
                 return grade.sortByNameDesc(t1);
             }
         });
-        controllerListener.onAdapterChanged(new GradeAdapter(ctx, grades));
+        listener.onAdapterChanged(new GradeAdapter(ctx, grades));
     }
 
     /**
@@ -111,8 +111,20 @@ public class GradeController {
                                 "settings", Context.MODE_PRIVATE).getString("token", "")));
 
                 for (int i = 0; i < jArray.length(); i++) {
-                    grades.add(new Grade(jArray.getJSONObject(i).getString("item"),
-                            jArray.getJSONObject(i).getDouble("grade")));
+                    Grade toAdd = new Grade(jArray.getJSONObject(i).getString("item"),
+                            jArray.getJSONObject(i).getDouble("grade"));
+
+                    // Prevent duplicates.
+                    boolean duplicate = false;
+                    for (Grade grade: grades) {
+                        if (grade.getName().equals(toAdd.getName())) {
+                            duplicate = true;
+                            break;
+                        }
+                    }
+                    if (!duplicate) {
+                        grades.add(toAdd);
+                    }
                 }
             } catch (Exception ex) {
                 Log.e(TAG, "doInBackground: A problem occurred while parsing the JSON file.", ex);
@@ -139,10 +151,10 @@ public class GradeController {
                 case NONE:
                 default:
                     GradeAdapter a = new GradeAdapter(ctx, grades);
-                    controllerListener.onAdapterChanged(a);
+                    listener.onAdapterChanged(a);
                     break;
             }
-            controllerListener.onProgressbarVisibility(false);
+            listener.onProgressbarVisibility(false);
         }
     }
 }

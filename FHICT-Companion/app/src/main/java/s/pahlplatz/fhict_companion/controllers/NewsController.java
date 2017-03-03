@@ -32,14 +32,14 @@ public class NewsController {
     private static final int MAX_NEWS_ARTICLES = 15;
     private static final int DEFAULT_NEWS_ARTICLES = 10;
 
-    private NewsControllerListener controllerListener;
+    private NewsControllerListener listener;
     private Context ctx;
     private ArrayList<NewsItem> newsItems;
 
     public NewsController(final Context ctx, final NewsControllerListener listener) {
         this.ctx = ctx;
         this.newsItems = new ArrayList<>();
-        this.controllerListener = listener;
+        this.listener = listener;
 
         new LoadNews().execute();
     }
@@ -83,14 +83,23 @@ public class NewsController {
     }
 
     /**
+     * Returns the right adapter.
+     *
+     * @return adapter.
+     */
+    private NewsAdapter getAdapter() {
+        return new NewsAdapter(newsItems, ctx);
+    }
+
+    /**
      * Interface implemented by the news host to communicate with the host.
      */
     public interface NewsControllerListener {
-        void onAdapterChanged(NewsAdapter adapter);
+        void setAdapter(NewsAdapter adapter);
 
         void notifyDataSetChanged();
 
-        void onProgressbarVisibility(boolean visible);
+        void setProgressbarVisibility(boolean visible);
     }
 
     /**
@@ -100,8 +109,8 @@ public class NewsController {
         @Override
         protected void onPreExecute() {
             newsItems.clear();
-            controllerListener.notifyDataSetChanged();
-            controllerListener.onProgressbarVisibility(true);
+            listener.notifyDataSetChanged();
+            listener.setProgressbarVisibility(true);
         }
 
         @Override
@@ -132,11 +141,10 @@ public class NewsController {
         }
 
         protected void onPostExecute(final Void params) {
-            controllerListener.onProgressbarVisibility(false);
+            listener.setProgressbarVisibility(false);
 
             // Set the adapter.
-            NewsAdapter adapter = new NewsAdapter(newsItems, ctx);
-            controllerListener.onAdapterChanged(adapter);
+            listener.setAdapter(getAdapter());
 
             // Load the thumbnails.
             for (int i = 0; i < newsItems.size(); i++) {
@@ -165,7 +173,7 @@ public class NewsController {
                 if (newsItem != null) {
                     newsItem.setThumbnailString("");
                     newsItem.setThumbnail(result);
-                    controllerListener.notifyDataSetChanged();
+                    listener.notifyDataSetChanged();
                 }
             } catch (Exception ex) {
                 Log.e(TAG, "onPostExecute: Couldn't load news thumbnails");

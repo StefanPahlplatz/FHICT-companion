@@ -46,7 +46,7 @@ public class ScheduleController {
     /**
      * Reference to the view hosting the schedule.
      */
-    private ScheduleListener scheduleListener;
+    private ScheduleListener listener;
 
     /**
      * @param ctx      context.
@@ -54,7 +54,7 @@ public class ScheduleController {
      */
     public ScheduleController(final Context ctx, final ScheduleListener listener) {
         this.ctx = ctx;
-        this.scheduleListener = listener;
+        this.listener = listener;
 
         if (NetworkState.isOnline()) {
             new LoadSchedule().execute();
@@ -64,7 +64,7 @@ public class ScheduleController {
 
             // If there is no schedule saved.
             if (schedule == null) {
-                scheduleListener.onNoSchedule();
+                listener.noSchedule();
             } else {
                 weeks = schedule.getWeekNrs();
 
@@ -80,9 +80,9 @@ public class ScheduleController {
         day = getCurrentDay();
         week = getCurrentWeek();
 
-        scheduleListener.onDaySpinner(DAYS[day]);
+        listener.setDaySpinner(DAYS[day]);
         if (weeks != null) {
-            scheduleListener.onWeekSpinner(weeks[week]);
+            listener.setWeekSpinner(weeks[week]);
         }
     }
 
@@ -92,8 +92,8 @@ public class ScheduleController {
             if (week < 0) {
                 week = weeks.length - 1;
             }
-            scheduleListener.onWeekSpinner(weeks[week]);
-            scheduleListener.onShowSchedule();
+            listener.setWeekSpinner(weeks[week]);
+            listener.showSchedule();
         }
     }
 
@@ -103,8 +103,8 @@ public class ScheduleController {
             if (week >= weeks.length) {
                 week = 0;
             }
-            scheduleListener.onWeekSpinner(weeks[week]);
-            scheduleListener.onShowSchedule();
+            listener.setWeekSpinner(weeks[week]);
+            listener.showSchedule();
         }
     }
 
@@ -116,13 +116,13 @@ public class ScheduleController {
 
                 // If we're not in the first week
                 if (week - 1 >= 0) {
-                    scheduleListener.onWeekSpinner(weeks[--week]);
+                    listener.setWeekSpinner(weeks[--week]);
                 } else {
                     Toast.makeText(ctx, "Can't view further back.", Toast.LENGTH_SHORT).show();
                 }
             }
-            scheduleListener.onDaySpinner(DAYS[day]);
-            scheduleListener.onShowSchedule();
+            listener.setDaySpinner(DAYS[day]);
+            listener.showSchedule();
         }
     }
 
@@ -132,13 +132,13 @@ public class ScheduleController {
             if (day > DAYS.length - 1) {
                 day = 0;
                 if (week + 1 < schedule.getAmountOfWeeks()) {
-                    scheduleListener.onWeekSpinner(weeks[++week]);
+                    listener.setWeekSpinner(weeks[++week]);
                 } else {
                     Toast.makeText(ctx, "Can't view any further.", Toast.LENGTH_SHORT).show();
                 }
             }
-            scheduleListener.onDaySpinner(DAYS[day]);
-            scheduleListener.onShowSchedule();
+            listener.setDaySpinner(DAYS[day]);
+            listener.showSchedule();
         }
     }
 
@@ -202,13 +202,13 @@ public class ScheduleController {
      * An interface to be implemented by every class that is using the schedule.
      */
     public interface ScheduleListener {
-        void onShowSchedule();
+        void showSchedule();
 
-        void onDaySpinner(String selection);
+        void setDaySpinner(String selection);
 
-        void onWeekSpinner(String selection);
+        void setWeekSpinner(String selection);
 
-        void onNoSchedule();
+        void noSchedule();
     }
 
     /**
@@ -258,7 +258,7 @@ public class ScheduleController {
             setCurrentWeek();
             setCurrentDay();
 
-            scheduleListener.onShowSchedule();
+            listener.showSchedule();
 
             // Save the schedule if option is selected.
             if (PreferenceManager.getDefaultSharedPreferences(ctx).getBoolean("always_download_schedule", false)) {
@@ -326,7 +326,7 @@ public class ScheduleController {
             if (!DAYS[day].contains("(today)")) {
                 DAYS[day] += " (today)";
             }
-            scheduleListener.onDaySpinner(DAYS[day]);
+            listener.setDaySpinner(DAYS[day]);
         }
 
         /**
@@ -337,13 +337,13 @@ public class ScheduleController {
             week = getCurrentWeek();
 
             if (week == -1) {
-                scheduleListener.onWeekSpinner("Week ?");
+                listener.setWeekSpinner("Week ?");
                 Log.e(TAG, "setCurrentWeek: Couldn't find right week.");
             } else if (weeks == null) {
                 Log.e(TAG, "setCurrentWeek: weeks array is null.");
             } else {
                 weeks[week] += " (current)";
-                scheduleListener.onWeekSpinner(weeks[week]);
+                listener.setWeekSpinner(weeks[week]);
             }
         }
     }

@@ -34,7 +34,7 @@ import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.BrowserHelper;
 
 /**
- * Activity that hosts the login fragment.
+ * Proceed with caution.
  */
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {

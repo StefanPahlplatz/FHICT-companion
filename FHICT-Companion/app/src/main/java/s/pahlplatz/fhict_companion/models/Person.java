@@ -2,7 +2,6 @@ package s.pahlplatz.fhict_companion.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -13,8 +12,6 @@ import java.util.ArrayList;
  * Person class to store data about a person.
  */
 public class Person implements Parcelable {
-    private static final String TAG = Person.class.getSimpleName();
-
     public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
         public Person createFromParcel(final Parcel in) {
             return new Person(in);
@@ -25,7 +22,7 @@ public class Person implements Parcelable {
             return new Person[size];
         }
     };
-
+    private static final String TAG = Person.class.getSimpleName();
     private String name;
     private String title;
     private String pictureUrl;
@@ -100,7 +97,18 @@ public class Person implements Parcelable {
     }
 
     /**
+     * Constructor used for parcels.
+     *
+     * @param in Parcel.
+     */
+    private Person(final Parcel in) {
+        super();
+        readFromParcel(in);
+    }
+
+    /**
      * Add extra information to the list.
+     *
      * @param extra ArrayList containing personInfo.
      */
     public void addExtraInfo(final ArrayList<PersonInfo> extra) {
@@ -132,21 +140,6 @@ public class Person implements Parcelable {
         return id;
     }
 
-    /**
-     * Constructor used for parcels.
-     *
-     * @param in Parcel.
-     */
-    private Person(final Parcel in) {
-        super();
-        readFromParcel(in);
-    }
-
-    /**
-     * Read and store the data.
-     *
-     * @param in Parcel.
-     */
     private void readFromParcel(final Parcel in) {
         name = in.readString();
     }

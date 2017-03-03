@@ -65,7 +65,7 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
     }
 
     @Override
-    public void onAdapterChanged(final NewsAdapter adapter) {
+    public void setAdapter(final NewsAdapter adapter) {
         recyclerView.setAdapter(adapter);
     }
 
@@ -77,7 +77,7 @@ public class NewsFragment extends Fragment implements NewsController.NewsControl
     }
 
     @Override
-    public void onProgressbarVisibility(final boolean visible) {
+    public void setProgressbarVisibility(final boolean visible) {
         progressBar.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
     }
 }

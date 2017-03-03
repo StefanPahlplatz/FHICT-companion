@@ -18,7 +18,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.models.Person;
-import s.pahlplatz.fhict_companion.models.PersonInfo;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
 
 /**

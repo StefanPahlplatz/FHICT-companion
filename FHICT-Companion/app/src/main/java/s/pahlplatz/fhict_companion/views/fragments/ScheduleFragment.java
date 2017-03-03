@@ -93,7 +93,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
         controller = new ScheduleController(getActivity(), this);
 
         if (!NetworkState.isOnline()) {
-            onShowSchedule();
+            showSchedule();
         }
 
         return view;
@@ -127,7 +127,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
      * Called by the schedule object.
      */
     @Override
-    public void onShowSchedule() {
+    public void showSchedule() {
         progressBar.setVisibility(View.INVISIBLE);
 
         ScheduleAdapter adapter = controller.getAdapter();
@@ -148,7 +148,7 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
      * @param day item to be shown.
      */
     @Override
-    public void onDaySpinner(final String day) {
+    public void setDaySpinner(final String day) {
         dayIndicator.setText(day);
     }
 
@@ -159,12 +159,15 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
      * @param week item to be selected.
      */
     @Override
-    public void onWeekSpinner(final String week) {
+    public void setWeekSpinner(final String week) {
         weekIndicator.setText(week);
     }
 
+    /**
+     * Controller couldn't find a schedule.
+     */
     @Override
-    public void onNoSchedule() {
+    public void noSchedule() {
         progressBar.setVisibility(View.GONE);
         noData.setVisibility(View.VISIBLE);
         noData.setText(R.string.no_schedule_found);
