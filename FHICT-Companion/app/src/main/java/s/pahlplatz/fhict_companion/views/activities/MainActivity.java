@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.controllers.PeopleController;
-import s.pahlplatz.fhict_companion.controllers.PeopleListController;
 import s.pahlplatz.fhict_companion.models.NewsItem;
 import s.pahlplatz.fhict_companion.models.Person;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
@@ -43,7 +41,6 @@ import s.pahlplatz.fhict_companion.views.fragments.NewsDetailsFragment;
 import s.pahlplatz.fhict_companion.views.fragments.NewsFragment;
 import s.pahlplatz.fhict_companion.views.fragments.PeopleDetailsFragment;
 import s.pahlplatz.fhict_companion.views.fragments.PeopleFragment;
-import s.pahlplatz.fhict_companion.views.fragments.PeopleListFragment;
 import s.pahlplatz.fhict_companion.views.fragments.ScheduleFragment;
 
 /**
@@ -51,8 +48,7 @@ import s.pahlplatz.fhict_companion.views.fragments.ScheduleFragment;
  */
 public final class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
-        PeopleController.OnPeopleSearchListener,
-        PeopleListController.OnFragmentInteractionListener,
+        PeopleController.OnFragmentInteractionListener,
         NewsAdapter.OnAdapterInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -96,6 +92,14 @@ public final class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
+        try {
+            // Change the icon to the drawer icon
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        } catch (NullPointerException ex) {
+            Log.e(TAG, "onBackPressed: " + ex.getMessage());
+        }
+        configureToolbar();
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.activity_main_drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
             drawer.closeDrawer(GravityCompat.START);
@@ -156,59 +160,25 @@ public final class MainActivity extends AppCompatActivity
     }
 
     /**
-     * Triggered when the search button is pressed in the people fragment.
-     *
-     * @param persons list of people that match the query.
-     */
-    @Override
-    public void onPeopleSearchListener(final ArrayList<Person> persons) {
-        // Search has 1 result.
-        if (persons.size() == 1) {
-            Fragment fragment = null;
-            try {
-                fragment = PeopleDetailsFragment.newInstance(persons.get(0));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-
-            PeopleListFragment myFragment = (PeopleListFragment) getSupportFragmentManager().
-                    findFragmentByTag("people_overview");
-            if (myFragment != null && myFragment.isVisible()) {
-                fragmentManager
-                        .beginTransaction()
-                        .addToBackStack("people_overview")
-                        .replace(R.id.people_content, fragment, "people_details").commit();
-                showUpButton();
-            } else {
-                fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_details").commit();
-            }
-        } else {
-            Fragment fragment = null;
-            try {
-                fragment = PeopleListFragment.newInstance(persons);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            android.support.v4.app.FragmentManager fragmentManager = getSupportFragmentManager();
-            try {
-                fragmentManager.beginTransaction().replace(R.id.people_content, fragment, "people_overview").commit();
-            } catch (IllegalStateException ex) {
-                Log.e(TAG, "onPeopleSearchListener: ", ex);
-            }
-        }
-    }
-
-    /**
      * Triggered when the user clicks an item in the people listview.
      *
      * @param p the selected person.
      */
     @Override
     public void onFragmentInteraction(final Person p) {
-        ArrayList<Person> person = new ArrayList<>();
-        person.add(p);
-        onPeopleSearchListener(person);
+        // Try to create the detail fragment.
+        Fragment fragment = null;
+        try {
+            fragment = PeopleDetailsFragment.newInstance(p);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack("people_overview")
+                .replace(R.id.app_bar_main_content_frame, fragment, "people_details")
+                .commit();
+        showUpButton();
     }
 
     /**
@@ -218,13 +188,11 @@ public final class MainActivity extends AppCompatActivity
      */
     @Override
     public void onAdapterInteractionListener(final NewsItem newsItem) {
-        // Switch fragment
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.app_bar_main_content_frame, NewsDetailsFragment.newInstance(newsItem))
                 .addToBackStack("parent")
                 .commit();
-
         showUpButton();
     }
 

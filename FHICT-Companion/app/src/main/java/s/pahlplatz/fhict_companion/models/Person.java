@@ -2,11 +2,19 @@ package s.pahlplatz.fhict_companion.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Person class to store data about a person.
  */
 public class Person implements Parcelable {
+    private static final String TAG = Person.class.getSimpleName();
+
     public static final Parcelable.Creator<Person> CREATOR = new Parcelable.Creator<Person>() {
         public Person createFromParcel(final Parcel in) {
             return new Person(in);
@@ -19,25 +27,109 @@ public class Person implements Parcelable {
     };
 
     private String name;
-    private String mail;
-    private String office;
-    private String phone;
-    private String dep;
     private String title;
+    private String pictureUrl;
     private String id;
+    private ArrayList<PersonInfo> info;
+    private boolean hasExtra;
 
     /**
      * Default constructor.
      */
-    public Person(final String name, final String mail, final String office, final String phone,
-                  final String dep, final String title, final String id) {
-        this.name = name;
-        this.mail = mail;
-        this.office = office;
-        this.phone = phone;
-        this.dep = dep;
-        this.title = title;
-        this.id = id;
+    public Person(final JSONObject p) {
+        info = new ArrayList<>();
+
+        try {
+            name = p.getString("displayName");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            pictureUrl = p.getString("photo");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            title = p.getString("title");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            id = p.getString("id");
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        info.add(PersonInfo.createInfo("ID", getId()));
+        try {
+            info.add(PersonInfo.createInfo("Mail", p.getString("mail")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            info.add(PersonInfo.createInfo("Office", p.getString("office")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            info.add(PersonInfo.createInfo("Phone", p.getString("telephoneNumber")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            info.add(PersonInfo.createInfo("Department", p.getString("department")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        info.add(PersonInfo.createInfo("Title", getTitle()));
+        try {
+            info.add(PersonInfo.createInfo("Personal title", p.getString("personalTitle")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            info.add(PersonInfo.createInfo("Affiliations", p.getString("affiliations")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        try {
+            info.add(PersonInfo.createInfo("Employee ID", p.getString("employeeId")));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Add extra information to the list.
+     * @param extra ArrayList containing personInfo.
+     */
+    public void addExtraInfo(final ArrayList<PersonInfo> extra) {
+        info.addAll(extra);
+        hasExtra = true;
+    }
+
+    public boolean hasExtra() {
+        return hasExtra;
+    }
+
+    public ArrayList<PersonInfo> getInfo() {
+        return info;
+    }
+
+    public String getPictureUrl() {
+        return pictureUrl;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getId() {
+        return id;
     }
 
     /**
@@ -57,13 +149,6 @@ public class Person implements Parcelable {
      */
     private void readFromParcel(final Parcel in) {
         name = in.readString();
-        mail = in.readString();
-        office = in.readString();
-        phone = in.readString();
-        dep = in.readString();
-        title = in.readString();
-        id = in.readString();
-
     }
 
     @Override
@@ -73,39 +158,5 @@ public class Person implements Parcelable {
 
     public void writeToParcel(final Parcel dest, final int flags) {
         dest.writeString(name);
-        dest.writeString(mail);
-        dest.writeString(office);
-        dest.writeString(phone);
-        dest.writeString(dep);
-        dest.writeString(title);
-        dest.writeString(id);
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public String getMail() {
-        return mail;
-    }
-
-    public String getOffice() {
-        return office;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public String getDep() {
-        return dep;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getId() {
-        return id;
     }
 }
