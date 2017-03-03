@@ -49,6 +49,10 @@ public class PeopleDetailController {
         return new PeopleDetailAdapter(p.getInfo(), ctx);
     }
 
+    public PersonInfo getPersonInfo(final int position) {
+        return p.getInfo(position);
+    }
+
     /**
      * Callbacks to the caller.
      */

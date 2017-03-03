@@ -124,6 +124,10 @@ public class Person implements Parcelable {
         return info;
     }
 
+    public PersonInfo getInfo(final int position) {
+        return info.get(position);
+    }
+
     public String getPictureUrl() {
         return pictureUrl;
     }
