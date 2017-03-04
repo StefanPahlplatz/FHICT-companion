@@ -24,6 +24,7 @@
         android:layout_width="128dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:textAlignment="center"
         android:gravity="center"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/app_in_offline_mode"
@@ -32,6 +33,7 @@
     <TextView
         android:id="@+id/nav_header_title"
         android:layout_width="128dp"
+        android:textAlignment="center"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"/>

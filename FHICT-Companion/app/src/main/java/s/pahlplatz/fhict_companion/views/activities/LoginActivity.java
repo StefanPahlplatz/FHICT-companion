@@ -14,7 +14,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.webkit.ConsoleMessage;
 import android.webkit.JavascriptInterface;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
@@ -78,6 +81,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         web.getSettings().setJavaScriptEnabled(true);
         web.getSettings().setDomStorageEnabled(true);
         web.setVerticalScrollBarEnabled(false);
+
         // Disable scrolling.
         web.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -86,6 +90,24 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             }
         });
         BrowserHelper.clearCookies(this);
+
+        // Handle javascript errors.
+        WebSettings webSettings = web.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        web.setWebChromeClient(new WebChromeClient() {
+            @Override
+            public boolean onConsoleMessage(final ConsoleMessage consoleMessage) {
+                Log.d("MyApplication", consoleMessage.message() + " -- From line "
+                        + consoleMessage.lineNumber() + " of "
+                        + consoleMessage.sourceId());
+                // Restart the activity if we missed a step in the js execution.
+                if (consoleMessage.message().contains("Uncaught TypeError")) {
+                    finish();
+                    startActivity(getIntent());
+                }
+                return super.onConsoleMessage(consoleMessage);
+            }
+        });
 
         // Configure the web client.
         web.setWebViewClient(new WebViewClient() {
