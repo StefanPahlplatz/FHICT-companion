@@ -24,6 +24,7 @@ import s.pahlplatz.fhict_companion.models.Week;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
 import s.pahlplatz.fhict_companion.utils.LocalPersistence;
 import s.pahlplatz.fhict_companion.utils.NetworkState;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Controller for the schedule fragment.
@@ -37,16 +38,15 @@ public class ScheduleController {
     private static final String[] DAYS = new String[] {"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
 
-    private Context ctx;
+    private final Context ctx;
+    /**
+     * Reference to the view hosting the schedule.
+     */
+    private final ScheduleListener listener;
     private Schedule schedule;
     private String[] weeks;
     private int week = 0;
     private int day = 0;
-
-    /**
-     * Reference to the view hosting the schedule.
-     */
-    private ScheduleListener listener;
 
     /**
      * @param ctx      context.
@@ -230,7 +230,7 @@ public class ScheduleController {
                 // Get JSONObject from fontys API
                 JSONObject jObject = new JSONObject(FontysAPI.getStream(
                         "https://api.fhict.nl/schedule/me?startLastMonday=true&expandWeeks=true",
-                        ctx.getSharedPreferences("settings", Context.MODE_PRIVATE).getString("token", "")));
+                        PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN)));
 
                 // Add weeks to schedule
                 addWeeks(jObject.getJSONArray("weeks"));

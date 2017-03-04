@@ -80,10 +80,11 @@ public class GradeFragment extends Fragment implements GradeController.GradeCont
 
     /**
      * Changes the visibility of the progressbar.
+     *
      * @param visible bool.
      */
     @Override
-    public void onProgressbarVisibility(final boolean visible) {
+    public void setProgressbarVisibility(final boolean visible) {
         View view = getView();
 
         if (view != null) {
@@ -99,10 +100,11 @@ public class GradeFragment extends Fragment implements GradeController.GradeCont
 
     /**
      * Assigns a new adapter to the listview.
+     *
      * @param adapter to be assigned.
      */
     @Override
-    public void onAdapterChanged(final GradeAdapter adapter) {
+    public void setAdapter(final GradeAdapter adapter) {
         View view = getView();
 
         if (view != null) {

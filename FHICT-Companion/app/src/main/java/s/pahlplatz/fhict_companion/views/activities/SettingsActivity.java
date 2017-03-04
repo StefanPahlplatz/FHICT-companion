@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import java.util.List;
 
 import s.pahlplatz.fhict_companion.R;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * A {@link PreferenceActivity} that presents a set of application settings. On
@@ -36,13 +37,12 @@ import s.pahlplatz.fhict_companion.R;
  * Access settings later by calling 'PreferenceManager.getDefaultSharedPreferences(context).getBoolean(key, bool))'.
  */
 public class SettingsActivity extends AppCompatPreferenceActivity {
-    private static final String TAG = SettingsActivity.class.getSimpleName();
 
     /**
      * A preference value change listener that updates the preference's summary
      * to reflect its new value.
      */
-    private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener =
+    private static final Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener =
             new Preference.OnPreferenceChangeListener() {
                 @Override
                 public boolean onPreferenceChange(final Preference preference, final Object value) {
@@ -223,8 +223,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             setHasOptionsMenu(true);
 
             Preference p = findPreference("logout");
-            p.setSummary("Currently logged in as " + getContext()
-                    .getSharedPreferences("settings", MODE_PRIVATE).getString("displayName", ""));
+            p.setSummary("Currently logged in as "
+                    + PreferenceHelper.getString(getContext(), PreferenceHelper.DISPLAY_NAME));
             p.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                 @Override
                 public boolean onPreferenceClick(final Preference preference) {

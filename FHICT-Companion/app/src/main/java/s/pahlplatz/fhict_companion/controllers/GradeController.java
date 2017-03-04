@@ -14,6 +14,7 @@ import java.util.Comparator;
 import s.pahlplatz.fhict_companion.adapters.GradeAdapter;
 import s.pahlplatz.fhict_companion.models.Grade;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Created by Stefan on 25-2-2017.
@@ -27,9 +28,9 @@ public class GradeController {
     private static final int ASC = 2;
     private static final int DESC = 3;
 
-    private GradeControllerListener listener;
-    private Context ctx;
-    private ArrayList<Grade> grades;
+    private final GradeControllerListener listener;
+    private final Context ctx;
+    private final ArrayList<Grade> grades;
 
     public GradeController(final Context ctx, final GradeControllerListener listener) {
         this.ctx = ctx;
@@ -54,7 +55,7 @@ public class GradeController {
                 return grade.sortByGradeAsc(t1);
             }
         });
-        listener.onAdapterChanged(new GradeAdapter(ctx, grades));
+        listener.setAdapter(new GradeAdapter(ctx, grades));
     }
 
     /**
@@ -67,7 +68,7 @@ public class GradeController {
                 return grade.sortByGradeDesc(t1);
             }
         });
-        listener.onAdapterChanged(new GradeAdapter(ctx, grades));
+        listener.setAdapter(new GradeAdapter(ctx, grades));
     }
 
     /**
@@ -80,16 +81,16 @@ public class GradeController {
                 return grade.sortByNameDesc(t1);
             }
         });
-        listener.onAdapterChanged(new GradeAdapter(ctx, grades));
+        listener.setAdapter(new GradeAdapter(ctx, grades));
     }
 
     /**
      * Interface implemented by the host.
      */
     public interface GradeControllerListener {
-        void onProgressbarVisibility(boolean visible);
+        void setProgressbarVisibility(boolean visible);
 
-        void onAdapterChanged(GradeAdapter adapter);
+        void setAdapter(GradeAdapter adapter);
     }
 
     /**
@@ -106,9 +107,7 @@ public class GradeController {
         public Void doInBackground(final Void... params) {
             try {
                 JSONArray jArray = new JSONArray(FontysAPI.getStream(
-                        "https://api.fhict.nl/grades/me",
-                        ctx.getSharedPreferences(
-                                "settings", Context.MODE_PRIVATE).getString("token", "")));
+                        "https://api.fhict.nl/grades/me", PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN)));
 
                 for (int i = 0; i < jArray.length(); i++) {
                     Grade toAdd = new Grade(jArray.getJSONObject(i).getString("item"),
@@ -116,7 +115,7 @@ public class GradeController {
 
                     // Prevent duplicates.
                     boolean duplicate = false;
-                    for (Grade grade: grades) {
+                    for (Grade grade : grades) {
                         if (grade.getName().equals(toAdd.getName())) {
                             duplicate = true;
                             break;
@@ -151,10 +150,10 @@ public class GradeController {
                 case NONE:
                 default:
                     GradeAdapter a = new GradeAdapter(ctx, grades);
-                    listener.onAdapterChanged(a);
+                    listener.setAdapter(a);
                     break;
             }
-            listener.onProgressbarVisibility(false);
+            listener.setProgressbarVisibility(false);
         }
     }
 }

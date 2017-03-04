@@ -4,7 +4,7 @@
         android:defaultValue="true"
         android:key="colour_grades"
         android:summary="Colour all grades according to their value."
-        android:title="Colour grades" />
+        android:title="Colour grades"/>
 
     <ListPreference
         android:defaultValue="0"
@@ -13,6 +13,6 @@
         android:key="grade_sort"
         android:negativeButtonText="@null"
         android:positiveButtonText="@null"
-        android:title="Default sorting method" />
+        android:title="Default sorting method"/>
 
 </PreferenceScreen>

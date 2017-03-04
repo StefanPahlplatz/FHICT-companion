@@ -21,7 +21,9 @@ import s.pahlplatz.fhict_companion.models.NewsItem;
  */
 
 public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.MyViewHolder> {
-    /** The amount of characters to extract the date in 'yyyy-mm-dd' from the pubDate. **/
+    /**
+     * The amount of characters to extract the date in 'yyyy-mm-dd' from the pubDate.
+     **/
     private static final int DATE_PART = 10;
 
     private final ArrayList<NewsItem> newsItems;

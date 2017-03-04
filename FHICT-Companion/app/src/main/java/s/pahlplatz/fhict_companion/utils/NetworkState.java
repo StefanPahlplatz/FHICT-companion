@@ -17,12 +17,12 @@ public final class NetworkState {
         // Not called.
     }
 
-    public static void setOnline(final boolean o) {
-        online = o;
-    }
-
     public static boolean isOnline() {
         return online;
+    }
+
+    public static void setOnline(final boolean o) {
+        online = o;
     }
 
     /**

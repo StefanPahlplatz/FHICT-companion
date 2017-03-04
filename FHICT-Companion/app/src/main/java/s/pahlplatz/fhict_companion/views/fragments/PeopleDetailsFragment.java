@@ -88,7 +88,8 @@ public class PeopleDetailsFragment extends Fragment implements PeopleDetailContr
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
         switch (item.getItemId()) {
             case R.id.people_details_copy:
-                ClipboardManager clipboard = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager clipboard = (ClipboardManager) getContext()
+                        .getSystemService(Context.CLIPBOARD_SERVICE);
                 ClipData clip = ClipData.newPlainText(controller.getPersonInfo(info.position).getLeft(),
                         controller.getPersonInfo(info.position).getRight());
                 clipboard.setPrimaryClip(clip);

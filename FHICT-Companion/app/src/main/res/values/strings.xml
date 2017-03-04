@@ -29,7 +29,6 @@
     <string name="course_placeholder">course</string>
     <string name="room_placeholder">room</string>
     <string name="teacher_placeholder">teacher</string>
-    <string name="exam">exam</string>
     <string name="no_schedule_found">No offline schedule found.\nPlease go online to download.</string>
 
     <!-- People -->
@@ -37,21 +36,14 @@
     <string name="search">Search</string>
 
     <!-- People details -->
-    <string name="mail">Mail:</string>
-    <string name="id">Id:</string>
-    <string name="title">Title:</string>
-    <string name="department">Department:</string>
-    <string name="phone">Phone:</string>
-    <string name="office">Office:</string>
-    <string name="name">Name:</string>
+    <string name="copy">Copy</string>
+    <string name="name_placeholder">Name</string>
 
     <!-- News -->
     <string name="thumbnail">Thumbnail</string>
     <string name="description_placeholder">Description text and stuff</string>
     <string name="header_placeholder">Header</string>
     <string name="amount">Amount of articles</string>
-    <string name="title_activity_news_details">NewsDetailsActivity</string>
-    <string name="section_format">Hello World from section: %1$d</string>
     <string name="author_template">Author</string>
 
     <!-- Grades -->
@@ -100,6 +92,5 @@
     <!-- Network settings -->
     <string name="pref_network_always_offline_sum">Launch app in offline mode even if an internet connection is available. (Gets turned off if you press \'Go online\').</string>
     <string name="pref_network_always_offline_title">Always offline</string>
-    <string name="logging_in">Logging in...</string>
-    <string name="copy">Copy</string>
+    <string name="logging_in">Logging in…</string>
 </resources>

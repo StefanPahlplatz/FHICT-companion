@@ -32,6 +32,7 @@ import com.google.android.gms.common.api.Status;
 
 import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.BrowserHelper;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Proceed with caution.
@@ -48,7 +49,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     private static final int RC_SAVE = 1;
     private static final int RC_READ = 3;
 
-    private boolean mIsRequesting;
     private boolean mIsResolving;
     private boolean autoLogin;
     private Credential credential;
@@ -154,9 +154,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         web.loadUrl("javascript: {var button = document.getElementsByClassName('btn btn-success')[0].click();};");
                     } else {
                         web.loadUrl("javascript: var button = document.getElementsByClassName('btn btn-danger')[0].style.visibility = 'hidden';"
-                            + "var btn2 = document.getElementsByClassName('pull-right btn btn-default')[0].style.visibility = 'hidden';"
-                            + "var headerBar = document.getElementsByClassName('navbar navbar-default navbar-fixed-top')[0].style.visibility = 'hidden';"
-                            + "var text = document.getElementsByClassName('col-md-8 col-xs-8')[0].style.visibility = 'hidden';");
+                                + "var btn2 = document.getElementsByClassName('pull-right btn btn-default')[0].style.visibility = 'hidden';"
+                                + "var headerBar = document.getElementsByClassName('navbar navbar-default navbar-fixed-top')[0].style.visibility = 'hidden';"
+                                + "var text = document.getElementsByClassName('col-md-8 col-xs-8')[0].style.visibility = 'hidden';");
                         showBrowser();
                     }
 
@@ -239,7 +239,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
     /**
      * Saves the credentials to the API.
      */
-    void saveCredential() {
+    private void saveCredential() {
         Auth.CredentialsApi.save(mGoogleApiClient, credential).setResultCallback(new ResultCallback<Status>() {
             @Override
             public void onResult(@NonNull final Status status) {
@@ -327,7 +327,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * If the user doesn't want to auto login, just load the login page.
      */
     private void requestCredentials() {
-        mIsRequesting = true;
         if (autoLogin) {
             CredentialRequest request = new CredentialRequest.Builder()
                     .setSupportsPasswordLogin(true)
@@ -337,7 +336,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                     new ResultCallback<CredentialRequestResult>() {
                         @Override
                         public void onResult(@NonNull final CredentialRequestResult credentialRequestResult) {
-                            mIsRequesting = false;
                             Status status = credentialRequestResult.getStatus();
                             if (credentialRequestResult.getStatus().isSuccess()) {
                                 // Successfully read the credential without any user interaction, this
@@ -351,9 +349,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                                 // Load the url to let the user sign in.
                                 web.loadUrl(FULL_URL);
                             } else if (status.getStatusCode() == CommonStatusCodes.RESOLUTION_REQUIRED) {
-                                    // This is most likely the case where the user has multiple saved
-                                    // credentials and needs to pick one.
-                                    resolveResult(status, RC_READ);
+                                // This is most likely the case where the user has multiple saved
+                                // credentials and needs to pick one.
+                                resolveResult(status, RC_READ);
                             } else if (status.getStatusCode() == CommonStatusCodes.SIGN_IN_REQUIRED) {
                                 // This is most likely the case where the user does not currently
                                 // have any saved credentials and thus needs to provide a username
@@ -379,7 +377,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      * @param token to save.
      */
     private void saveToken(final String token) {
-        getSharedPreferences("settings", MODE_PRIVATE).edit().putString("token", token).apply();
+        PreferenceHelper.save(getBaseContext(), PreferenceHelper.TOKEN, token);
         startMainActivity();
     }
 

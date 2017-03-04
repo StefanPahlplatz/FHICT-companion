@@ -14,24 +14,18 @@ public final class PersonInfo {
 
     private PersonInfo(final String left, final String right) {
         if (left.equals("") || right.equals("")) {
-            throw new RuntimeException("PersonInfo has an empty string. Are you sure you initialized the object with the createInfo method?");
+            throw new RuntimeException("PersonInfo has an empty string. "
+                    + "Are you sure you initialized the object with the createInfo method?");
         }
 
         this.left = left;
         this.right = right;
     }
 
-    public String getLeft() {
-        return left;
-    }
-
-    public String getRight() {
-        return right;
-    }
-
     /**
      * Validate the info.
-     * @param left constant.
+     *
+     * @param left  constant.
      * @param right variable.
      * @return personInfo object.
      */
@@ -43,5 +37,13 @@ public final class PersonInfo {
             }
         }
         return null;
+    }
+
+    public String getLeft() {
+        return left;
+    }
+
+    public String getRight() {
+        return right;
     }
 }

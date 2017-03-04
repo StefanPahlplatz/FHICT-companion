@@ -1,8 +1,6 @@
 package s.pahlplatz.fhict_companion.views.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -37,6 +36,7 @@ import s.pahlplatz.fhict_companion.models.NewsItem;
 import s.pahlplatz.fhict_companion.models.Person;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
 import s.pahlplatz.fhict_companion.utils.NetworkState;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 import s.pahlplatz.fhict_companion.views.fragments.GradeFragment;
 import s.pahlplatz.fhict_companion.views.fragments.NewsDetailsFragment;
 import s.pahlplatz.fhict_companion.views.fragments.NewsFragment;
@@ -93,11 +93,10 @@ public final class MainActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        try {
-            // Change the icon to the drawer icon
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-        } catch (NullPointerException ex) {
-            Log.e(TAG, "onBackPressed: " + ex.getMessage());
+        // Change the icon to the drawer icon
+        ActionBar ab = getSupportActionBar();
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(false);
         }
         configureToolbar();
 
@@ -297,8 +296,7 @@ public final class MainActivity extends AppCompatActivity
         @Override
         protected Map<String, String> doInBackground(final Void... params) {
             Map<String, String> retMap = new HashMap<>();
-            String token = getSharedPreferences("settings", MODE_PRIVATE).getString("token", "");
-            SharedPreferences.Editor edit = getSharedPreferences("settings", MODE_PRIVATE).edit();
+            String token = PreferenceHelper.getString(getBaseContext(), PreferenceHelper.TOKEN);
 
             try {
                 // Get the user's information.
@@ -312,8 +310,8 @@ public final class MainActivity extends AppCompatActivity
                         // If the user has a class store it in sp.
                         String groupType = group.getString("groupType");
                         if (groupType.contains("Klas")) {
-                            edit.putString("classId", group.getString("id"));
-                            edit.putString("className", group.getString("groupName"));
+                            PreferenceHelper.save(getBaseContext(), PreferenceHelper.CLASS_ID, group.getString("id"));
+                            PreferenceHelper.save(getBaseContext(), PreferenceHelper.CLASS_NAME, group.getString("groupName"));
                             Log.i(TAG, "doInBackground: User is part of class " + group.getString("id"));
                         }
                     } catch (Exception ex) {
@@ -322,11 +320,10 @@ public final class MainActivity extends AppCompatActivity
                 }
 
                 // Store info
-                edit.putString("id", jObject.getString("id"));
-                edit.putString("displayName", jObject.getString("displayName"));
-                edit.putString("title", jObject.getString("title"));
-                edit.putString("photo", jObject.getString("photo"));
-                edit.apply();
+                PreferenceHelper.save(getBaseContext(), PreferenceHelper.USER_ID, jObject.getString("id"));
+                PreferenceHelper.save(getBaseContext(), PreferenceHelper.DISPLAY_NAME, jObject.getString("displayName"));
+                PreferenceHelper.save(getBaseContext(), PreferenceHelper.USER_TITLE, jObject.getString("title"));
+                PreferenceHelper.save(getBaseContext(), PreferenceHelper.PROFILE_PICTURE_URL, jObject.getString("photo"));
 
                 // Return name and title
                 retMap.put("displayName", jObject.getString("displayName"));
@@ -353,10 +350,10 @@ public final class MainActivity extends AppCompatActivity
     private class LoadProfilePicture extends AsyncTask<Void, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(final Void... params) {
-            SharedPreferences sp = getBaseContext().getSharedPreferences("settings", Context.MODE_PRIVATE);
             return FontysAPI.getPicture(
-                    "https://api.fhict.nl/pictures/I" + sp.getString("id", "").substring(1) + ".jpg",
-                    sp.getString("token", ""));
+                    "https://api.fhict.nl/pictures/I" + PreferenceHelper.getString(getBaseContext(),
+                            PreferenceHelper.USER_ID).substring(1) + ".jpg",
+                    PreferenceHelper.getString(getBaseContext(), PreferenceHelper.TOKEN));
         }
 
         @Override

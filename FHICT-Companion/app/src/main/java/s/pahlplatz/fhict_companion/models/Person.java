@@ -32,8 +32,9 @@ public class Person implements Parcelable {
     private boolean hasExtra;
 
     /**
-     * Special constuctor for students.
-     * @param p json object with info.
+     * Special constructor for students.
+     *
+     * @param p         json object with info.
      * @param className the name of the group the student is in.
      */
     public Person(final JSONObject p, final String className) {
@@ -140,6 +141,7 @@ public class Person implements Parcelable {
 
     /**
      * Checks all elements to see if any of them match the query.
+     *
      * @param query search.
      * @return true if person contains the information.
      */

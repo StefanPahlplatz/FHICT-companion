@@ -2,19 +2,19 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:paddingTop="4dp"
-                android:orientation="vertical"
                 android:background="@color/cardview_light_background"
-                android:padding="8dp">
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:paddingTop="4dp">
 
     <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                                                   android:id="@+id/people_details_profile_image"
                                                   android:layout_width="128dp"
                                                   android:layout_height="128dp"
-                                                  app:civ_border_color="#FBFBFB"
-                                                  app:civ_border_width="2dp"
                                                   android:layout_alignParentTop="true"
-                                                  android:layout_centerHorizontal="true"/>
+                                                  android:layout_centerHorizontal="true"
+                                                  app:civ_border_color="#FBFBFB"
+                                                  app:civ_border_width="2dp"/>
 
     <TextView
         android:id="@+id/people_details_name"
@@ -22,10 +22,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/people_details_profile_image"
         android:layout_centerHorizontal="true"
-        android:text="Name"
+        android:padding="8dp"
+        android:text="@string/name_placeholder"
         android:textAlignment="center"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:padding="8dp"/>
+        android:textAppearance="?android:attr/textAppearanceMedium"/>
 
     <ListView
         android:id="@+id/people_details_listview"
@@ -48,8 +48,8 @@
         style="?android:attr/progressBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="75dp"
-        android:layout_alignParentBottom="true"/>
+        android:layout_marginBottom="75dp"/>
 
 </RelativeLayout>

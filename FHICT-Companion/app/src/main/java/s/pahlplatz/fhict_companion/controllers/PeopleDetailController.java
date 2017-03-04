@@ -1,7 +1,6 @@
 package s.pahlplatz.fhict_companion.controllers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -16,6 +15,7 @@ import s.pahlplatz.fhict_companion.adapters.PeopleDetailAdapter;
 import s.pahlplatz.fhict_companion.models.Person;
 import s.pahlplatz.fhict_companion.models.PersonInfo;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Created by Stefan on 3-3-2017.
@@ -26,9 +26,9 @@ import s.pahlplatz.fhict_companion.utils.FontysAPI;
 public class PeopleDetailController {
     private static final String TAG = PeopleDetailController.class.getSimpleName();
 
-    private PeopleDetailListener listener;
-    private Person p;
-    private Context ctx;
+    private final PeopleDetailListener listener;
+    private final Person p;
+    private final Context ctx;
 
     public PeopleDetailController(final Person p, final PeopleDetailListener caller) {
         this.p = p;
@@ -74,8 +74,7 @@ public class PeopleDetailController {
     private class LoadProfilePicture extends AsyncTask<Void, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(final Void... params) {
-            SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
-            return FontysAPI.getPicture(p.getPictureUrl(), sp.getString("token", ""));
+            return FontysAPI.getPicture(p.getPictureUrl(), PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN));
         }
 
         @Override
@@ -93,8 +92,7 @@ public class PeopleDetailController {
 
         @Override
         protected void onPreExecute() {
-            SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
-            token = sp.getString("token", "");
+            token = PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN);
         }
 
         @Override
@@ -127,6 +125,7 @@ public class PeopleDetailController {
 
         /**
          * Wrapper to extract all data from the json object safely.
+         *
          * @param extraInfo list to add to.
          */
         private void addSharePointInfo(final ArrayList<PersonInfo> extraInfo) {

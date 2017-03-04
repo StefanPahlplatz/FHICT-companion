@@ -1,5 +1,6 @@
 package s.pahlplatz.fhict_companion.utils;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
@@ -23,6 +24,7 @@ public final class BrowserHelper {
      *
      * @param context context.
      */
+    @SuppressLint("ObsoleteSdkInt")
     @SuppressWarnings("deprecation")
     public static void clearCookies(final Context context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {

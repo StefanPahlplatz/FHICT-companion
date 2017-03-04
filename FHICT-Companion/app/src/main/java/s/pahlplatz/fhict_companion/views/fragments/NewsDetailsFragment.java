@@ -15,7 +15,9 @@ import s.pahlplatz.fhict_companion.models.NewsItem;
  * A simple {@link Fragment} subclass.
  */
 public class NewsDetailsFragment extends Fragment {
-    /** The amount of characters to extract the date in 'yyyy-mm-dd' from the pubDate. **/
+    /**
+     * The amount of characters to extract the date in 'yyyy-mm-dd' from the pubDate.
+     **/
     private static final int DATE_PART = 10;
 
     private String title, content, author, pubDate;

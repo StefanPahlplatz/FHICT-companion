@@ -7,15 +7,15 @@
     <TextView
         android:id="@+id/row_people_detail_constant"
         android:layout_width="0dp"
-        android:layout_weight=".50"
         android:layout_height="wrap_content"
+        android:layout_weight=".50"
         android:text="left"/>
 
     <TextView
         android:id="@+id/row_people_detail_var"
         android:layout_width="0dp"
-        android:layout_weight=".50"
         android:layout_height="wrap_content"
+        android:layout_weight=".50"
         android:text="right"/>
 
 </LinearLayout>

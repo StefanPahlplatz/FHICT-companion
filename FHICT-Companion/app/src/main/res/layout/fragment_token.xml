@@ -1,13 +1,13 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="s.pahlplatz.fhict_companion.views.activities.LoginActivity">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="s.pahlplatz.fhict_companion.views.activities.LoginActivity">
 
     <WebView
         android:id="@+id/token_webview"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <ProgressBar
         android:id="@+id/token_pbar"
@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:visibility="visible" />
+        android:visibility="visible"/>
 
     <TextView
         android:id="@+id/token_loading"
@@ -23,8 +23,8 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="100dp"
-        android:textAlignment="center"
         android:text="@string/logging_in"
+        android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:visibility="invisible"/>
 

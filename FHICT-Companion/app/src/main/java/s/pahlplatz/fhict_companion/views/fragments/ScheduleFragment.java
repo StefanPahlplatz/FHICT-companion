@@ -25,7 +25,6 @@ import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
  * Fragment to show the user's schedule.
  */
 public class ScheduleFragment extends Fragment implements ScheduleController.ScheduleListener {
-    private static final String TAG = ScheduleFragment.class.getSimpleName();
 
     private ScheduleController controller;
     private RecyclerView recyclerView;

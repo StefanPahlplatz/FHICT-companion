@@ -20,7 +20,7 @@ import s.pahlplatz.fhict_companion.models.PersonInfo;
 
 public class PeopleDetailAdapter extends BaseAdapter {
     private final LayoutInflater layoutInflater;
-    private ArrayList<PersonInfo> info;
+    private final ArrayList<PersonInfo> info;
 
     public PeopleDetailAdapter(final ArrayList<PersonInfo> info, final Context ctx) {
         this.info = info;

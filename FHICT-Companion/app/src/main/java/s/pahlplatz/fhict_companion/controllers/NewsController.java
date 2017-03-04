@@ -2,7 +2,6 @@ package s.pahlplatz.fhict_companion.controllers;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AlertDialog;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 import s.pahlplatz.fhict_companion.adapters.NewsAdapter;
 import s.pahlplatz.fhict_companion.models.NewsItem;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Created by Stefan on 25-2-2017.
@@ -32,9 +32,9 @@ public class NewsController {
     private static final int MAX_NEWS_ARTICLES = 15;
     private static final int DEFAULT_NEWS_ARTICLES = 10;
 
-    private NewsControllerListener listener;
-    private Context ctx;
-    private ArrayList<NewsItem> newsItems;
+    private final NewsControllerListener listener;
+    private final Context ctx;
+    private final ArrayList<NewsItem> newsItems;
 
     public NewsController(final Context ctx, final NewsControllerListener listener) {
         this.ctx = ctx;
@@ -52,8 +52,7 @@ public class NewsController {
         final NumberPicker picker = new NumberPicker(ctx);
         picker.setMinValue(MIN_NEWS_ARTICLES);
         picker.setMaxValue(MAX_NEWS_ARTICLES);
-        picker.setValue(ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                .getInt("amountOfNewsItems", DEFAULT_NEWS_ARTICLES));
+        picker.setValue(PreferenceHelper.getInt(ctx, PreferenceHelper.AMOUNT_OF_NEWS_ITEMS, DEFAULT_NEWS_ARTICLES));
 
         // Create the FrameLayout for the NumberPicker to be hosted in.
         final FrameLayout layout = new FrameLayout(ctx);
@@ -69,11 +68,7 @@ public class NewsController {
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(final DialogInterface dialogInterface, final int i) {
-                        ctx.getSharedPreferences("settings", Context.MODE_PRIVATE)
-                                .edit()
-                                .putInt("amountOfNewsItems", picker.getValue())
-                                .apply();
-
+                        PreferenceHelper.save(ctx, PreferenceHelper.AMOUNT_OF_NEWS_ITEMS, picker.getValue());
                         // Load news with new amount of items.
                         new LoadNews().execute();
                     }
@@ -116,14 +111,13 @@ public class NewsController {
         @Override
         protected Void doInBackground(final Void... params) {
             try {
+                int items = PreferenceHelper.getInt(
+                        ctx, PreferenceHelper.AMOUNT_OF_NEWS_ITEMS, DEFAULT_NEWS_ARTICLES);
+                String token = PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN);
+
                 // Get JSONArray from API.
                 JSONArray jArray = new JSONObject(FontysAPI.getStream(
-                        "https://api.fhict.nl/newsfeeds/Fhict?items=" + ctx
-                                .getSharedPreferences("settings", Context.MODE_PRIVATE)
-                                .getInt("amountOfNewsItems", DEFAULT_NEWS_ARTICLES),
-                        ctx.getSharedPreferences(
-                                "settings", Context.MODE_PRIVATE).getString("token", "")
-                )).getJSONArray("items");
+                        "https://api.fhict.nl/newsfeeds/Fhict?items=" + items, token)).getJSONArray("items");
 
                 // Fill the newsItems list.
                 for (int i = 0; i < jArray.length(); i++) {
@@ -162,9 +156,9 @@ public class NewsController {
 
         @Override
         protected Bitmap doInBackground(final Object... params) {
-            SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
             newsItem = (NewsItem) params[0];
-            return FontysAPI.getPicture(newsItem.getThumbnailString(), sp.getString("token", ""));
+            return FontysAPI.getPicture(newsItem.getThumbnailString(),
+                    PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN));
         }
 
         @Override

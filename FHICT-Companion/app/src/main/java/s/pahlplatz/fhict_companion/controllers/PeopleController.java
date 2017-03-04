@@ -1,7 +1,6 @@
 package s.pahlplatz.fhict_companion.controllers;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -19,6 +18,7 @@ import java.util.ArrayList;
 
 import s.pahlplatz.fhict_companion.models.Person;
 import s.pahlplatz.fhict_companion.utils.FontysAPI;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Created by Stefan on 25-2-2017.
@@ -29,10 +29,9 @@ import s.pahlplatz.fhict_companion.utils.FontysAPI;
 public class PeopleController {
     private static final String TAG = PeopleController.class.getSimpleName();
 
-    private Context ctx;
+    private final Context ctx;
+    private final PeopleListener listener;                      // Reference to the view hosting the search.
     private ArrayList<Person> personList;
-
-    private PeopleListener listener;                            // Reference to the view hosting the search.
     private OnFragmentInteractionListener activityListener;     // Reference to the activity hosting the search.
 
     /**
@@ -150,10 +149,9 @@ public class PeopleController {
 
         @Override
         protected void onPreExecute() {
-            SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
-            token = sp.getString("token", "");
-            classId = sp.getString("classId", "");
-            className = sp.getString("className", "");
+            token = PreferenceHelper.getString(ctx, PreferenceHelper.TOKEN);
+            classId = PreferenceHelper.getString(ctx, PreferenceHelper.CLASS_ID);
+            className = PreferenceHelper.getString(ctx, PreferenceHelper.CLASS_NAME);
             listener.progressbarVisibility(true);
         }
 
@@ -196,7 +194,7 @@ public class PeopleController {
                         e.printStackTrace();
                     }
 
-                // More results.
+                    // More results.
                 } else {
                     try {
                         for (int i = 0; i < jArrayPeopleSearch.length(); i++) {
