@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -296,13 +297,31 @@ public final class MainActivity extends AppCompatActivity
         @Override
         protected Map<String, String> doInBackground(final Void... params) {
             Map<String, String> retMap = new HashMap<>();
+            String token = getSharedPreferences("settings", MODE_PRIVATE).getString("token", "");
+            SharedPreferences.Editor edit = getSharedPreferences("settings", MODE_PRIVATE).edit();
+
             try {
-                // Convert the InputStream to a JSONArray
-                JSONObject jObject = new JSONObject(FontysAPI.getStream("https://api.fhict.nl/people/me",
-                        getSharedPreferences("settings", MODE_PRIVATE).getString("token", "")));
+                // Get the user's information.
+                JSONObject jObject = new JSONObject(FontysAPI.getStream("https://api.fhict.nl/people/me", token));
+
+                // Get the user's class.
+                JSONArray jsonArray = new JSONArray(FontysAPI.getStream("https://api.fhict.nl/groups", token));
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    JSONObject group = jsonArray.getJSONObject(i);
+                    try {
+                        // If the user has a class store it in sp.
+                        String groupType = group.getString("groupType");
+                        if (groupType.contains("Klas")) {
+                            edit.putString("classId", group.getString("id"));
+                            edit.putString("className", group.getString("groupName"));
+                            Log.i(TAG, "doInBackground: User is part of class " + group.getString("id"));
+                        }
+                    } catch (Exception ex) {
+                        // Do nothing.
+                    }
+                }
 
                 // Store info
-                SharedPreferences.Editor edit = getSharedPreferences("settings", MODE_PRIVATE).edit();
                 edit.putString("id", jObject.getString("id"));
                 edit.putString("displayName", jObject.getString("displayName"));
                 edit.putString("title", jObject.getString("title"));

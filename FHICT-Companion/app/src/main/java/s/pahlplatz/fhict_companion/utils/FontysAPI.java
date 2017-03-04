@@ -44,7 +44,7 @@ public final class FontysAPI {
             // Get the result.
             inputStream = connection.getInputStream();
         } catch (Exception ex) {
-            Log.e(TAG, "getStream: Couldn't get data from fontys api.", ex);
+            Log.e(TAG, "getStream: Couldn't get data from fontys api." + ex.getMessage());
             return null;
         }
         return convertStreamToString(inputStream);

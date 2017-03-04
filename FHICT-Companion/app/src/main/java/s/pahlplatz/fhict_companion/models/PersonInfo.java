@@ -8,11 +8,15 @@ package s.pahlplatz.fhict_companion.models;
  * Right is for the variable.
  */
 
-public class PersonInfo {
+public final class PersonInfo {
     private final String left;
     private final String right;
 
-    PersonInfo(final String left, final String right) {
+    private PersonInfo(final String left, final String right) {
+        if (left.equals("") || right.equals("")) {
+            throw new RuntimeException("PersonInfo has an empty string. Are you sure you initialized the object with the createInfo method?");
+        }
+
         this.left = left;
         this.right = right;
     }
@@ -32,9 +36,11 @@ public class PersonInfo {
      * @return personInfo object.
      */
     public static PersonInfo createInfo(final String left, final String right) {
-        if (!right.equals("")) {
-            String rightNew = right.replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ");
-            return new PersonInfo(left, rightNew);
+        if (left != null && right != null) {
+            if (!right.equals("")) {
+                String rightNew = right.replace("[", "").replace("]", "").replace("\"", "").replace(",", ", ");
+                return new PersonInfo(left, rightNew);
+            }
         }
         return null;
     }

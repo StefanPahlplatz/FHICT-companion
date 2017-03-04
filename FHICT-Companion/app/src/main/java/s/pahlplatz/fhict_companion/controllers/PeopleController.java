@@ -140,63 +140,105 @@ public class PeopleController {
     /**
      * Load the results from the fontys API.
      */
-    private class LoadResults extends AsyncTask<String, Void, JSONArray> {
-        private SharedPreferences sp;
+    private class LoadResults extends AsyncTask<String, Void, Void> {
+        private JSONArray jArrayPeopleSearch = null;
+        private JSONArray jArrayClassMembers = null;
+        private String token;
+        private String classId;
+        private String className;
+        private String query;
 
         @Override
         protected void onPreExecute() {
-            sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
+            SharedPreferences sp = ctx.getSharedPreferences("settings", Context.MODE_PRIVATE);
+            token = sp.getString("token", "");
+            classId = sp.getString("classId", "");
+            className = sp.getString("className", "");
             listener.progressbarVisibility(true);
         }
 
         @Override
-        protected JSONArray doInBackground(final String... params) {
-            JSONArray jArrayPeople = null;
-            String query = params[0];
+        protected Void doInBackground(final String... params) {
+            query = params[0];
 
-            if (sp != null) {
+            // // Get data from the people search.
+            try {
+                jArrayPeopleSearch = new JSONArray(FontysAPI.getStream(
+                        "https://api.fhict.nl/people/search/" + query, token));
+            } catch (Exception ex) {
+                Log.e(TAG, "doInBackground: Couldn't get data", ex);
+            }
+
+            // Get data from the class search.
+            if (!classId.equals("")) {
                 try {
-                    jArrayPeople = new JSONArray(FontysAPI.getStream(
-                            "https://api.fhict.nl/people/search/" + query, sp.getString("token", "")));
+                    JSONObject jObj = new JSONObject(FontysAPI.getStream(
+                            "https://api.fhict.nl/groups/" + classId + "?includeMembers=true", token));
+                    jArrayClassMembers = jObj.getJSONArray("members");
                 } catch (Exception ex) {
-                    Log.e(TAG, "doInBackground: Couldn't get data", ex);
+                    Log.e(TAG, "doInBackground: Couldn't get data from class search.", ex);
                 }
             }
-            return jArrayPeople;
+
+            return null;
         }
 
         @Override
-        protected void onPostExecute(final JSONArray jArray) {
-            if (jArray != null) {
-                // No results.
-                if (jArray.length() == 0) {
-                    Toast.makeText(ctx, "No results found", Toast.LENGTH_SHORT).show();
+        protected void onPostExecute(final Void v) {
+            personList = new ArrayList<>();
 
+            if (jArrayPeopleSearch != null) {
                 // One result.
-                } else if (jArray.length() == 1) {
+                if (jArrayPeopleSearch.length() == 1) {
                     try {
-                        activityListener.onFragmentInteraction(new Person(jArray.getJSONObject(0)));
+                        personList.add(new Person(jArrayPeopleSearch.getJSONObject(0)));
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
                 // More results.
                 } else {
-                    personList = new ArrayList<>();
                     try {
-                        for (int i = 0; i < jArray.length(); i++) {
-                            JSONObject p = jArray.getJSONObject(i);
+                        for (int i = 0; i < jArrayPeopleSearch.length(); i++) {
+                            JSONObject p = jArrayPeopleSearch.getJSONObject(i);
                             personList.add(new Person(p));
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    createList(personList);
                 }
-
-                // Hide the pbar.
-                listener.progressbarVisibility(false);
+            } else {
+                Log.e(TAG, "onPostExecute: People search is null");
             }
+
+            if (jArrayClassMembers != null) {
+                for (int i = 0; i < jArrayClassMembers.length(); i++) {
+                    JSONObject p = null;
+                    try {
+                        p = jArrayClassMembers.getJSONObject(i);
+                    } catch (JSONException e) {
+                        // Do nothing.
+                    }
+                    Person person = new Person(p, className);
+                    if (person.contains(query)) {
+                        personList.add(person);
+                    }
+                }
+            } else {
+                Log.e(TAG, "onPostExecute: jArrayClassMembers = null. "
+                        + "This means that the search for people in your class was unsuccessful");
+            }
+
+            if (personList.size() == 0) {
+                Toast.makeText(ctx, "No results found", Toast.LENGTH_SHORT).show();
+            } else if (personList.size() == 1) {
+                activityListener.onFragmentInteraction(personList.get(0));
+            } else {
+                createList(personList);
+            }
+
+            // Hide the pbar.
+            listener.progressbarVisibility(false);
         }
     }
 }
