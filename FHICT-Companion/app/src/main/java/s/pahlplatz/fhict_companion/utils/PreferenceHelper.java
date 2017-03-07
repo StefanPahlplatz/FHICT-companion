@@ -19,6 +19,7 @@ public final class PreferenceHelper {
     public static final String USER_ID = "id";
     public static final String USER_TITLE = "title";
     public static final String PROFILE_PICTURE_URL = "title";
+    public static final String STARTED_ONLINE = "started_offline";
 
     private PreferenceHelper() {
         // Not called.
@@ -34,6 +35,18 @@ public final class PreferenceHelper {
     public static void save(final Context ctx, final String var, final String data) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         sharedPreferences.edit().putString(var, data).apply();
+    }
+
+    /**
+     * Saves a bool to preferences.
+     *
+     * @param ctx  context.
+     * @param var  name of the variable.
+     * @param data string to save.
+     */
+    public static void save(final Context ctx, final String var, final boolean data) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        sharedPreferences.edit().putBoolean(var, data).apply();
     }
 
     /**
@@ -69,5 +82,16 @@ public final class PreferenceHelper {
     public static int getInt(final Context ctx, final String var, final int defaultValue) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
         return sharedPreferences.getInt(var, defaultValue);
+    }
+
+    /**
+     * Gets a boolean from preferences.
+     *
+     * @param ctx          context.
+     * @param var          name of the variable to retrieve.
+     */
+    public static boolean getBoolean(final Context ctx, final String var) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        return sharedPreferences.getBoolean(var, false);
     }
 }

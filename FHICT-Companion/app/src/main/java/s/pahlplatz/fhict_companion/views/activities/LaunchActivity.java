@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import s.pahlplatz.fhict_companion.utils.NetworkState;
+import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
 /**
  * Activity to determine in which mode the app will be launched, online or offline.
@@ -27,6 +28,7 @@ public class LaunchActivity extends AppCompatActivity {
         } else {
             intent = new Intent(getBaseContext(), hasConnection ? LoginActivity.class : MainActivity.class);
         }
+        PreferenceHelper.save(getBaseContext(), PreferenceHelper.STARTED_ONLINE, hasConnection);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK
                 | Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);

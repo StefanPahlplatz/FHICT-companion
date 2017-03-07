@@ -35,7 +35,7 @@ public class ScheduleController {
      * Turns 'Monday' into 'Mon' for comparison.
      */
     private static final int SHORT_DAY = 3;
-    private static final String[] DAYS = new String[] {"Monday", "Tuesday", "Wednesday",
+    private static final String[] DAYS = new String[]{"Monday", "Tuesday", "Wednesday",
             "Thursday", "Friday", "Saturday", "Sunday"};
 
     private final Context ctx;
@@ -59,15 +59,20 @@ public class ScheduleController {
         if (NetworkState.isOnline()) {
             new LoadSchedule().execute();
         } else {
-            // Try to load a schedule from storage.
-            schedule = (Schedule) LocalPersistence.readObjectFromFile(ctx, "schedule");
+            try {
+                // Try to load a schedule from storage.
+                schedule = (Schedule) LocalPersistence.readObjectFromFile(ctx, "schedule");
+            } catch (ClassCastException ex) {
+                Log.e(TAG, "ScheduleController: Couldn't convert the saved schedule to a schedule object.");
+            }
 
             // If there is no schedule saved.
             if (schedule == null) {
                 listener.noSchedule();
             } else {
                 weeks = schedule.getWeekNrs();
-
+                setCurrentWeek();
+                setCurrentDay();
                 setToday();
             }
         }
@@ -77,6 +82,10 @@ public class ScheduleController {
      * Views today's schedule.
      */
     public void setToday() {
+        if (schedule == null) {
+            return;
+        }
+
         day = getCurrentDay();
         week = getCurrentWeek();
 
@@ -199,6 +208,36 @@ public class ScheduleController {
     }
 
     /**
+     * Sets the current day as selected.
+     * Also appends '(today)' to the current day.
+     */
+    private void setCurrentDay() {
+        day = getCurrentDay();
+        if (!DAYS[day].contains("(today)")) {
+            DAYS[day] += " (today)";
+        }
+        listener.setDaySpinner(DAYS[day]);
+    }
+
+    /**
+     * Set the current week as selected.
+     * Also appends '(current)' to the current week.
+     */
+    private void setCurrentWeek() {
+        week = getCurrentWeek();
+
+        if (week == -1) {
+            listener.setWeekSpinner("Week ?");
+            Log.e(TAG, "setCurrentWeek: Couldn't find right week.");
+        } else if (weeks == null) {
+            Log.e(TAG, "setCurrentWeek: weeks array is null.");
+        } else {
+            weeks[week] += " (current)";
+            listener.setWeekSpinner(weeks[week]);
+        }
+    }
+
+    /**
      * An interface to be implemented by every class that is using the schedule.
      */
     public interface ScheduleListener {
@@ -314,36 +353,6 @@ public class ScheduleController {
                 } catch (JSONException ex) {
                     Log.e(TAG, "Week: Exception occurred while parsing JSON", ex);
                 }
-            }
-        }
-
-        /**
-         * Sets the current day as selected.
-         * Also appends '(today)' to the current day.
-         */
-        private void setCurrentDay() {
-            day = getCurrentDay();
-            if (!DAYS[day].contains("(today)")) {
-                DAYS[day] += " (today)";
-            }
-            listener.setDaySpinner(DAYS[day]);
-        }
-
-        /**
-         * Set the current week as selected.
-         * Also appends '(current)' to the current week.
-         */
-        private void setCurrentWeek() {
-            week = getCurrentWeek();
-
-            if (week == -1) {
-                listener.setWeekSpinner("Week ?");
-                Log.e(TAG, "setCurrentWeek: Couldn't find right week.");
-            } else if (weeks == null) {
-                Log.e(TAG, "setCurrentWeek: weeks array is null.");
-            } else {
-                weeks[week] += " (current)";
-                listener.setWeekSpinner(weeks[week]);
             }
         }
     }

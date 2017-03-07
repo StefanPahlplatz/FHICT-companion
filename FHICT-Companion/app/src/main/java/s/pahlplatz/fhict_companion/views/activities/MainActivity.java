@@ -59,10 +59,11 @@ public final class MainActivity extends AppCompatActivity
 
         setContentView(R.layout.activity_main);
 
+        boolean started_online = PreferenceHelper.getBoolean(getBaseContext(), PreferenceHelper.STARTED_ONLINE);
         if (PreferenceManager.getDefaultSharedPreferences(this).getBoolean("always_offline", false)) {
             NetworkState.setOnline(false);
         } else {
-            NetworkState.setOnline(NetworkState.isActive(this));
+            NetworkState.setOnline(started_online);
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.app_bar_main_toolbar);
@@ -138,6 +139,7 @@ public final class MainActivity extends AppCompatActivity
                             .edit()
                             .putBoolean("always_offline", false)
                             .apply();
+                    PreferenceHelper.save(getBaseContext(), PreferenceHelper.STARTED_ONLINE, true);
                     restart();
                 } else {
                     Toast.makeText(this, "Can't connect to the internet.", Toast.LENGTH_SHORT).show();
@@ -297,6 +299,9 @@ public final class MainActivity extends AppCompatActivity
         protected Map<String, String> doInBackground(final Void... params) {
             Map<String, String> retMap = new HashMap<>();
             String token = PreferenceHelper.getString(getBaseContext(), PreferenceHelper.TOKEN);
+            if (token.equals("")) {
+                return null;
+            }
 
             try {
                 // Get the user's information.
@@ -336,6 +341,10 @@ public final class MainActivity extends AppCompatActivity
 
         @Override
         protected void onPostExecute(final Map<String, String> map) {
+            if (map == null) {
+                return;
+            }
+
             TextView name = (TextView) findViewById(R.id.nav_header_name);
             name.setText(map.get("displayName"));
 
@@ -350,14 +359,22 @@ public final class MainActivity extends AppCompatActivity
     private class LoadProfilePicture extends AsyncTask<Void, Void, Bitmap> {
         @Override
         protected Bitmap doInBackground(final Void... params) {
+            String token = PreferenceHelper.getString(getBaseContext(), PreferenceHelper.TOKEN);
+            if (token.equals("")) {
+                return null;
+            }
+
             return FontysAPI.getPicture(
                     "https://api.fhict.nl/pictures/I" + PreferenceHelper.getString(getBaseContext(),
-                            PreferenceHelper.USER_ID).substring(1) + ".jpg",
-                    PreferenceHelper.getString(getBaseContext(), PreferenceHelper.TOKEN));
+                            PreferenceHelper.USER_ID).substring(1) + ".jpg", token);
         }
 
         @Override
         protected void onPostExecute(final Bitmap result) {
+            if (result == null) {
+                return;
+            }
+
             CircleImageView image = (CircleImageView) findViewById(R.id.nav_header_profile_image);
             image.setImageBitmap(result);
         }
