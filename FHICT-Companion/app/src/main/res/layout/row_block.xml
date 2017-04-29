@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp">
+
+    <CheckBox
+        android:id="@+id/row_block_checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/row_block_teacher"
+        android:layout_alignBottom="@+id/row_block_teacher"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:id="@+id/row_block_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/row_block_teacher"
+        android:padding="4dp"
+        android:text="@string/time_placeholder" />
+
+    <TextView
+        android:id="@+id/row_block_teacher"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/row_block_subject"
+        android:padding="4dp"
+        android:text="@string/teacher" />
+
+    <TextView
+        android:id="@+id/row_block_subject"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:padding="4dp"
+        android:text="@string/subject" />
+</RelativeLayout>

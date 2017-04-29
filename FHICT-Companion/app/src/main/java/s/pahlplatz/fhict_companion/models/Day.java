@@ -45,7 +45,24 @@ public class Day implements java.io.Serializable {
     /**
      * Adds the given block to the day.
      */
-    void addBlock(final Block block) {
+    public void addBlock(final Block block) {
+        for (int i = 0; i < blocks.size(); i++) {
+            int startHour = Integer.parseInt(blocks.get(i).getStart().substring(0, 2));
+            int startHour2 = Integer.parseInt(block.getStart().substring(0, 2));
+
+            if (startHour > startHour2) {
+                blocks.add(i, block);
+                return;
+            } else if (startHour == startHour2) {
+                int startMin = Integer.parseInt(blocks.get(i).getStart().substring(3, 5));
+                int startMin2 = Integer.parseInt(block.getStart().substring(3, 5));
+
+                if (startMin > startMin2) {
+                    blocks.add(i, block);
+                    return;
+                }
+            }
+        }
         blocks.add(block);
     }
 

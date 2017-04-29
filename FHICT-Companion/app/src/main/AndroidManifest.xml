@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="s.pahlplatz.fhict_companion">
+    package="s.pahlplatz.fhict_companion">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -13,23 +13,41 @@
         android:theme="@style/AppTheme">
         <activity android:name=".views.activities.LaunchActivity">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER"/>
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".views.activities.LoginActivity"/>
+        <activity android:name=".views.activities.LoginActivity" />
         <activity
             android:name=".views.activities.MainActivity"
             android:label="@string/title_activity_main"
-            android:theme="@style/AppTheme.NoActionBar"/>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".views.activities.SettingsActivity"
             android:label="@string/title_activity_settings"
             android:parentActivityName=".views.activities.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="s.pahlplatz.fhict_companion.views.activities.MainActivity"/>
+                android:value="s.pahlplatz.fhict_companion.views.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.activities.AddBlockActivity"
+            android:label="@string/title_activity_add_block"
+            android:parentActivityName=".views.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="s.pahlplatz.fhict_companion.views.activities.MainActivity" />
+        </activity>
+        <activity
+            android:name=".views.activities.RemoveBlockActivity"
+            android:label="@string/title_activity_remove_block"
+            android:parentActivityName=".views.activities.MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="s.pahlplatz.fhict_companion.views.activities.MainActivity" />
         </activity>
     </application>
 

@@ -38,7 +38,6 @@ public final class PreferenceHelper {
         }
         set.add(name);
         sharedPreferences.edit().putStringSet(BLOCKS, set).apply();
-        Log.d(PreferenceHelper.class.getSimpleName(), "addBlock: addedi3642");
     }
 
     public static CharSequence[] getBlocks(final Context ctx) {

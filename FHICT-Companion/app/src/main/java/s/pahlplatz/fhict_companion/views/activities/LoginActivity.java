@@ -424,7 +424,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             credential = new Credential.Builder(user)
                     .setPassword(pass)
                     .build();
-            Log.i(TAG, "processContent:\n\tusername: " + user + "\n\tpassword: " + pass);
         }
     }
 }

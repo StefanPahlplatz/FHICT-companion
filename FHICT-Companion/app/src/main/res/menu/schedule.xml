@@ -1,9 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/action_schedule_download"
         android:orderInCategory="2"
         android:title="@string/action_download"
-        app:showAsAction="never"/>
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_schedule_add"
+        android:orderInCategory="3"
+        android:title="@string/add_block"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_schedule_remove"
+        android:orderInCategory="4"
+        android:title="@string/remove_custom_block"
+        app:showAsAction="never" />
+
 </menu>

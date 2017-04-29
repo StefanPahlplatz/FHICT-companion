@@ -5,6 +5,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Date;
 
+//TODO: Merge teachers too if the block is the same.
+
 /**
  * Schedule model to host all information about the schedule.
  */

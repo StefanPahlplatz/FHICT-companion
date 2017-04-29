@@ -25,7 +25,7 @@
     <string name="previous"><![CDATA[<]]></string>
     <string name="next"><![CDATA[>]]></string>
     <string name="no_data">No data</string>
-    <string name="time_placeholder">time</string>
+    <string name="time_placeholder">Time</string>
     <string name="course_placeholder">course</string>
     <string name="room_placeholder">room</string>
     <string name="teacher_placeholder">teacher</string>
@@ -93,4 +93,16 @@
     <string name="pref_network_always_offline_sum">Launch app in offline mode even if an internet connection is available. (Gets turned off if you press \'Go online\').</string>
     <string name="pref_network_always_offline_title">Always offline</string>
     <string name="logging_in">Logging in…</string>
+    <string name="add_block">Add custom block</string>
+    <string name="title_activity_add_block">Add Block</string>
+    <string name="subject">Subject</string>
+    <string name="teacher">Teacher</string>
+    <string name="room">Room</string>
+    <string name="day">Day</string>
+    <string name="starting_time">Starting time</string>
+    <string name="ending_time">Ending time</string>
+    <string name="save">Save</string>
+    <string name="remove_custom_block">Remove custom block</string>
+    <string name="title_activity_remove_block">Remove Custom Block</string>
+    <string name="remove_selected">Remove selected</string>
 </resources>

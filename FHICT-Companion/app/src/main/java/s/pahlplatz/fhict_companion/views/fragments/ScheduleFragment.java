@@ -1,5 +1,6 @@
 package s.pahlplatz.fhict_companion.views.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -20,6 +21,8 @@ import s.pahlplatz.fhict_companion.adapters.ScheduleAdapter;
 import s.pahlplatz.fhict_companion.controllers.ScheduleController;
 import s.pahlplatz.fhict_companion.utils.NetworkState;
 import s.pahlplatz.fhict_companion.utils.WrapContentLinearLayoutManager;
+import s.pahlplatz.fhict_companion.views.activities.AddBlockActivity;
+import s.pahlplatz.fhict_companion.views.activities.RemoveBlockActivity;
 
 /**
  * Fragment to show the user's schedule.
@@ -114,6 +117,16 @@ public class ScheduleFragment extends Fragment implements ScheduleController.Sch
 
             case R.id.action_schedule_today:
                 controller.setToday();
+                return true;
+
+            case R.id.action_schedule_add:
+                Intent addBlockActivity = new Intent(getActivity(), AddBlockActivity.class);
+                startActivity(addBlockActivity);
+                return true;
+
+            case R.id.action_schedule_remove:
+                Intent removeBlockActivity = new Intent(getActivity(), RemoveBlockActivity.class);
+                startActivity(removeBlockActivity);
                 return true;
 
             default:

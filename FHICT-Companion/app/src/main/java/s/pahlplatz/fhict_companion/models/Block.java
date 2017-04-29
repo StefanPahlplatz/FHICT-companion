@@ -12,8 +12,8 @@ public class Block implements java.io.Serializable {
 
     private final String subject;
     private final String teacherAbbr;
-    private final String start;         // Start - TIME!
-    private String end;                 // End - TIME!
+    private String start;
+    private String end;
     private String room;
 
     /**
@@ -24,8 +24,13 @@ public class Block implements java.io.Serializable {
         this.room = room;
         this.subject = subject;
         this.teacherAbbr = teacherAbbr;
-        this.start = start.substring(START_OF_TIME, END_OF_TIME);
-        this.end = end.substring(START_OF_TIME, END_OF_TIME);
+
+        try {
+            this.start = start.substring(START_OF_TIME, END_OF_TIME);
+            this.end = end.substring(START_OF_TIME, END_OF_TIME);
+        } catch (Exception e) {
+            // Do nothing.
+        }
     }
 
     /**
@@ -69,6 +74,10 @@ public class Block implements java.io.Serializable {
         return start;
     }
 
+    public void setStart(String start) {
+        this.start = start;
+    }
+
     /**
      * Returns the abbreviation of the teacher.
      */
@@ -92,6 +101,7 @@ public class Block implements java.io.Serializable {
 
     /**
      * Sets the room of the block.
+     *
      * @param room string.
      */
     void setRoom(String room) {

@@ -17,6 +17,9 @@ import java.io.ObjectOutputStream;
 public final class LocalPersistence {
     private static final String TAG = LocalPersistence.class.getSimpleName();
 
+    public static final String SCHEDULE = "schedule";
+    public static final String BLOCKS = "blocks";
+
     private LocalPersistence() {
         // Not called.
     }
