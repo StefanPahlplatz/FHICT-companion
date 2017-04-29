@@ -3,6 +3,10 @@ package s.pahlplatz.fhict_companion.utils;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by Stefan on 4-3-2017.
@@ -20,9 +24,30 @@ public final class PreferenceHelper {
     public static final String USER_TITLE = "title";
     public static final String PROFILE_PICTURE_URL = "title";
     public static final String STARTED_ONLINE = "started_offline";
+    private static final String BLOCKS = "blocks";
 
     private PreferenceHelper() {
         // Not called.
+    }
+
+    public static void addBlock(final Context ctx, final String name) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        Set<String> set = sharedPreferences.getStringSet(BLOCKS, null);
+        if (set == null) {
+            set = new HashSet<>();
+        }
+        set.add(name);
+        sharedPreferences.edit().putStringSet(BLOCKS, set).apply();
+        Log.d(PreferenceHelper.class.getSimpleName(), "addBlock: addedi3642");
+    }
+
+    public static CharSequence[] getBlocks(final Context ctx) {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);
+        Set<String> set = sharedPreferences.getStringSet(BLOCKS, null);
+        if (set == null) {
+            return null;
+        }
+        return set.toArray(new CharSequence[set.size()]);
     }
 
     /**
@@ -87,8 +112,8 @@ public final class PreferenceHelper {
     /**
      * Gets a boolean from preferences.
      *
-     * @param ctx          context.
-     * @param var          name of the variable to retrieve.
+     * @param ctx context.
+     * @param var name of the variable to retrieve.
      */
     public static boolean getBoolean(final Context ctx, final String var) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(ctx);

@@ -1,6 +1,7 @@
 package s.pahlplatz.fhict_companion.controllers;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -13,8 +14,10 @@ import org.json.JSONObject;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Set;
 
 import s.pahlplatz.fhict_companion.adapters.ScheduleAdapter;
 import s.pahlplatz.fhict_companion.models.Block;
@@ -254,6 +257,8 @@ public class ScheduleController {
      * Async class to load the schedule from the API.
      */
     private class LoadSchedule extends AsyncTask<Void, Void, Void> {
+        private String[] blocks_to_ignore;
+
         @Override
         protected void onPreExecute() {
             if (schedule == null) {
@@ -261,6 +266,11 @@ public class ScheduleController {
             } else {
                 schedule.clear();
             }
+
+            SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(ctx);
+            Set<String> set = pref.getStringSet("ignore_blocks", null);
+
+            blocks_to_ignore = set == null ? new String[0] : set.toArray(new String[]{});
         }
 
         @Override
@@ -335,9 +345,13 @@ public class ScheduleController {
 
             for (int i = 0; i < jDays.length(); i++) {
                 try {
+                    String subject = jDays.getJSONObject(i).getString("subject");
+                    if (Arrays.asList(blocks_to_ignore).contains(subject)) {
+                        continue;
+                    }
+
                     // Get data from array.
                     String room = jDays.getJSONObject(i).getString("room").replace("_", " ");
-                    String subject = jDays.getJSONObject(i).getString("subject");
                     String teacherAbbr = jDays.getJSONObject(i).getString("teacherAbbreviation");
                     String start = jDays.getJSONObject(i).getString("start");
                     String end = jDays.getJSONObject(i).getString("end");
@@ -345,6 +359,8 @@ public class ScheduleController {
 
                     // Wrap all info in a block object.
                     Block block = new Block(room, subject, teacherAbbr, start, end);
+
+                    PreferenceHelper.addBlock(ctx, subject);
 
                     // Add block to the schedule.
                     schedule.addBlock(block, date);

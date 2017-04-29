@@ -9,6 +9,7 @@ import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceFragment;
@@ -164,11 +165,22 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
      */
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class SchedulePreferenceFragment extends PreferenceFragment {
+        private MultiSelectListPreference ignore_blocks;
+
         @Override
         public void onCreate(final Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_schedule);
             setHasOptionsMenu(true);
+
+            ignore_blocks = (MultiSelectListPreference) findPreference("ignore_blocks");
+            CharSequence[] array = PreferenceHelper.getBlocks(getContext());
+            if (array == null) {
+                ignore_blocks.setEnabled(false);
+            } else {
+                ignore_blocks.setEntryValues(array);
+                ignore_blocks.setEntries(array);
+            }
         }
 
         @Override
