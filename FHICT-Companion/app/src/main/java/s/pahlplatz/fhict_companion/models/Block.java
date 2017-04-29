@@ -10,11 +10,11 @@ public class Block implements java.io.Serializable {
     private static final int START_OF_TIME = 11;
     private static final int END_OF_TIME = 16;
 
-    private final String room;          // Room
-    private final String subject;       // Subject
-    private final String teacherAbbr;   // Teacher
+    private final String subject;
+    private final String teacherAbbr;
     private final String start;         // Start - TIME!
     private String end;                 // End - TIME!
+    private String room;
 
     /**
      * Default constructor.
@@ -56,7 +56,7 @@ public class Block implements java.io.Serializable {
      *
      * @param end String in hh:mm format.
      */
-    public void setEnd(final String end) {
+    void setEnd(final String end) {
         this.end = end;
     }
 
@@ -88,6 +88,14 @@ public class Block implements java.io.Serializable {
      */
     public String getRoom() {
         return room;
+    }
+
+    /**
+     * Sets the room of the block.
+     * @param room string.
+     */
+    void setRoom(String room) {
+        this.room = room;
     }
 
     @Override

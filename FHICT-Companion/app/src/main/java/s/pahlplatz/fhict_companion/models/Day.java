@@ -53,14 +53,24 @@ public class Day implements java.io.Serializable {
      * Merges two consecutive blocks if the times follow up and the subjects are the same.
      */
     void mergeDuplicates() {
-        for (int i = 0; i < blocks.size(); i++) {
-            if (i + 1 < blocks.size()) {
-                if (blocks.get(i).getSubject().equals(blocks.get(i + 1).getSubject())
-                        && blocks.get(i).getEnd().equals(blocks.get(i + 1).getStart())) {
-                    blocks.get(i).setEnd(blocks.get(i + 1).getEnd());
-                    blocks.remove(i + 1);
-                    i = 0;
-                }
+        for (int i = 0; i < blocks.size() - 1; i++) {
+            Block current = blocks.get(i);
+            Block next = blocks.get(i + 1);
+
+            // Merge two consecutive blocks.
+            if (current.getSubject().equals(next.getSubject())
+                    && current.getEnd().equals(next.getStart())) {
+                current.setEnd(next.getEnd());
+                blocks.remove(i + 1);
+                i = 0;
+            }
+            // Merge same blocks in different rooms.
+            else if (current.getSubject().equals(next.getSubject()) &&
+                    current.getStart().equals(next.getStart()) &&
+                    current.getEnd().equals(next.getEnd())) {
+                current.setRoom(current.getRoom() + " / " + next.getRoom());
+                blocks.remove(i + 1);
+                i = 0;
             }
         }
     }
