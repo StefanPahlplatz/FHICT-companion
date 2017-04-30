@@ -46,6 +46,14 @@ public class Day implements java.io.Serializable {
      * Adds the given block to the day.
      */
     public void addBlock(final Block block) {
+        // Check if the block already exists.
+        for (Block b : blocks) {
+            if (b.equals(block)) {
+                return;
+            }
+        }
+
+        // Insert the block.
         for (int i = 0; i < blocks.size(); i++) {
             int startHour = Integer.parseInt(blocks.get(i).getStart().substring(0, 2));
             int startHour2 = Integer.parseInt(block.getStart().substring(0, 2));
