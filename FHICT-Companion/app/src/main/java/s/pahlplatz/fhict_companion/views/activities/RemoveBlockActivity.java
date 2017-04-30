@@ -30,6 +30,13 @@ public class RemoveBlockActivity extends AppCompatActivity {
         final ArrayList<CustomBlock> blocks = (ArrayList<CustomBlock>) LocalPersistence.readObjectFromFile(
                 getBaseContext(), LocalPersistence.BLOCKS
         );
+        
+        if (blocks == null) {
+            Toast.makeText(this, "No extra blocks found.", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+        
         adapter = new BlockAdapter(getBaseContext(), blocks);
 
         ListView listView = (ListView) findViewById(R.id.remove_block_listview);
