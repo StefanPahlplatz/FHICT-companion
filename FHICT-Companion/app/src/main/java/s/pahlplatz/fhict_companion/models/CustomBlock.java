@@ -17,4 +17,11 @@ public class CustomBlock extends Block {
     public String getDay() {
         return day;
     }
+
+    /**
+     * {@inheritDoc}
+     */
+    public boolean equals(CustomBlock other) {
+        return super.equals(other) && this.day.equals(other.day);
+    }
 }

@@ -108,6 +108,19 @@ public class Block implements java.io.Serializable {
         this.room = room;
     }
 
+    /**
+     * Returns true or false depending on if all of the properties are the same.
+     * @param other to check.
+     * @return same or not.
+     */
+    public boolean equals(Block other) {
+        return this.subject.equals(other.subject) &&
+                this.teacherAbbr.equals(other.teacherAbbr) &&
+                this.start.equals(other.start) &&
+                this.end.equals(other.end) &&
+                this.room.equals(other.room);
+    }
+
     @Override
     public String toString() {
         if (subject.equals("Break")) {
