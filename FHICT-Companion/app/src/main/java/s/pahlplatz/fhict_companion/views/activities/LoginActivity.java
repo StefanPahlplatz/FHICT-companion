@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         // Assign elements.
         web = (WebView) findViewById(R.id.token_webview);
         progressBar = (ProgressBar) findViewById(R.id.token_pbar);
-        autoLogin = PreferenceManager.getDefaultSharedPreferences(this).getBoolean("auto_login", false);
+        autoLogin = PreferenceHelper.getBoolean(this, PreferenceHelper.AUTO_LOGIN);
 
         // Adjust browser settings.
         web.getSettings().setJavaScriptEnabled(true);
@@ -97,7 +97,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         web.setWebChromeClient(new WebChromeClient() {
             @Override
             public boolean onConsoleMessage(final ConsoleMessage consoleMessage) {
-                Log.d("MyApplication", consoleMessage.message() + " -- From line "
+                Log.e("MyApplication", consoleMessage.message() + " -- From line "
                         + consoleMessage.lineNumber() + " of "
                         + consoleMessage.sourceId());
                 // Restart the activity if we missed a step in the js execution.
@@ -168,9 +168,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         showBrowser();
                     }
 
-                // =================================================================
-                // AUTHORIZATION PAGE
-                // =================================================================
+                    // =================================================================
+                    // AUTHORIZATION PAGE
+                    // =================================================================
                 } else if (url.contains("connect/authorize?redirect_uri")) {
                     if (autoLogin) {
                         web.loadUrl("javascript: {var button = document.getElementsByClassName('btn btn-success')[0].click();};");
@@ -182,55 +182,60 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
                         showBrowser();
                     }
 
-                // =================================================================
-                // ACCESS DENIED!
-                // =================================================================
+                    // =================================================================
+                    // ACCESS DENIED!
+                    // =================================================================
                 } else if (url.contains("error=access_denied")) {
                     Log.e(TAG, "ACCESS_DENIED_HERE");
                     authComplete = true;
                     showBrowser();
 
-                // =================================================================
-                // WE'RE ON THE FINAL PAGE
-                // =================================================================
+                    // =================================================================
+                    // WE'RE ON THE FINAL PAGE
+                    // =================================================================
                 } else if (url.contains("access_token=") && !authComplete) {
                     // Get the auth token.
                     authCode = getAuthCode(url);
                     authComplete = true;
 
-                    if (credential == null) {
-                        // Ask the user if they want to auto login.
-                        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(final DialogInterface dialog, final int which) {
-                                switch (which) {
-                                    case DialogInterface.BUTTON_POSITIVE:
+                    if (!autoLogin) {
+                        Log.v(TAG, "AUTO_LOGIN == FALSE");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+
+                        builder.setTitle("Enable auto-login?");
+
+                        builder.setMessage("Do you want to save your credentials so you can be logged in automatically?")
+                                .setPositiveButton("Yes (Recommended)", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
                                         PreferenceManager.getDefaultSharedPreferences(getBaseContext())
                                                 .edit()
                                                 .putBoolean("auto_login", true)
                                                 .apply();
                                         saveCredential();       // Save credentials to google API.
                                         saveToken(authCode);    // Save the access token.
-                                        break;
-
-                                    case DialogInterface.BUTTON_NEGATIVE:
+                                        startMainActivity();
+                                    }
+                                })
+                                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
                                         saveToken(authCode);    // Save the access token.
-                                        break;
-                                }
-                            }
-                        };
-                        AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                        builder.setMessage("Do you want to save your credentials so you can be logged in automatically?")
-                                .setPositiveButton("Yes (Recommended)", dialogClickListener)
-                                .setNegativeButton("No", dialogClickListener).show();
+                                        startMainActivity();
+                                    }
+                                });
+                        AlertDialog alertDialog = builder.create();
+                        alertDialog.show();
                     } else {
+                        Log.v(TAG, "AUTO_LOGIN == TRUE");
                         saveToken(authCode);    // Save the access token.
+                        startMainActivity();
                     }
                 }
             }
 
             private void showBrowser() {
-                if (!autoLogin && !web.getUrl().contains("tas.fhict.nl/oob.html")) {
+                if (!web.getUrl().contains("tas.fhict.nl/oob.html")) {
                     web.setVisibility(View.VISIBLE);
                 }
             }
@@ -249,12 +254,12 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
 
         // Searches the query string for the first value with the given key.
         String authCode = uri.getQueryParameter("access_token");
-        Log.i(TAG, "CODE : " + authCode);
         String strUri = uri.toString();
         String[] results = strUri.split("#access_token=", 2);
         strUri = results[1];
         results = strUri.split("&", 2);
         authCode = results[0];
+        Log.i(TAG, "CODE: " + authCode);
         return authCode;
     }
 
@@ -266,9 +271,9 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
             @Override
             public void onResult(@NonNull final Status status) {
                 if (status.isSuccess()) {
-                    Log.d(TAG, "Credential saved");
+                    Log.v(TAG, "Credential saved");
                 } else {
-                    Log.d(TAG, "Attempt to save credential failed " + status.getStatusMessage() + " "
+                    Log.e(TAG, "Attempt to save credential failed " + status.getStatusMessage() + " "
                             + status.getStatusCode());
                     resolveResult(status, RC_SAVE);
                 }
@@ -315,7 +320,7 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
         } else if (requestCode == RC_SAVE) {
             Log.d(TAG, "Result code: " + resultCode);
             if (resultCode == RESULT_OK) {
-                Log.d(TAG, "Credential Save: OK");
+                Log.v(TAG, "Credential Save: OK");
             } else {
                 Log.e(TAG, "Credential Save Failed");
             }
@@ -329,18 +334,18 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      */
     @Override
     public void onConnected(final Bundle bundle) {
-        Log.d(TAG, "onConnected: Requesting credentials.");
+        Log.i(TAG, "onConnected: Requesting credentials.");
         requestCredentials();
     }
 
     @Override
     public void onConnectionSuspended(final int cause) {
-        Log.d(TAG, "onConnectionSuspended: " + cause);
+        Log.e(TAG, "onConnectionSuspended: " + cause);
     }
 
     @Override
     public void onConnectionFailed(@NonNull final ConnectionResult connectionResult) {
-        Log.d(TAG, "onConnectionFailed: " + connectionResult);
+        Log.e(TAG, "onConnectionFailed: " + connectionResult);
     }
 
     /**
@@ -400,7 +405,6 @@ public class LoginActivity extends AppCompatActivity implements GoogleApiClient.
      */
     private void saveToken(final String token) {
         PreferenceHelper.save(getBaseContext(), PreferenceHelper.TOKEN, token);
-        startMainActivity();
     }
 
     /**

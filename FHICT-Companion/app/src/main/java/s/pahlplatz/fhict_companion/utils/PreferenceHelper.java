@@ -24,7 +24,11 @@ public final class PreferenceHelper {
     public static final String USER_TITLE = "title";
     public static final String PROFILE_PICTURE_URL = "title";
     public static final String STARTED_ONLINE = "started_offline";
+    public static final String FIRST_TIME_LAUNCH = "first";
+    public static final String AUTO_LOGIN = "auto_login";
+
     private static final String BLOCKS = "blocks";
+
 
     private PreferenceHelper() {
         // Not called.
