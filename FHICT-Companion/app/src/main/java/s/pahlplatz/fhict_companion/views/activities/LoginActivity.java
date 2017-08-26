@@ -37,15 +37,18 @@ import s.pahlplatz.fhict_companion.R;
 import s.pahlplatz.fhict_companion.utils.BrowserHelper;
 import s.pahlplatz.fhict_companion.utils.PreferenceHelper;
 
-/**
- * Proceed with caution.
+/** 
+ * ============= DO NOT USE IN CURRENT STATE! =============
+ * 
+ * DEPRECATED SINCE FONTYS CHANGED THEIR AUTH SYSTEM!
+ * Request your own credentials here: https://api.fhict.nl/Documentation/RequestAccess
  */
 public class LoginActivity extends AppCompatActivity implements GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener {
     private static final String TAG = LoginActivity.class.getSimpleName();
-    private static final String CLIENT_ID = "i874073-studentapp";
-    private static final String REDIRECT_URI = "https://tas.fhict.nl/oob.html";
-    private static final String OAUTH_URL = "https://identity.fhict.nl/connect/authorize";
+    private static final String CLIENT_ID = // CLIENT_ID
+    private static final String REDIRECT_URI = // REDIRECT_URI
+    private static final String OAUTH_URL = // OAUTH_URL
     private static final String OAUTH_SCOPE = "fhict fhict_personal";
     private static final String FULL_URL = OAUTH_URL + "?redirect_uri=" + REDIRECT_URI + "&response_type=token&client_id="
             + CLIENT_ID + "&scope=" + OAUTH_SCOPE;
